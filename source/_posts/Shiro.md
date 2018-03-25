@@ -5,11 +5,15 @@ categories: 工作与学习
 tags: [权限控制,Shiro]
 ---
 
-# Apache Shiro
-> 安全框架
-## 1. 简介
+**Apache Shiro**
+## 初步认识
+> 一个安全认证，授权框架
+
+### 组件简介
 ![](http://dl2.iteye.com/upload/attachment/0093/9788/d59f6d02-1f45-3285-8983-4ea5f18111d5.png)
-### 概念
+
+
+### 组件说明
 * Authentication : 身份认证/登录，验证用户是不是拥有相应的身份
 * Authorization :授权，及权限验证
 * Session Manager : 会话管理，用户登录后就一次会话
@@ -21,10 +25,17 @@ tags: [权限控制,Shiro]
 * Testing:测试
 * Run As :允许一个用户假装为另一个用户
 * Remember me：记住我
+> **Shiro 不会去维护用户，维护权限;需要我们自己去设计，然后注入Shiro** 
 
-**Shiro 不会去维护用户，维护权限;需要我们自己去设计，然后注入Shiro** 
+
+### 优点
+* 简洁的API，使用方便灵活
+* 可插拔式，能与其他很多框架完美融合
+* web能力，remenber me,以及缓存的设计
+* 不依赖于具体环境，无论是web，application
 
 
+### 式例
 ```
 #基本编码样式
 // 创建SecurityManager
@@ -43,9 +54,9 @@ System.out.println("是否已经登录：" + auth);
 ```
 
 
-## 2.身份认证 - Authentication 
+## 身份认证 - Authentication 
 
-#### 流程
+### 流程
 > 主要通过 Subject.login(token) 来进行身份认证
 
 1. 首先调用Subject.login(token)进行登录，其会自动委托给Security Manager，调用之前必
@@ -59,7 +70,7 @@ ModularRealmAuthenticator会调用AuthenticationStrategy进行多Realm身份验�
 回/抛出异常表示身份验证失败了。此处可以配置多个Realm，将按照相应的顺序及策略进
 行访问。
 
-#### Realm 的实现体系
+### Realm 的实现体系
 
 > Realm：域，Shiro从从Realm获取安全数据（如用户、角色、权限），就是说SecurityManager要验证用户身份，那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；也需要从Realm得到用户相应的角色/权限进行验证用户是否能进行操作；可以把Realm看成DataSource，即安全数据源。如我们之前的ini配置方式将使用org.apache.shiro.realm.text.IniRealm。
 
@@ -77,7 +88,7 @@ ModularRealmAuthenticator会调用AuthenticationStrategy进行多Realm身份验�
 而不是“用户名错误”/“密码错误”，防止一些恶意用户非法扫描帐号库
 
 
-#### 多个Realm
+### 多个Realm
 ```
 # 
 #声明多个realm
@@ -90,7 +101,7 @@ securityManager.realms=$myRealm,$myRealm2
 
 
 
-#### 多个Realm的验证策略 AuthenticationStrategy
+### 多个Realm的验证策略 AuthenticationStrategy
 
 > SecurityManager接口继承了Authenticator，另外还有一个ModularRealmAuthenticator实现，
 其委托给多个Realm 进行验证，验证规则通过AuthenticationStrategy 接口指定，
@@ -105,9 +116,9 @@ securityManager.realms=$myRealm,$myRealm2
 
 > 自定义策略 略
 
-## 3.授权 - Authorization
+## 授权 - Authorization
 
-#### 概念
+### 概念
 * 主体（Subject）
 * 资源（Resource）
 * 权限（permission）
@@ -119,12 +130,12 @@ securityManager.realms=$myRealm,$myRealm2
 >　　基于资源的权限访问控制RBAC（resource-based access control）是以资源为中心进行的访问控制，只需要为角色添加权限就可以 **(显示角色)**
 
 
-####  授权方式
+###  授权方式
 1. 编程式 :通过写if/else 授权代码块完成
 2. 注解式：通过在执行的Java方法上放置相应的注解完成 @RequiresRoles("admin")
 3. JSP/GSP 标签：在JSP/GSP 页面通过相应的标签完成
 
-#### 授权
+### 授权
 
 > ini配置规则 “用户名=密码，角色1，角色2”  “角色=权限1，权限2”
 
@@ -147,7 +158,7 @@ role2=user:delete
 没有提供如isPermittedAny用于判断拥有某一个权限的接口
 
 
-#### Permission
+### Permission
 > 规则：“资源标识符：操作：对象实例ID” 即对哪个资源的哪个实例可以进行什么操作。
 其默认支持通配符权限字符串，“:”表示资源/操作/实例的分割；“,”表示操作的分割；
 “*”表示任意资源/操作/实例
@@ -171,7 +182,7 @@ role71=user:view:1 # 对资源user的1 实例拥有view权限
 通配符匹配方式比字符串相等匹配来说是更复杂的，因此需要花费更长时间，但是一般系统的权限不会太多，且可以配合缓存来提供其性能，如果这样性能还达不到要求我们可以实现**位操作算法**实现性能更好的权限匹配。另外实例级别的权限验证如果数据量太大也不建议使用，可能造成查询权限及匹配变慢。可以考虑比如在sql 查询时加上权限字符串之类的方式在查询时就完成了权限匹配。
 
 
-#### 授权流程
+### 授权流程
 1. 首先调用Subject.isPermitted*/hasRole*接口，其会委托给SecurityManager，而
 SecurityManager接着会委托给Authorizer；
 2. Authorizer是真正的授权者，如果我们调用如isPermitted(“user:view”)，其首先会通过
@@ -202,12 +213,12 @@ true，否则false。
 [简单shiro扩展实现NOT、AND、OR权限验证](http://jinnianshilongnian.iteye.com/blog/1864800)
 
 
-## 4.加解密 - Cryptography
+## 加解密 - Cryptography
 
-#### 编码/解码
+### 编码/解码
 * Shiro 提供了base64和16进制字符串编码/解码的API支持
 
-#### 散列算法
+### 散列算法
 * 散列算法一般用于生成数据的摘要信息，是一种不可逆的算法，一般适合存储密码之类的
 数据，常见的散列算法如MD5、SHA等
 * 为了方便使用，Shiro 提供了HashService，默认提供了DefaultHashService实现。
@@ -226,7 +237,7 @@ String hex = hashService.computeHash(request).toHex();
 ```
 
 
-#### 加密/解密
+### 加密/解密
 * Shiro 还提供对称式加密/解密算法的支持，如AES、Blowfish 等；当前还没有提供对非对
 称加密/解密算法支持，
 
@@ -246,20 +257,20 @@ new String(aesCipherService.decrypt(Hex.decode(encrptText), key.getEncoded()).ge
 Assert.assertEquals(text, text2);
 ```
 
-##### PasswordService/CredentialsMatcher
+#### PasswordService/CredentialsMatcher
 * Shiro 提供了PasswordService及CredentialsMatcher用于提供加密密码及验证密码服务。
 
-###### 密码重试次数限制
+#### 密码重试次数限制
 
 
 
-## 5.会话管理
+## 会话管理
 > Shiro 提供了完整的企业级会话管理功能，不依赖于底层容器（如web容器tomcat），不管
 JavaSE 还是JavaEE环境都可以使用，提供了会话管理、会话事件监听、会话存储/持久化、
 容器无关的集群、失效/过期支持、对Web 的透明支持、SSO 单点登录的支持等特性。即
 直接使用Shiro 的会话管理可以直接替换如Web 容器的会话管理。
 
-#### 会话
+### 会话
 
 ```
 Subject subject = SecurityUtils.getSubject();
@@ -287,7 +298,7 @@ org.apache.shiro.session.Session.removeAttribute(Object)
 > Shiro 提供的会话可以用于JavaSE/JavaEE 环境，不依赖于任何底层容器，可以独立使用，
 是完整的会话模块。
 
-#### 会话管理器
+### 会话管理器
 > 会话管理器管理着应用中所有Subject的会话的创建、维护、删除、失效、验证等工作。是Shiro 的核心组件。
 
 > 顶层组件SecurityManager 直接继承了SessionManager，且提供了SessionsSecurityManager 实现直接把会话管理委托给相应的SessionManager ，DefaultSecurityManager 及DefaultWebSecurityManager 默认SecurityManager 都继承了
@@ -309,7 +320,7 @@ Shiro提供了三个默认实现：
 
 
 
-#### 会话监听
+### 会话监听
 > 会话监听器用于监听会话创建、过期及停止事件：
 > 如果只想监听某一个事件，可以继承SessionListenerAdapter实现：
 
@@ -330,14 +341,14 @@ MemorySessionDAO 直接在内存中进行会话维护；而EnterpriseCacheSessio
 > Shiro 提供了使用Ehcache 进行会话存储，Ehcache 可以配合TerraCotta 实现容器无关的分
 布式集群。
 
-#### 会话验证
+### 会话验证
 > Shiro 提供了会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话；出于性能考虑，一般情况下都是获取会话时来验证会话是否过期并停止会话的；但是如在web环境中，如果用户不主动退出是不知道会话是否过期的，因此需要定期的检测会话是否过期，Shiro提供了会话验证调度器SessionValidationScheduler来做这件事情。
 
-#### sessionFactory
+### sessionFactory
 > sessionFactory 是创建会话的工厂，根据相应的Subject上下文信息来创建会话；默认提供了SimpleSessionFactory用来创建SimpleSession会话。
 
 
-## 6.其他模块
+## 其他模块
 ### JSP标签
 > Shiro 提供了JSTL标签用于在JSP/GSP 页面进行权限控制，如根据登录用户显示相应的页面按钮。
 
