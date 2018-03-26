@@ -5,66 +5,74 @@ categories: 工作与学习
 tags: [Nginx]
 ---
 
-## Nginx 
 
-### 一：安装
-> 一般我们都需要先装pcre, zlib，前者为了重写rewrite，后者为了gzip压缩
+## 安装
+> 需要先装pcre, zlib，前者为了重写rewrite，后者为了gzip压缩
 
+* 选定源码目录
 
-1.选定源码目录
+```
+cd /usr/local/
+```
 
-	cd /usr/local/
-
-2.安装PCRE库
+* 安装PCRE库
 	
-	cd /usr/local/
-	wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.21.tar.gz
-	tar -zxvf pcre-8.21.tar.gz
-	cd pcre-8.21
-	./configure
-	make
-	make install
+```
+cd /usr/local/
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.21.tar.gz
+tar -zxvf pcre-8.21.tar.gz
+cd pcre-8.21
+./configure
+make
+make install
+```
 
-3.安装zlib库
+*  安装zlib库
 
-	cd /usr/local/ 
-	wget http://zlib.net/zlib-1.2.8.tar.gz
-	tar -zxvf zlib-1.2.8.tar.gz cd zlib-1.2.8
-	./configure
-	make
-	make install
+```
+cd /usr/local/ 
+wget http://zlib.net/zlib-1.2.8.tar.gz
+tar -zxvf zlib-1.2.8.tar.gz cd zlib-1.2.8
+./configure
+make
+make install
+```
 
-4.安装ssl （或者yum install openssl）
+*  安装ssl （或者yum install openssl）
+```
+cd /usr/local/
+wget http://www.openssl.org/source/openssl-1.0.1c.tar.gz
+tar -zxvf openssl-1.0.1c.tar.gz
+./config --prefix=/usr/local/ssl shared zlib-dynamicmake
+make install
+```
 
-	cd /usr/local/
-	wget http://www.openssl.org/source/openssl-1.0.1c.tar.gz
-	tar -zxvf openssl-1.0.1c.tar.gz
-	./config --prefix=/usr/local/ssl shared zlib-dynamicmake
-	make install
+*  安装nginx
+```
+cd /usr/local/
+wget http://nginx.org/download/nginx-1.2.8.tar.gz
+tar -zxvf nginx-1.2.8.tar.gz
+cd nginx-1.2.8
+./configure --user=nobody --group=nobody --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module --with-http_realip_module --with-http_sub_module --with-http_ssl_module
+make
+make install
+```
 
-5.安装nginx
-	
-	cd /usr/local/
-	wget http://nginx.org/download/nginx-1.2.8.tar.gz
-	tar -zxvf nginx-1.2.8.tar.gz
-	cd nginx-1.2.8
-	./configure --user=nobody --group=nobody --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module --with-http_realip_module --with-http_sub_module --with-http_ssl_module
-	make
-	make install
 
-6.启动及命令
-	
-	/usr/local/nginx/sbin/nginx
-	sbin/nginx -s reload|reopen|stop|quit  #重新加载配置|重启|停止|退出 nginx
-	sbin/nginx -t   #测试配置是否有语法错误
+* 启动及命令
 
->  注意
->  
+```
+/usr/local/nginx/sbin/nginx
+sbin/nginx -s reload|reopen|stop|quit  #重新加载配置|重启|停止|退出 nginx
+sbin/nginx -t   #测试配置是否有语法错误
+```
+
+
 * 正向代理，反向代理
-	*	两者的区别在于代理的对象不一样：正向代理代理的对象是客户端，反向代理代理的对象是服务端	[知乎](https://www.zhihu.com/question/24723688)
+	*	两者的区别在于代理的对象不一样：正向代理代理的对象是客户端，反向代理代理的对象是服务端	[link区别](https://www.zhihu.com/question/24723688)
 
 
-### 二：功能
+## 功能
 1. Http代理，反向代理
 2. 负载均衡 
 	* 内置策略 
@@ -79,7 +87,7 @@ tags: [Nginx]
 		Nginx可以对不同的文件做不同的缓存处理，配置灵活，并且支持FastCGI_Cache，
 		主要用于对FastCGI的动态程序进行缓存。配合着第三方的ngx_cache_purge，对制定的URL缓存内容可以的进行增删管理。
 
-### 三：文件结构
+## 文件结构
 		
 		...              #全局块
 		
@@ -120,7 +128,7 @@ tags: [Nginx]
 5. location块：配置请求的路由，以及各种页面的处理情况。 一个server可以有多个location块
 
 
-### 四： Nginx配置示例
+## Nginx配置示例
 
 ########### 每个指令必须有分号结束。#################
 
@@ -187,7 +195,7 @@ tags: [Nginx]
 		}
 　
 
-### 五： nginx 支持https
+## Nginx 支持https
 
 * 利用openssl生成RSA密钥及证书
 
@@ -224,18 +232,18 @@ tags: [Nginx]
 
 * 另 可申请免费的证书，https://www.startcomca.com/
 
-#### HTTPS基础
+### HTTPS基础
 * HTTPS 其实是由两个部分组成，HTTP + SSL / TLS，也就是在HTTP上又加了一层处理加密信息的模块。服务端和客户端的信息传输都会通过TLS进行加密，所以传输的数据都是加密后的数据。
 * HTTPS是一种基于SSL/TLS的Http协议，所有的http数据都是在SSL/TLS协议封装之上传输的。也属于应用层协议。
 * HTTP协议运行在TCP之上，所有传输的内容都是明文，客户端和服务器端都无法验证对方的身份。
 * HTTPS是运行在SSL/TLS之上的HTTP协议，SSL/TLS运行在TCP之上。所有传输的内容都经过加密，加密采用对称加密，但对称	加密的密钥用服务器方的证书进行了非对称加密。
 
 ![](http://images2015.cnblogs.com/blog/292888/201703/292888-20170316180309010-1175498769.png)
-#### HTTPS 认证方式(单/双认证)
+### HTTPS 认证方式(单/双认证)
 ![](http://img.blog.csdn.net/20160310160503593) 
 ![](http://img.blog.csdn.net/20160310160519781)
 
-### 六： API接口设计原理
+##  API接口设计原理
 * 安全第一
 	* 身份认证
 	* 权限控制
@@ -250,7 +258,7 @@ tags: [Nginx]
 		* js跨域
 	* 智能平板
 
-#### 一般常用的设计方式
-HTTP + 请求签名
-HTTP + 参数加密
-HTTPS + 访问令牌
+### 一般常用的设计方式
+* HTTP + 请求签名
+* HTTP + 参数加密
+* HTTPS + 访问令牌

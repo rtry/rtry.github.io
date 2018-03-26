@@ -4,13 +4,13 @@ date: 2017-10-08
 categories: 工作与学习
 tags: [docker]
 ---
-## Docker
+### Docker简介
 #### 初认识
 > 1. build, ship, and run any app, anywhere
 > 2. 镜像，容器，仓库
 > 3. 集装箱，标准化，隔离
 
-#### docker架构
+#### Docker架构
 
 ![docker架构](http://hainiubl.com/images/2016/architecture.jpg?_=6822905)
 

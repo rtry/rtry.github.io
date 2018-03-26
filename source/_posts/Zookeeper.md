@@ -11,15 +11,15 @@ zk 是一个由java语言编写的软件。
 
 从设计模式上看：是一个基于观察者模式的分布式服务管理框架。它负责存储和管理大家都关系的数据，然后接受观察者注册，一旦数据的状态发生变化，它负责通知各观察者做出响应。
 
-### 提供服务：
+## 提供服务：
 
 1.	统一命名服务（Name Service）
 2.	配置管理（Configuration Management）
 3.	集群管理（Group Membership）
 
-### 安装与应用 [官网](http://zookeeper.apache.org/)
+## 安装与应用 [官网](http://zookeeper.apache.org/)
 
-#### 单机安装
+### 单机安装
 1. wget http://www.bizdirusa.com/mirrors/apache/ZooKeeper/stable/zookeeper3.4.5.tar.gz
 2. tar xzvf zookeeper3.4.5.tar.gz
 3. cd zookeeper3.4.5 
@@ -57,7 +57,7 @@ zk 是一个由java语言编写的软件。
 
 
 
-#### 集群安装
+### 集群安装
 
 * 注意默认配置位置为 conf/zoo.cfg  无则配置（配置 server 1，2，3）
 	

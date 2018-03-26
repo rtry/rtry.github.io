@@ -36,8 +36,27 @@ tags: [权限控制,Shiro]
 
 
 ### 式例
+
+
+* maven 
 ```
-#基本编码样式
+<!-- 引入依赖-->
+<dependency>
+	<groupId>org.apache.shiro</groupId>
+	<artifactId>shiro-core</artifactId>
+	<version>1.2.2</version>
+</dependency>
+```
+>  其日志是面向slf4j 编程的，所以如果要友好的显示日志，可以根据自己的习惯导入（log4j，logback ....）
+
+* shiro.ini
+```
+[users]
+pxw=123
+jjb=123
+```
+* code
+```
 // 创建SecurityManager
 Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
 SecurityManager securityManager = factory.getInstance();
