@@ -5,15 +5,17 @@ categories: 工作与学习
 tags: [权限控制,Shiro]
 ---
 
-**Apache Shiro**
-## 初步认识
-> 一个安全认证，授权框架
 
-### 组件简介
+## 初步认识
+> * 一个安全认证，授权框架
+> * 轻量级的（从jar,从设计）
+> * 现成的组件 
+
+### 模块简介
 ![](http://dl2.iteye.com/upload/attachment/0093/9788/d59f6d02-1f45-3285-8983-4ea5f18111d5.png)
 
 
-### 组件说明
+### 模块说明
 * Authentication : 身份认证/登录，验证用户是不是拥有相应的身份
 * Authorization :授权，及权限验证
 * Session Manager : 会话管理，用户登录后就一次会话
@@ -75,9 +77,12 @@ System.out.println("是否已经登录：" + auth);
 
 ## 身份认证 - Authentication 
 
-### 流程
+### 流程图
 > 主要通过 Subject.login(token) 来进行身份认证
 
+![](http://dl2.iteye.com/upload/attachment/0094/0173/8d639160-cd3e-3b9c-8dd6-c7f9221827a5.png)
+
+### 流程分析
 1. 首先调用Subject.login(token)进行登录，其会自动委托给Security Manager，调用之前必
 须通过SecurityUtils. setSecurityManager()设置；
 2. SecurityManager负责真正的身份验证逻辑；它会委托给Authenticator进行身份验证；
@@ -88,6 +93,33 @@ ModularRealmAuthenticator会调用AuthenticationStrategy进行多Realm身份验�
 5. Authenticator 会把相应的token 传入Realm，从Realm 获取身份验证信息，如果没有返
 回/抛出异常表示身份验证失败了。此处可以配置多个Realm，将按照相应的顺序及策略进
 行访问。
+
+> 上述说明可能会造成理解的不畅，注意这几个要点
+
+```
+## 接口SecurityManager 是继承 Authenticator
+public interface SecurityManager extends Authenticator, Authorizer, SessionManager {}
+
+## Authenticator接口 只有一个方法
+public AuthenticationInfo authenticate(AuthenticationToken authenticationToken) throws AuthenticationException;
+
+## 接口SecurityManager 自身有以下几个方法
+Subject login(Subject subject, AuthenticationToken authenticationToken) throws AuthenticationException;
+void logout(Subject subject);
+Subject createSubject(SubjectContext context);
+
+## 接口SecurityManager 具体实例是由工厂方法产生的，默认为DefaultSecurityManager，会初始使用的Realm的实现
+
+## DefaultSecurityManager调用login()的时候，会调用父类DefaultSecurityManager的authenticate()，该方法继承超级接口Authenticator,在DefaultSecurityManager中注入
+
+## Realm 在DefaultSecurityManager实例时，已经由其父类RealmSecurityManager 注入了
+
+## Realm 接口有以下3个方法
+String getName();
+boolean supports(AuthenticationToken token);
+AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws AuthenticationException;
+```
+
 
 ### Realm 的实现体系
 
@@ -120,7 +152,7 @@ securityManager.realms=$myRealm,$myRealm2
 
 
 
-### 多个Realm的验证策略 AuthenticationStrategy
+### 多Realm的验证策略 AuthenticationStrategy
 
 > SecurityManager接口继承了Authenticator，另外还有一个ModularRealmAuthenticator实现，
 其委托给多个Realm 进行验证，验证规则通过AuthenticationStrategy 接口指定，
@@ -132,6 +164,24 @@ securityManager.realms=$myRealm,$myRealm2
 * AllSuccessfulStrategy：所有Realm验证成功才算成功，且返回所有Realm身份验证成功的
 认证信息，如果有一个失败就失败了。
 * ModularRealmAuthenticator默认使用AtLeastOneSuccessfulStrategy策略。
+
+shiro.ini
+```
+[main]
+#指定securityManager的authenticator实现
+authenticator=org.apache.shiro.authc.pam.ModularRealmAuthenticator
+securityManager.authenticator=$authenticator
+
+#指定securityManager.authenticator的authenticationStrategy
+allSuccessfulStrategy=org.apache.shiro.authc.pam.AllSuccessfulStrategy
+securityManager.authenticator.authenticationStrategy=$allSuccessfulStrategy
+
+myRealm1=com.github.zhangkaitao.shiro.chapter2.realm.MyRealm1
+myRealm2=com.github.zhangkaitao.shiro.chapter2.realm.MyRealm2
+myRealm3=com.github.zhangkaitao.shiro.chapter2.realm.MyRealm3
+securityManager.realms=$myRealm1,$myRealm3
+```
+
 
 > 自定义策略 略
 
@@ -146,13 +196,34 @@ securityManager.realms=$myRealm,$myRealm2
 
 > 基于角色的权限访问控制RBAC（role-based access control）是以角色为中心进行的访问控制，也就是判断主体subject是那个角色的方式进行权限访问控制，是粗粒度的 **(隐式角色)**
 
->　　基于资源的权限访问控制RBAC（resource-based access control）是以资源为中心进行的访问控制，只需要为角色添加权限就可以 **(显示角色)**
+> 基于资源的权限访问控制RBAC（resource-based access control）是以资源为中心进行的访问控制，只需要为角色添加权限就可以 **(显示角色)**
 
 
 ###  授权方式
 1. 编程式 :通过写if/else 授权代码块完成
-2. 注解式：通过在执行的Java方法上放置相应的注解完成 @RequiresRoles("admin")
+```
+Subject subject = SecurityUtils.getSubject();
+if(subject.hasRole(“admin”)) {
+//有权限
+} else {
+//无权限
+}
+```
+
+2. 注解式：通过在执行的Java方法上放置相应的注解完成
+```
+@RequiresRoles("admin")
+public void hello() {
+//有权限
+}
+```
+
 3. JSP/GSP 标签：在JSP/GSP 页面通过相应的标签完成
+```
+<shiro:hasRole name="admin">
+<!— 有权限—>
+</shiro:hasRole>
+```
 
 ### 授权
 
@@ -182,7 +253,6 @@ role2=user:delete
 其默认支持通配符权限字符串，“:”表示资源/操作/实例的分割；“,”表示操作的分割；
 “*”表示任意资源/操作/实例
 
-ini 配置
 
 ```
 role41=system:user:update,system:user:delete
@@ -231,11 +301,47 @@ true，否则false。
 
 [简单shiro扩展实现NOT、AND、OR权限验证](http://jinnianshilongnian.iteye.com/blog/1864800)
 
+## ini 详解
+
+```
+[main]
+#提供了对根对象securityManager及其依赖的配置
+securityManager=org.apache.shiro.mgt.DefaultSecurityManager
+…………
+securityManager.realms=$jdbcRealm
+[users]
+#提供了对用户/密码及其角色的配置，用户名=密码，角色1，角色2
+username=password,role1,role2
+[roles]
+#提供了角色及权限之间关系的配置，角色=权限1，权限2
+role1=permission1,permission2
+[urls]
+#用于web，提供了对web url拦截相关的配置，url=拦截器[参数]，拦截器
+/index.html = anon
+/admin/** = authc, roles[admin], perms["permission1"]
+```
+
 
 ## 加解密 - Cryptography
 
 ### 编码/解码
 * Shiro 提供了base64和16进制字符串编码/解码的API支持
+
+```
+String str = "hello";
+String base64Encoded = Base64.encodeToString(str.getBytes());
+String str2 = Base64.decodeToString(base64Encoded);
+Assert.assertEquals(str, str2);
+```
+
+```
+String str = "hello";
+String base64Encoded = Hex.encodeToString(str.getBytes());
+String str2 = new String(Hex.decode(base64Encoded.getBytes()));
+Assert.assertEquals(str, str2);
+```
+> CodecSupport，提供了toBytes(str, "utf-8") / toString(bytes,
+"utf-8")用于在byte 数组/String 之间转换。
 
 ### 散列算法
 * 散列算法一般用于生成数据的摘要信息，是一种不可逆的算法，一般适合存储密码之类的
