@@ -20,7 +20,6 @@ tags: [权限控制,Shiro]
 * Authorization :授权，及权限验证
 * Session Manager : 会话管理，用户登录后就一次会话
 * Cryptography ：加密，保护数据安全
-
 * Web Support: web支持，可以非常容易的集成到web
 * Caching : 缓存 
 * Concurrency: shiro支持多线程应用

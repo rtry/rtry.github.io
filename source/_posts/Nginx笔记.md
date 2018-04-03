@@ -67,6 +67,19 @@ sbin/nginx -s reload|reopen|stop|quit  #重新加载配置|重启|停止|退出 
 sbin/nginx -t   #测试配置是否有语法错误
 ```
 
+> win7中host文件位置
+
+```
+C:\Windows\System32\drivers\etc
+```
+
+> centos6.5 host文件
+
+```
+/etc/hosts
+```
+
+
 
 * 正向代理，反向代理
 	*	两者的区别在于代理的对象不一样：正向代理代理的对象是客户端，反向代理代理的对象是服务端	[link区别](https://www.zhihu.com/question/24723688)
