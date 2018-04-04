@@ -64,65 +64,72 @@ keytool -genkey -keystore "D:\localhost.keystore" -alias localhost -keyalg RSA
 * crt 是CA认证后的证书文，签署人用他自己的key给你签署的凭证
 
 ##### 构成部分
+
 * 密码算法库
 * 秘钥和证书封装管理功能
 * SSL通信API接口
+
 ##### 用途
+
 * 建立 RSA, DH, DSA key 参数
 * 建立 X.509证书
 * 计算消息摘要
 * 使用各种加解密
 * SSL/TLS  测试
+
 ##### 证书生成操作
+
 > 默认情况下， openssl 输出格式为 PKCS#1-PEM 
 > 默认情况下，生成的 公钥，私钥，csr, crt 文件存放于  /etc/ssl/certs
+
 * 生成RSA私钥（无加密）
 ```
 openssl genrsa -out rsa_private.key 2048
 //rsa_private.key 为私钥文件
 ```
+
 * 生成RSA 公钥
 ```
 openssl rsa -in rsa_private.key -pubout -out rsa_public.key
 //rsa_public.key是与rsa_private.key 配对的共有文件
 ```
+
 * 生成RSA私钥（使用aes256加密）
 ```
 openssl genrsa -aes256 -passout pass:111111 -out rsa_aes_private.key 2048
 ```
+
 * 生成RSA公钥
 ```
 openssl rsa -in rsa_aes_private.key -passin pass:111111 -pubout -out rsa_public.key
 ```
-* 生成签名请求（csr）
 
-> 非加密的
+* 生成签名请求（csr）
 ```
+// 非加密的
 openssl req -sha256 -new -key rsa_private.key -out server.csr
-//or
+// or
 openssl req -sha256 -new -key rsa_private.key -out server.csr -subj "/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=wangye.org/CN=wangye.org"
 
-//自定义
+// 自定义
 openssl req -new -key rsa_private.key -out server.csr -subj "/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=localhost/CN=localhost"
 
 openssl req  -sha256 -new -key rsa_private.key -out server.csr -subj "/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=cms.felicity.com/CN=cms.felicity.com"
 
 // 使用rsa_private.key 私钥来生成签名请求（csr）server.csr
-//这里/C表示国家(Country)，只能是国家字母缩写，如CN、US等；/ST表示州或者省(State/Provice)；/L表示城市或者地区(Locality)；/O表示组织名(Organization Name)；/OU其他显示内容，一般会显示在颁发者这栏。
+// 这里/C表示国家(Country)，只能是国家字母缩写，如CN、US等；/ST表示州或者省(State/Provice)；/L表示城市或者地区(Locality)；/O表示组织名(Organization Name)；/OU其他显示内容，一般会显示在颁发者这栏。
 // 需要注意的是，如果是自签名证书，这里生成的签名请求csr,的C,ST,L,O最好保持一致
-```
 
-> 加密的
-```
+// 加密的
 openssl req -new -key rsa_private.key -passin pass:111111 -out server.csr -subj "/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=wangye.org/CN=wangye.org"
 ```
 
 * 生成crt
 > CSR文件(server.csr)必须有CA的签名才可形成证书，可将此文件发送到verisign等地方由它验证，要交一大笔钱，何不自己做CA呢。
 
->自签名
-1. 如果没有ca.key,ca.crt, /etc/pki/CA/ 文件夹下没有index.txt，serial 文件，需先手动生成
+* 自签名
 
+1. 如果没有ca.key,ca.crt, /etc/pki/CA/ 文件夹下没有index.txt，serial 文件，需先手动生成
 ```
 //建ca.key 私钥
 openssl genrsa -out ca.key 2048
@@ -137,7 +144,6 @@ echo '01' > serial
 ```
 
 2. 使用ca.crt根证书，自签名
-
 ```
 openssl ca -in server.csr -out  server.crt -cert ca.crt -keyfile ca.key 
 //签发完成的是以sha1 为签名算法
@@ -146,11 +152,11 @@ openssl x509 -req -sha256 -in server.csr  -out server.crt   -signkey rsa_private
 //签发完成的是以sha256 为签名算法
 ```
 
->好了，现在目录下有两个服务器需要的SSL证书及相关文件了，分别是server.crt和rsa_private.key，接下来就可以利用它们配置你的服务器软件了。
+> 好了，现在目录下有两个服务器需要的SSL证书及相关文件了，分别是server.crt和rsa_private.key，接下来就可以利用它们配置你的服务器软件了。
 
->需要注意的是由于是自签名证书，所以客户端需要安装根证书，将刚才第2步创建的根证书ca.crt下载到客户端，然后双击导入，否则会提示不受信任的证书发布商问题。
+> 需要注意的是由于是自签名证书，所以客户端需要安装根证书，将刚才第2步创建的根证书ca.crt下载到客户端，然后双击导入，否则会提示不受信任的证书发布商问题。
 
->通常情况下私人或者内部用的话，自建证书已经绰绰有余了，但是如果你的产品面向的是大众，那就花点银子去买正规的SSL证书吧，可不能学某售票系统强制要求安装自建的根证书哦。
+> 通常情况下私人或者内部用的话，自建证书已经绰绰有余了，但是如果你的产品面向的是大众，那就花点银子去买正规的SSL证书吧，可不能学某售票系统强制要求安装自建的根证书哦。
 
 > CER和CRT其实是一样的，只是一般Linux下面叫CRT多，Windows下面叫CER多
 
@@ -200,3 +206,6 @@ clientAuth="false" sslProtocol="TLS"
 keystoreFile="D:\localhost.keystore" keystorePass="123456"/>
 
 ```
+### 证书类型转换
+
+> 略，使用场景较少
