@@ -267,3 +267,14 @@ curl -XPOST '192.168.253.104:9200/bookmark/_analyze?pretty=1&analyzer=chinese' -
 联想召回thinkpads 304笔记本电源线'
 
 ```
+## Lucene
+> a jar for search
+
+### 创建索引
+* 创建Directory
+* 创建IndexWriter
+* 创建Document对象
+* 为Document添加Field
+* 通过IndexWriter添加文档到索引中
+ 
+

@@ -102,33 +102,52 @@ C:\Windows\System32\drivers\etc
 
 ## 文件结构
 		
-		...              #全局块
-		
-		events {         #events块
-		   ...
-		}
-		
-		http      #http块
-		{
-		    ...   #http全局块
-		    server        #server块
-		    { 
-		        ...       #server全局块
-		        location [PATTERN]   #location块
-		        {
-		            ...
-		        }
-		        location [PATTERN] 
-		        {
-		            ...
-		        }
-		    }
-		    server
-		    {
-		      ...
-		    }
-		    ...     #http全局块
-		}
+
+```
+
+#全局块
+...
+
+#events块
+events {   
+   ...
+}
+
+#http块
+http      
+{
+    #http全局块
+    ...   
+    
+    #server块
+    server        
+    { 
+    
+        #server全局块
+        ...
+        
+        #location块
+        location [PATTERN]   
+        {
+            ...
+        }
+        location [PATTERN] 
+        {
+            ...
+        }
+    }
+    
+    #server另一个块
+    server
+    {
+      ...
+    }
+    
+    #http全局块
+    ...     
+}
+```
+
 
 1. 全局块：配置影响nginx全局的指令。一般有运行nginx服务器的用户组，nginx进程pid存放路径，日志存放路径，配置文件引入，允许生成worker process数等
 
