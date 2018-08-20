@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Https,证书,非对称加密," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="概念 HTTPS（HyperText Transfer Protocol over Secure Socket Layer） HTTPS 可以理解为HTTP+SSL/TLS， 即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL，因此加密的详细内容就需要 SSL，用于安全的 HTTP 数据传输。 SSL (Secure Sockets Layer 安全套接层)，及其继承者传输安全层(">
+<meta name="keywords" content="Https,证书,非对称加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Https 相关扩展">
+<meta property="og:url" content="http://rtry.xyz/2018/04/01/Https 相关扩展/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="概念 HTTPS（HyperText Transfer Protocol over Secure Socket Layer） HTTPS 可以理解为HTTP+SSL/TLS， 即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL，因此加密的详细内容就需要 SSL，用于安全的 HTTP 数据传输。 SSL (Secure Sockets Layer 安全套接层)，及其继承者传输安全层(">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/https/2012121714270132.png">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.795Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Https 相关扩展">
+<meta name="twitter:description" content="概念 HTTPS（HyperText Transfer Protocol over Secure Socket Layer） HTTPS 可以理解为HTTP+SSL/TLS， 即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL，因此加密的详细内容就需要 SSL，用于安全的 HTTP 数据传输。 SSL (Secure Sockets Layer 安全套接层)，及其继承者传输安全层(">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/https/2012121714270132.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2018/04/01/Https 相关扩展/"/>
+
+
+
+
+
+  <title>Https 相关扩展 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2018/04/01/Https 相关扩展/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Https 相关扩展</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T00:00:00+08:00">
+                2018-04-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li>HTTPS（HyperText Transfer Protocol over Secure Socket Layer）</li>
+<li>HTTPS 可以理解为HTTP+SSL/TLS， 即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL，因此加密的详细内容就需要 SSL，用于安全的 HTTP 数据传输。</li>
+<li>SSL (Secure Sockets Layer 安全套接层)，及其继承者传输安全层(Transport Layer Secure ,TLS),是为网络通信提供 安全及数据完整性的一种安全协议，TLS与SSL在传输层对网络连接进行加密</li>
+</ul>
+<h3 id="服务器类"><a href="#服务器类" class="headerlink" title="服务器类"></a>服务器类</h3><ol>
+<li>Tomcat</li>
+<li>Nginx</li>
+<li>IIS</li>
+<li>Apache</li>
+<li>….</li>
+</ol>
+<h3 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h3><ul>
+<li>对称加密<blockquote>
+<p>有流式和分组两种，加密与解密都是使用的同一个密钥，常用的有 <strong>DES AES</strong></p>
+</blockquote>
+</li>
+<li>非对称加密<blockquote>
+<p>加密与解密使用不同密钥，分别称为公钥，私钥，其中公钥与算法都是公开的，私钥是保密的，非对称加密算法性能较低，但安全性高，当然其加密的数据长度有限，常用有 <strong>RSA DSA ECDSA DH</strong> 等</p>
+</blockquote>
+</li>
+<li>Hash算法<blockquote>
+<p>是一种摘要算法，将任意长度的数据，转换成固定长度的值，一般用于验证数据是否变动，常用的有  <strong>MD5 SHA-1 SHA-2 SHA-256</strong></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Https-流程"><a href="#Https-流程" class="headerlink" title="Https 流程"></a>Https 流程</h3><p><img src="/uploads/https/2012121714270132.png" alt=""></p>
+<blockquote>
+<p>整体可分为8部分，前提需要服务器端准备证书（其实就是公钥与私钥）</p>
+</blockquote>
+<ol>
+<li>客户端发出请求，（输入<a href="https://www.domain.com）" target="_blank" rel="noopener">https://www.domain.com）</a></li>
+<li>服务器端准备证书,当然可以自己制作或者机构申请，区别就是在客户端验证的时候，如果是机构申请的话，可以直接验证通过，而自己制作的则需要手动同意</li>
+<li>服务器端向客服端传输证书（其实传递的是证书公钥,当然还包含其他的信息，例如过期时间，机构名称等）  </li>
+<li>客服端验证证书，验证不通过（比如时间过期等，机构不合格等）给予用户警告，验证通过，先生成一个随机数g，用接受到的公钥加密生成c，待用</li>
+<li>客服端像服务器传输加密值c</li>
+<li>服务器端用私钥解密刚才接受c,解密结果为g,使用g作为秘钥，加密需要返回给客服端的数据，</li>
+<li>服务器端向客服端传输加密后的响应正文</li>
+<li>客服端使用生成的g,解密接受到的密文</li>
+</ol>
+<blockquote>
+<p>以上说明是，https的单向认证（及只有服务器端有证书，客服端没有），你完全可以在客户端也生成一个证书，这就是双向认证</p>
+</blockquote>
+<h3 id="Https-证书制作"><a href="#Https-证书制作" class="headerlink" title="Https 证书制作"></a>Https 证书制作</h3><h4 id="Java自带工具生成"><a href="#Java自带工具生成" class="headerlink" title="Java自带工具生成"></a>Java自带工具生成</h4><blockquote>
+<p>使用java 自带工具keytool 生成证书</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -keystore &quot;D:\localhost.keystore&quot; -alias localhost -keyalg RSA</span><br></pre></td></tr></table></figure>
+<h4 id="linux-openssl-工具生成"><a href="#linux-openssl-工具生成" class="headerlink" title="linux openssl 工具生成"></a>linux openssl 工具生成</h4><blockquote>
+<p>openssl 是目前最流行的SSL密码工具，其提供一个通用的，健壮，功能完善的工具套件，用以支持SSL/TLS协议实现</p>
+</blockquote>
+<blockquote>
+<p>x509证书一般会用到三类文，key，csr，crt。</p>
+</blockquote>
+<ul>
+<li>key 是私钥，公钥，默认的存储扩展名，通常用RSA算法</li>
+<li>csr 是证书申请文件，用于申请证书，在制作csr文件时，必须使用自己的私钥来签署申请，同时可以设置一个密码</li>
+<li>crt 是CA认证后的证书文，签署人用他自己的key给你签署的凭证</li>
+</ul>
+<h5 id="构成部分"><a href="#构成部分" class="headerlink" title="构成部分"></a>构成部分</h5><ul>
+<li>密码算法库</li>
+<li>秘钥和证书封装管理功能</li>
+<li>SSL通信API接口</li>
+</ul>
+<h5 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h5><ul>
+<li>建立 RSA, DH, DSA key 参数</li>
+<li>建立 X.509证书</li>
+<li>计算消息摘要</li>
+<li>使用各种加解密</li>
+<li>SSL/TLS  测试</li>
+</ul>
+<h5 id="证书生成操作"><a href="#证书生成操作" class="headerlink" title="证书生成操作"></a>证书生成操作</h5><blockquote>
+<p>默认情况下， openssl 输出格式为 PKCS#1-PEM<br>默认情况下，生成的 公钥，私钥，csr, crt 文件存放于  /etc/ssl/certs</p>
+</blockquote>
+<ul>
+<li><p>生成RSA私钥（无加密）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out rsa_private.key 2048</span><br><span class="line">//rsa_private.key 为私钥文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成RSA 公钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in rsa_private.key -pubout -out rsa_public.key</span><br><span class="line">//rsa_public.key是与rsa_private.key 配对的共有文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成RSA私钥（使用aes256加密）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -aes256 -passout pass:111111 -out rsa_aes_private.key 2048</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成RSA公钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in rsa_aes_private.key -passin pass:111111 -pubout -out rsa_public.key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成签名请求（csr）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 非加密的</span><br><span class="line">openssl req -sha256 -new -key rsa_private.key -out server.csr</span><br><span class="line">// or</span><br><span class="line">openssl req -sha256 -new -key rsa_private.key -out server.csr -subj &quot;/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=wangye.org/CN=wangye.org&quot;</span><br><span class="line"></span><br><span class="line">// 自定义</span><br><span class="line">openssl req -new -key rsa_private.key -out server.csr -subj &quot;/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=localhost/CN=localhost&quot;</span><br><span class="line"></span><br><span class="line">openssl req  -sha256 -new -key rsa_private.key -out server.csr -subj &quot;/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=cms.felicity.com/CN=cms.felicity.com&quot;</span><br><span class="line"></span><br><span class="line">// 使用rsa_private.key 私钥来生成签名请求（csr）server.csr</span><br><span class="line">// 这里/C表示国家(Country)，只能是国家字母缩写，如CN、US等；/ST表示州或者省(State/Provice)；/L表示城市或者地区(Locality)；/O表示组织名(Organization Name)；/OU其他显示内容，一般会显示在颁发者这栏。</span><br><span class="line">// 需要注意的是，如果是自签名证书，这里生成的签名请求csr,的C,ST,L,O最好保持一致</span><br><span class="line"></span><br><span class="line">// 加密的</span><br><span class="line">openssl req -new -key rsa_private.key -passin pass:111111 -out server.csr -subj &quot;/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=wangye.org/CN=wangye.org&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成crt</p>
+<blockquote>
+<p>CSR文件(server.csr)必须有CA的签名才可形成证书，可将此文件发送到verisign等地方由它验证，要交一大笔钱，何不自己做CA呢。</p>
+</blockquote>
+</li>
+<li><p>自签名</p>
+</li>
+</ul>
+<ol>
+<li><p>如果没有ca.key,ca.crt, /etc/pki/CA/ 文件夹下没有index.txt，serial 文件，需先手动生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//建ca.key 私钥</span><br><span class="line">openssl genrsa -out ca.key 2048</span><br><span class="line">//建ca.crt 证书</span><br><span class="line">openssl req  -sha256 -new -x509 -days 3650 -key ca.key -out ca.crt -subj \</span><br><span class="line">&quot;/C=CN/ST=Jiangsu/L=Yangzhou/O=Your Company Name/OU=Your Root CA&quot;</span><br><span class="line"></span><br><span class="line">//建缺少文件</span><br><span class="line">cd /etc/pki/CA/</span><br><span class="line">touch index.txt</span><br><span class="line">echo &apos;01&apos; &gt; serial</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用ca.crt根证书，自签名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">openssl ca -in server.csr -out  server.crt -cert ca.crt -keyfile ca.key </span><br><span class="line">//签发完成的是以sha1 为签名算法</span><br><span class="line">//or</span><br><span class="line">openssl x509 -req -sha256 -in server.csr  -out server.crt   -signkey rsa_private.key  -CA ca.crt -CAkey ca.key -CAcreateserial  -days 990</span><br><span class="line">//签发完成的是以sha256 为签名算法</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>好了，现在目录下有两个服务器需要的SSL证书及相关文件了，分别是server.crt和rsa_private.key，接下来就可以利用它们配置你的服务器软件了。</p>
+</blockquote>
+<blockquote>
+<p>需要注意的是由于是自签名证书，所以客户端需要安装根证书，将刚才第2步创建的根证书ca.crt下载到客户端，然后双击导入，否则会提示不受信任的证书发布商问题。</p>
+</blockquote>
+<blockquote>
+<p>通常情况下私人或者内部用的话，自建证书已经绰绰有余了，但是如果你的产品面向的是大众，那就花点银子去买正规的SSL证书吧，可不能学某售票系统强制要求安装自建的根证书哦。</p>
+</blockquote>
+<blockquote>
+<p>CER和CRT其实是一样的，只是一般Linux下面叫CRT多，Windows下面叫CER多</p>
+</blockquote>
+<h3 id="Https-证书申请"><a href="#Https-证书申请" class="headerlink" title="Https 证书申请"></a>Https 证书申请</h3><blockquote>
+<p>略，到各大网站上申请就是</p>
+</blockquote>
+<h3 id="Https-安装证书到nginx"><a href="#Https-安装证书到nginx" class="headerlink" title="Https 安装证书到nginx"></a>Https 安装证书到nginx</h3><blockquote>
+<p>nginx 配置，需要将秘钥与服务证书放到指定位置即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#cms 接口</span><br><span class="line">    server &#123;</span><br><span class="line">       listen 80;</span><br><span class="line">       listen 443 ssl;</span><br><span class="line">       server_name  cms.felicity.com;</span><br><span class="line">       ssl on;</span><br><span class="line">       ssl_certificate /export/safe/cmsSafe/server.crt;</span><br><span class="line">       ssl_certificate_key /export/safe/cmsSafe/rsa_private.key;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">        proxy_pass http://192.168.253.1:8080;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       location = /favicon.ico &#123;</span><br><span class="line">           log_not_found off;</span><br><span class="line">           access_log off;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<ul>
+<li>IE 游览器只要安装了根证书，就可以解除游览器提示</li>
+<li>Chrome 会校验加密的强弱，（-sha1）会给予提示，更换为-sha256，即可消除提示</li>
+</ul>
+<h3 id="Https-安装证书到Tomcat"><a href="#Https-安装证书到Tomcat" class="headerlink" title="Https 安装证书到Tomcat"></a>Https 安装证书到Tomcat</h3><blockquote>
+<p>直接将keystore 文件放入到配置中即可</p>
+</blockquote>
+<blockquote>
+<p>访问 <a href="https://localhost:8443" target="_blank" rel="noopener">https://localhost:8443</a> 即可</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8443&quot; protocol=&quot;org.apache.coyote.http11.Http11NioProtocol&quot; SSLEnabled=&quot;true&quot;</span><br><span class="line">maxThreads=&quot;150&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</span><br><span class="line">clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</span><br><span class="line">keystoreFile=&quot;D:\localhost.keystore&quot; keystorePass=&quot;123456&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="证书类型转换"><a href="#证书类型转换" class="headerlink" title="证书类型转换"></a>证书类型转换</h3><blockquote>
+<p>略，使用场景较少</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Https/" rel="tag"># Https</a>
+          
+            <a href="/tags/证书/" rel="tag"># 证书</a>
+          
+            <a href="/tags/非对称加密/" rel="tag"># 非对称加密</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/shiro 笔记/" rel="next" title="Shiro">
+                <i class="fa fa-chevron-left"></i> Shiro
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/18/Maven_Git_Svn私有仓库/" rel="prev" title="Maven_Git_Svn私有仓库">
+                Maven_Git_Svn私有仓库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器类"><span class="nav-number">2.</span> <span class="nav-text">服务器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加密算法"><span class="nav-number">3.</span> <span class="nav-text">加密算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https-流程"><span class="nav-number">4.</span> <span class="nav-text">Https 流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https-证书制作"><span class="nav-number">5.</span> <span class="nav-text">Https 证书制作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java自带工具生成"><span class="nav-number">5.1.</span> <span class="nav-text">Java自带工具生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linux-openssl-工具生成"><span class="nav-number">5.2.</span> <span class="nav-text">linux openssl 工具生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#构成部分"><span class="nav-number">5.2.1.</span> <span class="nav-text">构成部分</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用途"><span class="nav-number">5.2.2.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#证书生成操作"><span class="nav-number">5.2.3.</span> <span class="nav-text">证书生成操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https-证书申请"><span class="nav-number">6.</span> <span class="nav-text">Https 证书申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https-安装证书到nginx"><span class="nav-number">7.</span> <span class="nav-text">Https 安装证书到nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Https-安装证书到Tomcat"><span class="nav-number">8.</span> <span class="nav-text">Https 安装证书到Tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#证书类型转换"><span class="nav-number">9.</span> <span class="nav-text">证书类型转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

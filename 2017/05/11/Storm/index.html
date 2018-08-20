@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大数据,storm," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Storm 文档1.Storm 简介 [x]  storm 是一个开源的, 分布式的, 实时的, 可靠的, 容错的, 大数据流式处理系统。  [x] storm 基于JVM    storm 依赖于zk1.1 Storm版本的变更：12345678910storm 0.9.x storm 0.10.xstorm 1.x 前面这些版本里面storm的核心源码是由java+clojule组成的。sto">
+<meta name="keywords" content="大数据,storm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Storm">
+<meta property="og:url" content="http://rtry.xyz/2017/05/11/Storm/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="Storm 文档1.Storm 简介 [x]  storm 是一个开源的, 分布式的, 实时的, 可靠的, 容错的, 大数据流式处理系统。  [x] storm 基于JVM    storm 依赖于zk1.1 Storm版本的变更：12345678910storm 0.9.x storm 0.10.xstorm 1.x 前面这些版本里面storm的核心源码是由java+clojule组成的。sto">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.787Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Storm">
+<meta name="twitter:description" content="Storm 文档1.Storm 简介 [x]  storm 是一个开源的, 分布式的, 实时的, 可靠的, 容错的, 大数据流式处理系统。  [x] storm 基于JVM    storm 依赖于zk1.1 Storm版本的变更：12345678910storm 0.9.x storm 0.10.xstorm 1.x 前面这些版本里面storm的核心源码是由java+clojule组成的。sto">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2017/05/11/Storm/"/>
+
+
+
+
+
+  <title>Storm | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2017/05/11/Storm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Storm</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T00:00:00+08:00">
+                2017-05-11
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Storm-文档"><a href="#Storm-文档" class="headerlink" title="Storm 文档"></a>Storm 文档</h2><h3 id="1-Storm-简介"><a href="#1-Storm-简介" class="headerlink" title="1.Storm 简介"></a>1.Storm 简介</h3><ul>
+<li><p>[x]  storm 是一个开源的, 分布式的, <strong>实时的</strong>, 可靠的, 容错的, 大数据<em>流式处理系统</em>。</p>
+</li>
+<li><p>[x] storm 基于JVM </p>
+</li>
+<li style="list-style: none"><input type="checkbox" checked> storm 依赖于zk<h5 id="1-1-Storm版本的变更："><a href="#1-1-Storm版本的变更：" class="headerlink" title="1.1 Storm版本的变更："></a>1.1 Storm版本的变更：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">storm 0.9.x </span><br><span class="line">storm 0.10.x</span><br><span class="line">storm 1.x </span><br><span class="line">前面这些版本里面storm的核心源码是由java+clojule组成的。</span><br><span class="line"></span><br><span class="line">storm 2.x</span><br><span class="line">后期这个版本就是全部用java重写了</span><br><span class="line">阿里在很早的时候就对storm进行了重写，提供了jstorm，</span><br><span class="line">后期jstorm也加入到apachestorm负责使用java对storm进行重写，</span><br><span class="line">这就是storm2.x版本的由来</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>storm 后来加入apache 成为apache的项目后，其底层通信出现变化</p>
+</blockquote>
+<blockquote>
+<p>在 0.9.x 之前 使用的是一个 性能卓越的 消息队列 ZeroMQ,在0.9.x 之后添加了netty作为通信基础，当然，这是一个更好的选择，毕竟在安装集群的时候，底层的依赖减少了</p>
+</blockquote>
+<h5 id="1-2-Storm-概述"><a href="#1-2-Storm-概述" class="headerlink" title="1.2  Storm 概述"></a>1.2  Storm 概述</h5><blockquote>
+<p>在Storm中，先要设计一个用于实时计算的图状结构，我们称之为拓扑（topology）。这个拓扑将会被提交给集群，由集群中的主控节点（master node）分发代码，将任务分配给工作节点（worker node）执行。一个拓扑中包括spout和bolt两种角色，其中spout发送消息，负责将数据流以tuple元组的形式发送出去；而bolt则负责转换这些数据流，在bolt中可以完成计算、过滤等操作，bolt自身也可以随机将数据发送给其他bolt。由spout发射出的tuple是不可变数组，对应着固定的键值对。</p>
+</blockquote>
+<h5 id="1-3-Storm基础概念"><a href="#1-3-Storm基础概念" class="headerlink" title="1.3  Storm基础概念"></a>1.3  Storm基础概念</h5><ul>
+<li>Topology : 拓扑结构</li>
+<li>Stream : 一个没有边界的tuple序列，这些tuples会被以一种分布式的方式并行地创建和处理</li>
+<li>Spouts : 消息源，是消息生产者，他会从一个外部源读取数据并向topology里面面发出消息：tuple</li>
+<li>Bolts : 消息处理者，所有的消息处理逻辑被封装在bolts里面，处理输入的数据流并产生输出的新数据流,可执行过滤，聚合，查询数据库等操作</li>
+<li>Nimbus : 主控节点运行Nimbus守护进程，对节点分配任务，并监视主机故。</li>
+<li>Supervisor : 工作节点运行Supervisor守护进程,负责监听工作节点上已经分配的主机作业，启动和停止Nimbus已经分配的工作进程<br></li>
+</ul>
+<blockquote>
+<p>注：clojure 是基于jre的一个lisp <a href="http://clojure-china.org/" target="_blank" rel="noopener">clojure 中文网</a></p>
+</blockquote>
+<blockquote>
+<p><a href="http://zeromq.org/" target="_blank" rel="noopener">zeroMQ</a> 是一个高性能通信框架</p>
+</blockquote>
+<blockquote>
+<p><a href="http://storm.apache.org/" target="_blank" rel="noopener">storm 官网</a></p>
+</blockquote>
+<h3 id="2-Storm-集群搭建"><a href="#2-Storm-集群搭建" class="headerlink" title="2.Storm 集群搭建"></a>2.Storm 集群搭建</h3><ul>
+<li>jdk 安装 </li>
+<li>python 安装 (python -V) 系统自带</li>
+<li>zookeeper 集群安装</li>
+<li>开始安装storm集群<blockquote>
+<p>1：下载storm的安装包apache-storm-1.0.2.tar.gz</p>
+<p>2：上传到192.168.1.100这台服务器的/usr/local目录下</p>
+<p>3：解压，重命名 <br><br>  tar -zxvf apache-storm-1.0.2.tar.gz <br><br>  mv apache-storm-1.0.2 storm <br></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>4：修改配置文件<br><br>    cd storm/conf<br><br>    vi storm.yaml<br><br>storm.zookeeper.servers:<br></p>
+<pre><code>- &quot;192.168.253.100&quot;&lt;br&gt;
+- &quot;192.168.253.102&quot;&lt;br&gt;
+- &quot;192.168.253.103&quot;&lt;br&gt;
+</code></pre><p>storm.local.dir: “/export/apache-storm-1.1.0/dataDir”<br><br>nimbus.seeds: [“192.168.253.100”]<br></p>
+</blockquote>
+<blockquote>
+<p>5.将配置覆盖到其他节点</p>
+</blockquote>
+<blockquote>
+<p>6.启动<br>192.168.253.100<br><br>nimbus：nohup bin/storm nimbus &gt;/dev/null 2&gt;&amp;1 &amp;<br><br>ui：nohup bin/storm ui &gt;/dev/null 2&gt;&amp;1 &amp;<br><br>logviewer：nohup bin/storm logviewer &gt;/dev/null 2&gt;&amp;1 &amp;</p>
+</blockquote>
+<blockquote>
+<p>192.168.253.102<br><br>nimbus：nohup bin/storm nimbus &gt;/dev/null 2&gt;&amp;1 &amp;<br><br>logviewer：nohup bin/storm logviewer &gt;/dev/null 2&gt;&amp;1 &amp;<br><br>supervisor：nohup bin/storm supervisor &gt;/dev/null 2&gt;&amp;1 &amp;</p>
+</blockquote>
+<blockquote>
+<p>192.168.253.103<br><br>supervisor：nohup bin/storm supervisor &gt;/dev/null 2&gt;&amp;1 &amp;<br><br>logviewer：nohup bin/storm logviewer &gt;/dev/null 2&gt;&amp;1 &amp;</p>
+</blockquote>
+<pre><code>http://192.168.253.100:8080  可查看UI
+
+最完整的属性配置在storm-core.jar中的defaults.yaml文件中
+启动Storm可能会遇到的问题
+如果启动 nimbus 时有显示 ERROR java.net.UnknownHostException 未知的名称或服务，
+或者启动 supervisor 后一会进程就中断了，则需要添加主机名的 ip 映射。执行 sudo vim /etc/hosts，
+增加一行 127.0.0.1 dblab，如下图所示。其中 dblab 为主机名
+</code></pre><h3 id="3-Storm-开发"><a href="#3-Storm-开发" class="headerlink" title="3.Storm 开发"></a>3.Storm 开发</h3><pre><code>1. spount 会被周期性的调用，故需要对线程进行控制
+2. 如果spount 出现异常，错误会一直反复的出现，因为它会一直调用
+3. strom不会停止，需要手动关闭这个拓扑
+4. 每个supervisor节点不能直接读取nimbus节点上的数据，故你需要在每个节点上处理数据的写入
+5. supervisor 与nimbus的节点数据进行通信时，可能是使用的nimbus的主机名进行通信，所以在supervisor上，需要能够通过主机名找到nimbus所在，故可能需要在supervisor的hosts文件上陪上主机nimbus的映射
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大数据/" rel="tag"># 大数据</a>
+          
+            <a href="/tags/storm/" rel="tag"># storm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/07/elasticsearch/" rel="next" title="ElasticSearch">
+                <i class="fa fa-chevron-left"></i> ElasticSearch
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/09/Speak/" rel="prev" title="Speak 笔记">
+                Speak 笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Storm-文档"><span class="nav-number">1.</span> <span class="nav-text">Storm 文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Storm-简介"><span class="nav-number">1.1.</span> <span class="nav-text">1.Storm 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-Storm版本的变更："><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.1 Storm版本的变更：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-Storm-概述"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">1.2  Storm 概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-Storm基础概念"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">1.3  Storm基础概念</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Storm-集群搭建"><span class="nav-number">1.2.</span> <span class="nav-text">2.Storm 集群搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Storm-开发"><span class="nav-number">1.3.</span> <span class="nav-text">3.Storm 开发</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

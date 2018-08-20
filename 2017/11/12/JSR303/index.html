@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,JSR303," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+<meta name="keywords" content="java,JSR303">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSR303">
+<meta property="og:url" content="http://rtry.xyz/2017/11/12/JSR303/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSR303">
+<meta name="twitter:description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2017/11/12/JSR303/"/>
+
+
+
+
+
+  <title>JSR303 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2017/11/12/JSR303/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JSR303</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-12T00:00:00+08:00">
+                2017-11-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第一章-简介"><a href="#第一章-简介" class="headerlink" title="第一章 简介"></a>第一章 简介</h2><p>JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析</p>
+<h2 id="第二章：’约束’如何定义"><a href="#第二章：’约束’如何定义" class="headerlink" title="第二章：’约束’如何定义"></a>第二章：’约束’如何定义</h2><h3 id="2-1-Constraint"><a href="#2-1-Constraint" class="headerlink" title="2.1 @Constraint"></a>2.1 @Constraint</h3><ol>
+<li>所有验证注解的元注解</li>
+<li><p>方法</p>
+<pre><code>public Class&lt;? extends ConstraintValidator&lt;?, ?&gt;&gt;[] validatedBy();
+</code></pre><blockquote>
+<p>定义验证的具体逻辑实现类</p>
+</blockquote>
+</li>
+</ol>
+<pre><code>如
+
+    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
+    @Retention(RUNTIME)
+    @Documented
+    @Constraint(validatedBy = { }) //此处使用了元注解@Constraint
+    public @interface NotNull {
+        ...
+    }
+</code></pre><h3 id="2-2-‘每个约束’-必须定义的属性"><a href="#2-2-‘每个约束’-必须定义的属性" class="headerlink" title="2.2 ‘每个约束’ 必须定义的属性"></a>2.2 ‘每个约束’ 必须定义的属性</h3><ol>
+<li><p>message  –&gt; error msg 错误信息</p>
+<pre><code>String message() default &quot;{com.acme.constraint.MyConstraint.message}&quot;;
+</code></pre></li>
+<li><p>groups   –&gt; 用来控制执行的顺序，或者执行部分验证</p>
+<pre><code>Class&lt;?&gt;[] groups() default {};
+</code></pre><p> 测试</p>
+<pre><code>@NotNull(groups = G1.class)
+String code;
+@NotNull(groups = G2.class)
+String name;
+
+--如果validator.validate(s, G2.class); 只会验证name不能为可供
+</code></pre></li>
+</ol>
+<ol>
+<li><p>payload  –&gt; 用来控制关联</p>
+<pre><code>Class&lt;? extends Payload&gt;[] payload() default {};
+</code></pre></li>
+</ol>
+<h3 id="2-3-接口-ConstraintValidator"><a href="#2-3-接口-ConstraintValidator" class="headerlink" title="2.3 接口 ConstraintValidator"></a>2.3 接口 ConstraintValidator</h3><blockquote>
+<p>所有约束的实现逻辑需要继承的接口 </p>
+</blockquote>
+<pre><code>public interface ConstraintValidator&lt;A extends Annotation, T&gt; {
+
+    void initialize(A constraintAnnotation);
+
+    boolean isValid(T value, ConstraintValidatorContext context);
+}
+</code></pre><blockquote>
+<p>isValid()方法，表示是否验证通过，其中参数ConstraintValidatorContext 是一个接口</p>
+</blockquote>
+<p>如@NotNull 的验证逻辑</p>
+<pre><code>public class NotNullValidator implements ConstraintValidator&lt;NotNull, Object&gt; {
+
+    public void initialize(NotNull parameters) {
+    }
+
+    public boolean isValid(Object object, ConstraintValidatorContext constraintValidatorContext) {
+        return object != null;
+    }
+}
+</code></pre><h3 id="2-4-接口-ConstraintValidatorContext"><a href="#2-4-接口-ConstraintValidatorContext" class="headerlink" title="2.4 接口 ConstraintValidatorContext"></a>2.4 接口 ConstraintValidatorContext</h3><blockquote>
+<p>该接口为 ‘isValid()方法’ 提供上下文信息 </p>
+</blockquote>
+<h3 id="2-5-ConstraintValidatorFactory"><a href="#2-5-ConstraintValidatorFactory" class="headerlink" title="2.5 ConstraintValidatorFactory"></a>2.5 ConstraintValidatorFactory</h3><blockquote>
+<p>该接口用来生成具体的验证实现类工厂</p>
+</blockquote>
+<h2 id="第三章：JavaBean如何用注解来描述约定"><a href="#第三章：JavaBean如何用注解来描述约定" class="headerlink" title="第三章：JavaBean如何用注解来描述约定"></a>第三章：JavaBean如何用注解来描述约定</h2><ul>
+<li>3.1 ‘约束’ 可以定义到接口及父类，实现类受影响</li>
+<li>3.2 ‘约束’ 可以定义到属性及方法上</li>
+<li>3.3 ‘约束’ 可以应用到 数组及集合上</li>
+</ul>
+<h2 id="第四章：编程中如何使用’约束’来验证JavaBean"><a href="#第四章：编程中如何使用’约束’来验证JavaBean" class="headerlink" title="第四章：编程中如何使用’约束’来验证JavaBean"></a>第四章：编程中如何使用’约束’来验证JavaBean</h2><p>例子：</p>
+<pre><code>ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+Validator validator = factory.getValidator();
+Student s = new Student();
+Set&lt;ConstraintViolation&lt;Object&gt;&gt; validateSet = validator.validate(s);
+</code></pre><h2 id="阅读中遇到的问题摘要"><a href="#阅读中遇到的问题摘要" class="headerlink" title="阅读中遇到的问题摘要"></a>阅读中遇到的问题摘要</h2><h3 id="Java-spi-技术规划"><a href="#Java-spi-技术规划" class="headerlink" title="Java spi 技术规划"></a>Java spi 技术规划</h3><ol>
+<li>javax.validation.spi.ValidationProvider 定义接口 ，在各大厂商进行不同实现时，各大厂商的jar包下 /META-INF/service/javax.validation.spi.ValidationProvider 的文件中，写上具体的实现</li>
+<li><p>在获取具体实现的时候，使用ServiceLoader.load 加载ServerLoader</p>
+<pre><code>ServiceLoader&lt;ValidationProvider&gt; loader = ServiceLoader.load( ValidationProvider.class, classloader );
+Iterator&lt;ValidationProvider&gt; providerIterator = loader.iterator();
+List&lt;ValidationProvider&lt;?&gt;&gt; validationProviderList = new ArrayList&lt;ValidationProvider&lt;?&gt;&gt;();
+</code></pre></li>
+</ol>
+<h3 id="另1"><a href="#另1" class="headerlink" title="另1"></a>另1</h3><p>java.util.Collections.unmodifiableSet()方法的声明。</p>
+<pre><code>public static &lt;T&gt; boolean addAll(Collection&lt;? super T&gt; c, T.. a)
+</code></pre><p>在方法调用返回指定set的不可修改视图。</p>
+<p>test</p>
+<pre><code>package com.yiibai;
+
+import java.util.*;
+
+public class CollectionsDemo {
+   public static void main(String[] s) {
+      // create set
+      Set&lt;String&gt; set = new HashSet&lt;String&gt;();
+
+      // populate the set
+      set.add(&quot;Welcome&quot;);
+      set.add(&quot;to&quot;);
+      set.add(&quot;TP&quot;);
+
+      System.out.println(&quot;Initial set value: &quot;+set);
+
+      // create unmodifiable set
+      Set unmodset = Collections.unmodifiableSet(set);
+
+      // try to modify the set
+      unmodset.add(&quot;Hello&quot;);
+   }
+}
+</code></pre><p>现在编译和运行上面的代码示例，将产生以下结果。</p>
+<pre><code>Initial set value: [to, Welcome, TP]
+Exception in thread &quot;main&quot; java.lang.UnsupportedOperationException
+</code></pre><h3 id="另2"><a href="#另2" class="headerlink" title="另2"></a>另2</h3><p>Class.cast() 源码</p>
+<pre><code>public T cast(Object obj) {
+   if (obj != null &amp;&amp; !isInstance(obj))
+     throw new ClassCastException();
+   return (T) obj;
+}
+</code></pre><p>很明显, 这个方法只是简单的进行了强制转换, 字符类型强制转换成Double肯定是错误的.</p>
+<h3 id="另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><a href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化" class="headerlink" title="另3 ResourceBundle 依据locale来读取properties文件，实现国际化"></a>另3 ResourceBundle 依据locale来读取properties文件，实现国际化</h3><pre><code>ResourceBundle rb = ResourceBundle.getBundle(&quot;fileName&quot;);
+//默认会读取fileName_zh_CN.properties 的文件 
+
+
+Locale locale = new Locale(&quot;en&quot;, &quot;US&quot;);
+ResourceBundle rb1 = ResourceBundle.getBundle(&quot;fileName&quot;, locale);
+ //默认会读取fileName_en_US.properties 的文件
+</code></pre><h3 id="validation-api-文档结构"><a href="#validation-api-文档结构" class="headerlink" title="validation-api 文档结构"></a>validation-api 文档结构</h3><pre><code>+javax.validation
++++bootstrap              ##基础引导程序
++++constraints             ##提供的注解
++++constraintvalidation ##约束验证
++++executable             ##可执行的
++++groups                 ##组
++++metadata             ##元数据
++++spi                     ##spi接口
+</code></pre><h3 id="java-lang-reflect-Constructor-构造器类"><a href="#java-lang-reflect-Constructor-构造器类" class="headerlink" title="java.lang.reflect.Constructor  构造器类"></a>java.lang.reflect.Constructor  构造器类</h3><pre><code>--获取到class    
+Class clazz = Class.forName(&quot;org.pt.jsr.bean.validation.Student&quot;);
+--获取到class所有的构造方法
+Constructor[] c = clazz.getConstructors();
+</code></pre><h3 id="另-jpa"><a href="#另-jpa" class="headerlink" title="另 jpa"></a>另 jpa</h3><ul>
+<li>JPA是Java Persistence API的简称，中文名Java持久层API，是JDK 5.0注解或XML描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。</li>
+<li>Sun引入新的JPA ORM规范出于两个原因：其一，简化现有Java EE和Java SE应用开发工作；其二，Sun希望整合ORM技术，实现天下归一。</li>
+</ul>
+<h3 id="另-java-lang-Void"><a href="#另-java-lang-Void" class="headerlink" title="另 java.lang.Void"></a>另 java.lang.Void</h3><p>原以为Void类为void类的包装类，但是查看Void类的<br>源码后发现并不是如此，Void类的源码如下：</p>
+<pre><code>/**
+ * The {@code Void} class is an uninstantiable placeholder class to hold a
+ * reference to the {@code Class} object representing the Java keyword
+ * void.
+ *  Void类是一个不可实例化的占位符类，它持有对标识Java关键字void的Class对象的引用。
+     并且本身的构造函数为private
+ * @author  unascribed
+ * @since   JDK1.1
+ */
+public final class Void {
+
+    /**
+     * The {@code Class} object representing the pseudo-type corresponding to
+     * the keyword {@code void}.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static final Class&lt;Void&gt; TYPE = (Class&lt;Void&gt;) Class.getPrimitiveClass(&quot;void&quot;);
+
+    /*
+     * The Void class cannot be instantiated.
+     */
+    private Void() {}
+}
+</code></pre><h3 id="枚举容器"><a href="#枚举容器" class="headerlink" title="枚举容器"></a>枚举容器</h3><p>EnumMap从名字我们可以看出这个Map是给枚举类用的。它的key为枚举元素，value自定义。在工作中我们也可以用其他的Map来实现我们关于枚举的需求，但是为什么要用这个EnumMap呢？因为它的性能高</p>
+<p>EnumSet这是一个用来操作Enum的集合，是一个抽象类，它有两个继承类：JumboEnumSet和RegularEnumSet。在使用的时候，需要制定枚举类型。它的特点也是速度非常快，为什么速度很快呢？因为每次add的时候，每个枚举值只占一个长整型的一位。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/JSR303/" rel="tag"># JSR303</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/08/Docker/" rel="next" title="docker笔记">
+                <i class="fa fa-chevron-left"></i> docker笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/12/Netty笔记/" rel="prev" title="Netty笔记">
+                Netty笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-简介"><span class="nav-number">1.</span> <span class="nav-text">第一章 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章：’约束’如何定义"><span class="nav-number">2.</span> <span class="nav-text">第二章：’约束’如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Constraint"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 @Constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-‘每个约束’-必须定义的属性"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ‘每个约束’ 必须定义的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-接口-ConstraintValidator"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 接口 ConstraintValidator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-接口-ConstraintValidatorContext"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 接口 ConstraintValidatorContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-ConstraintValidatorFactory"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 ConstraintValidatorFactory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章：JavaBean如何用注解来描述约定"><span class="nav-number">3.</span> <span class="nav-text">第三章：JavaBean如何用注解来描述约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章：编程中如何使用’约束’来验证JavaBean"><span class="nav-number">4.</span> <span class="nav-text">第四章：编程中如何使用’约束’来验证JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读中遇到的问题摘要"><span class="nav-number">5.</span> <span class="nav-text">阅读中遇到的问题摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-spi-技术规划"><span class="nav-number">5.1.</span> <span class="nav-text">Java spi 技术规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另1"><span class="nav-number">5.2.</span> <span class="nav-text">另1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另2"><span class="nav-number">5.3.</span> <span class="nav-text">另2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><span class="nav-number">5.4.</span> <span class="nav-text">另3 ResourceBundle 依据locale来读取properties文件，实现国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validation-api-文档结构"><span class="nav-number">5.5.</span> <span class="nav-text">validation-api 文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-Constructor-构造器类"><span class="nav-number">5.6.</span> <span class="nav-text">java.lang.reflect.Constructor  构造器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-jpa"><span class="nav-number">5.7.</span> <span class="nav-text">另 jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-java-lang-Void"><span class="nav-number">5.8.</span> <span class="nav-text">另 java.lang.Void</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举容器"><span class="nav-number">5.9.</span> <span class="nav-text">枚举容器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

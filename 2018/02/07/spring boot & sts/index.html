@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="STS spring 官方提供的一个便于开发spring项目的定制版eclipse   内置了一些常用的插件 对spring 的支持与调试良好   目录结构 从官网上下载sts 后解压  123--- legal //法律文件--- pivotal-tc-server-developer-3.2.8.RELEASE  //tc-server 定制版的tomcat--- sts-3.9.1.RELE">
+<meta name="keywords" content="java,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot">
+<meta property="og:url" content="http://rtry.xyz/2018/02/07/spring boot & sts/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="STS spring 官方提供的一个便于开发spring项目的定制版eclipse   内置了一些常用的插件 对spring 的支持与调试良好   目录结构 从官网上下载sts 后解压  123--- legal //法律文件--- pivotal-tc-server-developer-3.2.8.RELEASE  //tc-server 定制版的tomcat--- sts-3.9.1.RELE">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/spring%20boot%20&%20sts/sringboot7-2.png">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot">
+<meta name="twitter:description" content="STS spring 官方提供的一个便于开发spring项目的定制版eclipse   内置了一些常用的插件 对spring 的支持与调试良好   目录结构 从官网上下载sts 后解压  123--- legal //法律文件--- pivotal-tc-server-developer-3.2.8.RELEASE  //tc-server 定制版的tomcat--- sts-3.9.1.RELE">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/spring%20boot%20&%20sts/sringboot7-2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2018/02/07/spring boot & sts/"/>
+
+
+
+
+
+  <title>Spring Boot | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2018/02/07/spring boot & sts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Boot</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T00:00:00+08:00">
+                2018-02-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="STS"><a href="#STS" class="headerlink" title="STS"></a>STS</h2><blockquote>
+<p>spring 官方提供的一个便于开发spring项目的定制版eclipse </p>
+<ul>
+<li>内置了一些常用的插件</li>
+<li>对spring 的支持与调试良好</li>
+</ul>
+</blockquote>
+<h4 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h4><blockquote>
+<p>从官网上下载sts 后解压</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--- legal <span class="comment">//法律文件</span></span><br><span class="line">--- pivotal-tc-server-developer-<span class="number">3.2</span>.8.RELEASE  <span class="comment">//tc-server 定制版的tomcat</span></span><br><span class="line">--- sts-<span class="number">3.9</span>.1.RELEASE  <span class="comment">//STS 定制版的eclipse</span></span><br></pre></td></tr></table></figure>
+<h2 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring Boot"></a>Spring Boot</h2><h3 id="项目优点"><a href="#项目优点" class="headerlink" title="项目优点"></a>项目优点</h3><ul>
+<li>自动配置：针对很多spring应用中常见的功能，提供自动的配置</li>
+<li>起步依赖：直接告诉spring boot 需要什么，它能自动依赖</li>
+<li>命令行界面：写完代码即可，不用额外关心构建与部署</li>
+<li>Actuator: 深入了解运行中的Spring Boot程序</li>
+</ul>
+<h3 id="入门介绍"><a href="#入门介绍" class="headerlink" title="入门介绍"></a>入门介绍</h3><h6 id="1-POM结构"><a href="#1-POM结构" class="headerlink" title="1. POM结构"></a>1. POM结构</h6><ol>
+<li>直接继承</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;2.0.0.RELEASE&lt;/version&gt;</span><br><span class="line">	&lt;relativePath /&gt;</span><br><span class="line">&lt;/parent&gt;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>dependencyManagement 配置依赖（可实现多继承）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;2.0.0.RELEASE&lt;/version&gt;</span><br><span class="line">			&lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">			&lt;scope&gt;import&lt;/scope&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">	&lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h6 id="2-启动"><a href="#2-启动" class="headerlink" title="2.启动"></a>2.启动</h6><blockquote>
+<p>main 方法自动启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">public class App &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		 SpringApplication.run(App.class, args);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h6 id="3-配置"><a href="#3-配置" class="headerlink" title="3. 配置"></a>3. 配置</h6><blockquote>
+<p>配置可以完全写到application.properties里面，也可以写到自定义的文件里面</p>
+</blockquote>
+<ol>
+<li><p>直接读取配置</p>
+<blockquote>
+<p>属性上声明即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Value(&quot;$&#123;pdName&#125;&quot;)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>配置转换成具体的实例</p>
+<blockquote>
+<p>需要的地方自动注入即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@ConfigurationProperties(prefix = &quot;user.config&quot;)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>属性之间间接引用，随机数等</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">com.dudu.name=&quot;AAA&quot;</span><br><span class="line">com.dudu.want=&quot;祝大家鸡年大吉吧&quot;</span><br><span class="line">com.dudu.yearhope=$&#123;com.dudu.name&#125;在此$&#123;com.dudu.want&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dudu.secret=$&#123;random.value&#125;</span><br><span class="line">dudu.number=$&#123;random.int&#125;</span><br><span class="line">dudu.bignumber=$&#123;random.long&#125;</span><br><span class="line">dudu.uuid=$&#123;random.uuid&#125;</span><br><span class="line">dudu.number.less.than.ten=$&#123;random.int(10)&#125;</span><br><span class="line">dudu.number.in.range=$&#123;random.int[1024,65536]&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>配置写到其他文件时，需要额外加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@PropertySource(&quot;classpath:test.properties&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SpringBoot中有许多的key是具有默认值的 比如server.port,user.name等，从这点可以看出，配置文件读取</p>
+<ul>
+<li>多个地方可配置</li>
+<li>配置是有先后的</li>
+</ul>
+</li>
+<li><p>SpringBoot 多环境配置文件名需要满足application-{profile}.properties的格式，其中{profile}对应你的环境标识，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">application-dev.properties：#开发环境</span><br><span class="line">application-prod.properties：#生产环境</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>具体使用哪一个配置，在任何配置地方（vim，cmd,配置文件，等）配置spring.profiles.active=dev/prod即可</p>
+<ol>
+<li>SpringBoot 的Maven插件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>会将项目打包成一个超级jar,一个可执行的jar ( java -jar xxxxx.jar –spring.profiles.active=dev)<br>打包命令（mvn clean package spring-boot:repackage） 或者在插件中配好</p>
+</blockquote>
+<h3 id="启动原理解析"><a href="#启动原理解析" class="headerlink" title="启动原理解析"></a>启动原理解析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@SpringBootApplication</li>
+<li>SpringApplication.run()</li>
+</ul>
+<p>TODO</p>
+<h3 id="Spring-Boot-与web开发"><a href="#Spring-Boot-与web开发" class="headerlink" title="Spring Boot 与web开发"></a>Spring Boot 与web开发</h3><blockquote>
+<p>Spring Boot 在web开发的过程中，个人的理解，应该是以微服务的形式存在最佳，那么在打包的选择上，倾向于直接打成一个可执行的jar包，当然不是说不可以打成war包。在Spring Boot的独有的启动方式上我们看出，纯java的启动显然是更加的方便</p>
+</blockquote>
+<blockquote>
+<p>如果是打成war包，（外部运行）需要注意下面几点</p>
+<ul>
+<li>Spring Boot 默认是内嵌Servlet容器的（tomcat）,需要手动移除</li>
+<li>Spring Boot 编译的时候需要 servlet api 等，运行的时候，外部容器中会存在</li>
+</ul>
+</blockquote>
+<h5 id="①-使用thymeleaf作为模板引擎（spring-boot-推荐）"><a href="#①-使用thymeleaf作为模板引擎（spring-boot-推荐）" class="headerlink" title="① 使用thymeleaf作为模板引擎（spring boot 推荐）"></a>① 使用thymeleaf作为模板引擎（spring boot 推荐）</h5><h6 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>spring-boot-starter-thymeleaf 是spring 使用thymeleaf作为模板引擎的依赖，会自动依赖（web与基础模块）<br>spring boot web 开发，在引入依赖后，默认的内嵌Servlet容器是tomcat,一般而言，可选 jetty,undertow,其中以undertow的性能最为出彩</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;</span><br><span class="line">	&lt;exclusions&gt;</span><br><span class="line">		&lt;exclusion&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;</span><br><span class="line">		&lt;/exclusion&gt;</span><br><span class="line">	&lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 修改SpringBoot 内嵌容器Tomcat变成undertow --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-undertow&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h6 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h6><blockquote>
+<p>Spring Boot 关于MVC的一些发现：对@Controller有一个处理，会根据请求头中的 Accept:text/html, 来满足返回，也就是说，如果有些请求有异常，或者没找到，Spring Boot可以返回漂亮的JSON</p>
+</blockquote>
+<ul>
+<li>对应静态资源的处理 (/resources下/static) URL上不需要声明/static,会自动在该文件下找</li>
+<li>对于webjar的处理 </li>
+<li>联合Spring MVC 对静态资源版本的管理</li>
+</ul>
+<blockquote>
+<p>Spring Boot Theamleaf所有的View(html) 是放在/resources下面的，在它自己提供的打包工具中，会将所有的资源统一打包处理，实现一个一个jar的web</p>
+</blockquote>
+<h5 id="②-使用jsp作为模板引擎（spring-boot-不推荐）"><a href="#②-使用jsp作为模板引擎（spring-boot-不推荐）" class="headerlink" title="② 使用jsp作为模板引擎（spring boot 不推荐）"></a>② 使用jsp作为模板引擎（spring boot 不推荐）</h5><p>简单的说明下注意事项:</p>
+<ul>
+<li>jsp页码不能像thymeleaf那样，将页面放到resource下，需要放到webapp下面</li>
+<li>由上引起的问题就是，在打jar包时，webapp的东西是会被忽略的</li>
+</ul>
+<h4 id="Spring-Boot-静态资源，拦截器等"><a href="#Spring-Boot-静态资源，拦截器等" class="headerlink" title="Spring Boot 静态资源，拦截器等"></a>Spring Boot 静态资源，拦截器等</h4><blockquote>
+<p>关键对象，一个WebMvcConfigurerAdapter 需要继承，实现某些方法</p>
+</blockquote>
+<h5 id="①-静态资源路径的默认与自定义"><a href="#①-静态资源路径的默认与自定义" class="headerlink" title="① 静态资源路径的默认与自定义"></a>① 静态资源路径的默认与自定义</h5><h6 id="Spring-Boot-默认静态资源存放位置-优先级顺序为"><a href="#Spring-Boot-默认静态资源存放位置-优先级顺序为" class="headerlink" title="Spring Boot 默认静态资源存放位置 优先级顺序为"></a>Spring Boot 默认静态资源存放位置 优先级顺序为</h6><ul>
+<li>classpath:/META-INF/resources</li>
+<li>classpath:/resources</li>
+<li>classpath:/static</li>
+<li>classpath:/public</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 默认值映射配置为 /**</span><br><span class="line">spring.mvc.static-path-pattern=</span><br><span class="line"># 及URL访问 /1.png, 会自动在上面4个路径中搜索1.png</span><br><span class="line"># 可修改 /aa/**</span><br></pre></td></tr></table></figure>
+<h6 id="扩展自定义资源映射"><a href="#扩展自定义资源映射" class="headerlink" title="扩展自定义资源映射"></a>扩展自定义资源映射</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 增加 静态资源访问规则</span><br><span class="line"> */</span><br><span class="line">@Override</span><br><span class="line">public void addResourceHandlers(ResourceHandlerRegistry registry) &#123;</span><br><span class="line">	//URL中请求/mystatic/** 的静态资源，会映射到当前项目中 /myst/下</span><br><span class="line">	registry.addResourceHandler(&quot;/mystatic/**&quot;).addResourceLocations(&quot;classpath:/myst/&quot;);</span><br><span class="line">	super.addResourceHandlers(registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过上述设置，系统会在默认4个映射路径之后，添加一个新的静态资源映射规则</p>
+</blockquote>
+<h5 id="②-页面跳转简化"><a href="#②-页面跳转简化" class="headerlink" title="② 页面跳转简化"></a>② 页面跳转简化</h5><blockquote>
+<p>以前写SpringMVC的时候，如果需要访问一个页面，必须要写Controller类，然后再写一个方法跳转到页面，感觉好麻烦，其实重写WebMvcConfigurerAdapter中的addViewControllers方法即可达到效果了</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 增加简单跳转规则</span><br><span class="line"> */</span><br><span class="line">@Override</span><br><span class="line">public void addViewControllers(ViewControllerRegistry registry) &#123;</span><br><span class="line">	registry.addViewController(&quot;/&quot;).setViewName(&quot;login&quot;);</span><br><span class="line">	registry.addViewController(&quot;/login&quot;).setViewName(&quot;login&quot;);</span><br><span class="line">	super.addViewControllers(registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="③-自定义拦截器"><a href="#③-自定义拦截器" class="headerlink" title="③ 自定义拦截器"></a>③ 自定义拦截器</h5><ol>
+<li><p>继承类 ，重写方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class MyInterceptor implements HandlerInterceptor &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;</span><br><span class="line">		HttpSession session = request.getSession();</span><br><span class="line">		Object o = session.getAttribute(ConstantPrefix.SESSION_USER);</span><br><span class="line">		System.out.println(&quot;进去拦截器&quot;);</span><br><span class="line">		if (o != null)</span><br><span class="line">			return true;</span><br><span class="line">		else&#123;</span><br><span class="line">			response.sendRedirect(&quot;/login&quot;);</span><br><span class="line">			return false;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,</span><br><span class="line">			ModelAndView modelAndView) throws Exception &#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span><br><span class="line">			throws Exception &#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加拦截规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void addInterceptors(InterceptorRegistry registry) &#123;</span><br><span class="line">	registry.addInterceptor(new MyInterceptor()).addPathPatterns(&quot;/**&quot;).excludePathPatterns(&quot;/login/**&quot;);</span><br><span class="line">	super.addInterceptors(registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Spring-Boot-日志"><a href="#Spring-Boot-日志" class="headerlink" title="Spring Boot 日志"></a>Spring Boot 日志</h4><p><img src="/uploads/spring boot &amp; sts/sringboot7-2.png" alt=""></p>
+<ul>
+<li><p>Spring Boot 默认提供日志支持，是用的logback 来作为日志的实现的</p>
+</li>
+<li><p>Spring Boot 采用默认的统一日志框架 SLF4j作为日志门面</p>
+</li>
+<li><p>在引入 spring-boot-starter 自动引起了依赖（如上图所示）</p>
+</li>
+<li><p>配置文件默认名称如下</p>
+<ul>
+<li>Logback   ：logback-spring.xml, logback-spring.groovy, logback.xml, logback.groovy</li>
+<li>Log4j     ：log4j-spring.properties, log4j-spring.xml, log4j.properties, log4j.xml</li>
+<li>Log4j2    ：log4j2-spring.xml, log4j2.xml</li>
+<li>JDK (Java Util Logging)：logging.properties</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Spring Boot官方推荐优先使用带有-spring的文件名作为你的日志配置（如使用logback-spring.xml，而不是logback.xml），命名为logback-spring.xml的日志配置文件，spring boot可以为它添加一些spring boot特有的配置项（多环境日志输出）</p>
+</blockquote>
+<blockquote>
+<p>根据不同环境（prod:生产环境，test:测试环境，dev:开发环境）来定义不同的日志输出，在 logback-spring.xml中使用 springProfile 节点来定义，方法如下：</p>
+</blockquote>
+<blockquote>
+<p>文件名称不是logback.xml，想使用spring扩展profile支持，要以logback-spring.xml命名</p>
+</blockquote>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 测试环境+开发环境. 多个使用逗号隔开. --&gt;</span><br><span class="line">&lt;springProfile name=&quot;test,dev&quot;&gt;</span><br><span class="line">    &lt;logger name=&quot;com.dudu.controller&quot; level=&quot;info&quot; /&gt;</span><br><span class="line">&lt;/springProfile&gt;</span><br><span class="line">&lt;!-- 生产环境. --&gt;</span><br><span class="line">&lt;springProfile name=&quot;prod&quot;&gt;</span><br><span class="line">    &lt;logger name=&quot;com.dudu.controller&quot; level=&quot;ERROR&quot; /&gt;</span><br><span class="line">&lt;/springProfile&gt;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>编码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line">// 引入标准，全部依赖于SLF4j，如果需要调整日志实现，不用更好代码</span><br><span class="line">private Logger logger = LoggerFactory.getLogger(BookController.class);</span><br></pre></td></tr></table></figure>
+<h6 id="使用logback-作为日志实现"><a href="#使用logback-作为日志实现" class="headerlink" title="使用logback 作为日志实现"></a>使用logback 作为日志实现</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!-- 是否支持自动扫描 --&gt;</span><br><span class="line">&lt;configuration debug=&quot;false&quot; scan=&quot;true&quot;&gt;</span><br><span class="line">	&lt;!-- 引入默认格式 --&gt;</span><br><span class="line">	&lt;include resource=&quot;org/springframework/boot/logging/logback/defaults.xml&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property name=&quot;APP_NAME&quot; value=&quot;sb&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;LOG_HOME&quot; value=&quot;/export/logs/$&#123;APP_NAME&#125;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!--Appeder 1： 控制台输出 --&gt;</span><br><span class="line">	&lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">			&lt;charset&gt;utf8&lt;/charset&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- Appender 2.0: 普通日志文件 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.INFO&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/info.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;7&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;DENY&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;ACCEPT&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line">	&lt;!-- Appender 2.0: 普通日志文件 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.ERROR&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/error.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;14&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;DENY&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- Appender 2.1: 用户INFO日志 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.USER.INFO&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/user/info.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;7&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;DENY&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;ACCEPT&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line">	&lt;!-- Appender 2.1: 用户ERROR日志 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.USER.ERROR&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/user/error.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;14&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;DENY&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&lt;!-- Appender 2.2: BUSINESS INFO日志 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.BUSINESS.INFO&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/business/info.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;7&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;DENY&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;ACCEPT&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line">	&lt;!-- Appender 2.2: BUSINESS INFO日志 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.BUSINESS.ERROR&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/business/error.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;14&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">			&lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">			&lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;</span><br><span class="line">			&lt;onMismatch&gt;DENY&lt;/onMismatch&gt;</span><br><span class="line">		&lt;/filter&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- Appender 2.3: 线上临时DEBUG日志 --&gt;</span><br><span class="line">	&lt;appender name=&quot;FILE.TEMPORARY.DEBUG&quot;</span><br><span class="line">		class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">			&lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/temporary/all.log.%d&#123;yyyy-MM-dd&#125;.log</span><br><span class="line">			&lt;/FileNamePattern&gt;</span><br><span class="line">			&lt;MaxHistory&gt;7&lt;/MaxHistory&gt;</span><br><span class="line">		&lt;/rollingPolicy&gt;</span><br><span class="line">		&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">			&lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">		&lt;/encoder&gt;</span><br><span class="line">		&lt;triggeringPolicy</span><br><span class="line">			class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">			&lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">		&lt;/triggeringPolicy&gt;</span><br><span class="line">	&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&lt;!-- 测试环境 --&gt;</span><br><span class="line">	&lt;springProfile name=&quot;test,dev&quot;&gt;</span><br><span class="line">		&lt;!-- 根：日志输出级别 --&gt;</span><br><span class="line">		&lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</span><br><span class="line">		&lt;/root&gt;</span><br><span class="line">	&lt;/springProfile&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 正式环境 --&gt;</span><br><span class="line">	&lt;springProfile name=&quot;prod&quot;&gt;</span><br><span class="line">		&lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.INFO&quot; /&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.ERROR&quot; /&gt;</span><br><span class="line">		&lt;/root&gt;</span><br><span class="line">		&lt;!-- 节点：interceptor --&gt;</span><br><span class="line">		&lt;logger name=&quot;interceptor&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line"></span><br><span class="line">		&lt;!-- bus 模块日志 --&gt;</span><br><span class="line">		&lt;logger name=&quot;pt.sicau.edu.cn.springboot.start03.bus&quot; level=&quot;INFO&quot;</span><br><span class="line">			additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.BUSINESS.INFO&quot; /&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.BUSINESS.ERROR&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line"></span><br><span class="line">		&lt;!-- use 模块日志 --&gt;</span><br><span class="line">		&lt;logger name=&quot;pt.sicau.edu.cn.springboot.start03.user&quot; level=&quot;INFO&quot;</span><br><span class="line">			additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.USER.INFO&quot; /&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;FILE.USER.ERROR&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">	&lt;/springProfile&gt;</span><br><span class="line"></span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>启动时，需要指明运行环境</strong></p>
+</blockquote>
+<h6 id="使用log4j-作为日志实现"><a href="#使用log4j-作为日志实现" class="headerlink" title="使用log4j 作为日志实现"></a>使用log4j 作为日志实现</h6><ul>
+<li>pom 移除jar，添加jar </li>
+<li>调整配置文件（代码不用调整）</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/12/Netty笔记/" rel="next" title="Netty笔记">
+                <i class="fa fa-chevron-left"></i> Netty笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/shiro 笔记/" rel="prev" title="Shiro">
+                Shiro <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#STS"><span class="nav-number">1.</span> <span class="nav-text">STS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#目录结构"><span class="nav-number">1.0.1.</span> <span class="nav-text">目录结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot"><span class="nav-number">2.</span> <span class="nav-text">Spring Boot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目优点"><span class="nav-number">2.1.</span> <span class="nav-text">项目优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入门介绍"><span class="nav-number">2.2.</span> <span class="nav-text">入门介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-POM结构"><span class="nav-number">2.2.0.0.1.</span> <span class="nav-text">1. POM结构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-启动"><span class="nav-number">2.2.0.0.2.</span> <span class="nav-text">2.启动</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-配置"><span class="nav-number">2.2.0.0.3.</span> <span class="nav-text">3. 配置</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动原理解析"><span class="nav-number">2.3.</span> <span class="nav-text">启动原理解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Boot-与web开发"><span class="nav-number">2.4.</span> <span class="nav-text">Spring Boot 与web开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①-使用thymeleaf作为模板引擎（spring-boot-推荐）"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">① 使用thymeleaf作为模板引擎（spring boot 推荐）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引入依赖"><span class="nav-number">2.4.0.1.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Controller"><span class="nav-number">2.4.0.1.2.</span> <span class="nav-text">Controller</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②-使用jsp作为模板引擎（spring-boot-不推荐）"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">② 使用jsp作为模板引擎（spring boot 不推荐）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Boot-静态资源，拦截器等"><span class="nav-number">2.4.1.</span> <span class="nav-text">Spring Boot 静态资源，拦截器等</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①-静态资源路径的默认与自定义"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">① 静态资源路径的默认与自定义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Spring-Boot-默认静态资源存放位置-优先级顺序为"><span class="nav-number">2.4.1.1.1.</span> <span class="nav-text">Spring Boot 默认静态资源存放位置 优先级顺序为</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#扩展自定义资源映射"><span class="nav-number">2.4.1.1.2.</span> <span class="nav-text">扩展自定义资源映射</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②-页面跳转简化"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">② 页面跳转简化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#③-自定义拦截器"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">③ 自定义拦截器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Boot-日志"><span class="nav-number">2.4.2.</span> <span class="nav-text">Spring Boot 日志</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#使用logback-作为日志实现"><span class="nav-number">2.4.2.0.1.</span> <span class="nav-text">使用logback 作为日志实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用log4j-作为日志实现"><span class="nav-number">2.4.2.0.2.</span> <span class="nav-text">使用log4j 作为日志实现</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

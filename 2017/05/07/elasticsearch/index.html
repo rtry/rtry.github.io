@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ElasticSearch," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="ElasticSearch Elasticsearch是一个开源的实时搜索引擎，基于 Apache Lucene ，使用java编写，隐藏Lucene的复杂性，提供一套简单的RESTful API.   you know ,for search!  单机安装基本软件 下载安装包，直接解压，有几个前提 1.x ,2.x –&amp;gt; java 1.7x 5.x    –&amp;gt; java 1.8x">
+<meta name="keywords" content="ElasticSearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch">
+<meta property="og:url" content="http://rtry.xyz/2017/05/07/elasticsearch/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="ElasticSearch Elasticsearch是一个开源的实时搜索引擎，基于 Apache Lucene ，使用java编写，隐藏Lucene的复杂性，提供一套简单的RESTful API.   you know ,for search!  单机安装基本软件 下载安装包，直接解压，有几个前提 1.x ,2.x –&amp;gt; java 1.7x 5.x    –&amp;gt; java 1.8x">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.775Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ElasticSearch">
+<meta name="twitter:description" content="ElasticSearch Elasticsearch是一个开源的实时搜索引擎，基于 Apache Lucene ，使用java编写，隐藏Lucene的复杂性，提供一套简单的RESTful API.   you know ,for search!  单机安装基本软件 下载安装包，直接解压，有几个前提 1.x ,2.x –&amp;gt; java 1.7x 5.x    –&amp;gt; java 1.8x">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2017/05/07/elasticsearch/"/>
+
+
+
+
+
+  <title>ElasticSearch | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2017/05/07/elasticsearch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ElasticSearch</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T00:00:00+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h1><blockquote>
+<p>Elasticsearch是一个开源的实时搜索引擎，基于 Apache Lucene ，使用java编写，隐藏Lucene的复杂性，提供一套简单的RESTful API.</p>
+</blockquote>
+<blockquote>
+<p>you know ,for search!</p>
+</blockquote>
+<h2 id="单机安装"><a href="#单机安装" class="headerlink" title="单机安装"></a>单机安装</h2><h3 id="基本软件"><a href="#基本软件" class="headerlink" title="基本软件"></a>基本软件</h3><ol>
+<li>下载安装包，直接解压，有几个前提<ul>
+<li>1.x ,2.x –&gt; java 1.7x</li>
+<li>5.x    –&gt; java 1.8x</li>
+</ul>
+</li>
+<li>解压后，bin/elasticsearch -d 后台启动</li>
+<li><p>不能直接用root账户启动，所以需要</p>
+<pre><code>useradd esearch  
+#自动增加esearch 用户与用户组
+
+chown -R esearch:esearch  elasticsearch  
+#更改elasticsearch文件夹内部文件的所属用户及组为esearch:esearch
+
+su esearch
+#由root用户切换到创建的用户 esearch
+
+bin/elasticsearch -d
+#后台启动
+</code></pre></li>
+<li><p>Centos启动的过程中，可能会出现以下问题</p>
+<pre><code>ERROR: bootstrap checks failed
+[1] max file descriptors [65535] for elasticsearch process likely too low, increase to at least [65536]
+[2] memory locking requested for elasticsearch process but memory is not locked
+[3] max number of threads [1024] for user [jason] likely too low, increase to at least [2048]
+[4] max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+[5] system call filters failed to install; check the logs and fix your configuration or disable system call filters at your own risk
+</code></pre><p> 处理方式</p>
+<pre><code>&gt; vim /etc/security/limits.conf
+# 末尾加上
+*       soft    noproc  65536
+*       hard    noproc  65536
+*       soft    nofile  65536
+*       hard    nofile  65536
+# 针对 max file descriptors
+# 针对 max number of threads
+
+&gt;vim  /etc/security/limits.d/90-nproc.conf 
+# 将1024改为2048 
+*          soft    nproc     2048
+# 以上重新登录有效
+
+&gt; vim /etc/sysctl.conf
+# 末尾加上
+vm.max_map_count=262144          
+# 针对 max virtual memory areas
+ &gt; sysctl -p
+
+&gt; vim /etc/elasticsearch/elasticsearch.yml
+# 末尾加上
+bootstrap.system_call_filter: false   
+# 针对 system call filters failed to install,
+</code></pre></li>
+<li><p>配置 config/elasticsearch.yml </p>
+<ul>
+<li>端口 </li>
+<li>network.host: 0.0.0.0  外网可访问，同时注意防火墙</li>
+<li>cluster.name: my-es</li>
+</ul>
+</li>
+</ol>
+<h3 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h3><ol>
+<li><p>head插件</p>
+<blockquote>
+<p>可以用来快速查看elasticsearch中的数据概况以及非全量的数据，也支持控件化查询和rest请求，但是体验都不是很好</p>
+</blockquote>
+</li>
+<li><p>sense 插件</p>
+<blockquote>
+<p>可以方便的执行rest请求，但是中文输入的体验不是很好</p>
+</blockquote>
+</li>
+<li><p>marvel 插件</p>
+<blockquote>
+<p>可以帮助使用者监控elasticsearch的运行状态，不过这个插件需要license。安装完license后可以安装marvel的agent，agent会收集elasticsearch的运行状态</p>
+</blockquote>
+</li>
+</ol>
+<p>注： sense 与 marvel 会自动集成到kibana中</p>
+<p>概念对比</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns</span><br><span class="line">Elasticsearch -&gt; Indices   -&gt; Types  -&gt; Documents -&gt; Fields</span><br></pre></td></tr></table></figure>
+<h2 id="集群安装"><a href="#集群安装" class="headerlink" title="集群安装"></a>集群安装</h2><p>…待完善</p>
+<h3 id="ElasticSearch的Java-Client类型"><a href="#ElasticSearch的Java-Client类型" class="headerlink" title="ElasticSearch的Java Client类型"></a>ElasticSearch的Java Client类型</h3><ul>
+<li><p>Node  Client</p>
+<p>  1.客户端节点本身也是Elasticsearch节点</p>
+<p>  2.也进入集群，和其他Elasticsearch节点一样</p>
+<p>  3.升级维护麻烦（词库、配置等等）</p>
+</li>
+<li><p>TransportClient (后续开发准备删除)</p>
+<p>  1.更加轻量级</p>
+<p>  2.客户端socket连接到es集群</p>
+<p>  3.早起版本需要完全一致</p>
+</li>
+<li><p>官网提供的rest api </p>
+<blockquote>
+<p> 分为高级与低级版本，使用http协议代替elastic 协议</p>
+</blockquote>
+</li>
+<li><p>jest客户端</p>
+<blockquote>
+<p> 第三方开发的 基于http协议的连接工具</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="ELasticSearch-集群状态处理"><a href="#ELasticSearch-集群状态处理" class="headerlink" title="ELasticSearch 集群状态处理"></a>ELasticSearch 集群状态处理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 查看所有的索引状态，注意是否有red</span><br><span class="line">curl -XGET 192.168.253.104:9200/_cluster/health?pretty=1&amp;level=indices</span><br><span class="line"></span><br><span class="line"># 查看那些分片不可用</span><br><span class="line">curl -XGET 192.168.253.104:9200/_cat/shards?pretty=1 | grep  UNASSIGNED</span><br><span class="line">索引名|分片号|p是主分片，r是副本|是否分配</span><br><span class="line">bookmark 0 r UNASSIGNED                             </span><br><span class="line">weather  2 r UNASSIGNED                             </span><br><span class="line">weather  1 r UNASSIGNED </span><br><span class="line"></span><br><span class="line"># yellow表示所有主分片可用，但不是所有副本分片都可用，最常见的情景是单节点时，</span><br><span class="line">#由于es默认是有1个副本，主分片和副本不能在同一个节点上，所以副本就是未分配unassigned</span><br><span class="line"></span><br><span class="line"># 手动分配 官方不建议</span><br><span class="line">curl -XPOST &apos;192.168.253.104:9200/_cluster/reroute?pretty&apos; -d &apos;&#123;</span><br><span class="line">    &quot;commands&quot; : [ &#123;</span><br><span class="line">          &quot;allocate&quot; : &#123;</span><br><span class="line">              &quot;index&quot; : &quot;article&quot;,</span><br><span class="line">              &quot;shard&quot; : 1,</span><br><span class="line">              &quot;node&quot; : &quot;my-es&quot;,</span><br><span class="line">              &quot;allow_primary&quot; : true</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Index Templates 与mapping 的区别在于，前者定义一个模板，后者定义一个具体的映射，如果符合规则，在定义具体的映射的时候，会继承模板中定义的mapping </p>
+</blockquote>
+<h3 id="ElasticSearch的Suggesters"><a href="#ElasticSearch的Suggesters" class="headerlink" title="ElasticSearch的Suggesters"></a>ElasticSearch的Suggesters</h3><p>Elasticsearch里设计了4种类别的Suggester，分别是:</p>
+<ul>
+<li>Term Suggester</li>
+<li>Phrase Suggester</li>
+<li>Completion Suggester</li>
+<li>Context Suggester</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">#插入映射</span><br><span class="line">curl -XPUT 192.168.253.104:9200/blogs/ -d&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;tech&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;body&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&apos;</span><br><span class="line"></span><br><span class="line">#插入数据</span><br><span class="line"></span><br><span class="line">curl -XPUT 192.168.253.104:9200/_bulk/?refresh=true -d&apos;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123; &quot;body&quot;: &quot;Lucene is cool&quot;&#125;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123; &quot;body&quot;: &quot;Elasticsearch builds on top of lucene&quot;&#125;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123; &quot;body&quot;: &quot;Elasticsearch rocks&quot;&#125;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123; &quot;body&quot;: &quot;Elastic is the company behind ELK stack&quot;&#125;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123; &quot;body&quot;: &quot;elk rocks&quot;&#125;</span><br><span class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;blogs&quot;, &quot;_type&quot; : &quot;tech&quot; &#125; &#125;</span><br><span class="line">&#123;  &quot;body&quot;: &quot;elasticsearch is rock solid&quot;&#125;</span><br><span class="line">&apos;</span><br><span class="line"></span><br><span class="line">#测试分词</span><br><span class="line">curl -XGET 192.168.253.104:9200/blogs/_analyze?pretty=1 -d&apos;</span><br><span class="line">Elastic is the company behind ELK s</span><br><span class="line">&apos;</span><br><span class="line"></span><br><span class="line">#term分析</span><br><span class="line">curl -XPOST 192.168.253.104:9200/blogs/_search?pretty -d&apos;</span><br><span class="line">&#123; </span><br><span class="line">  &quot;suggest&quot;: &#123;</span><br><span class="line">    &quot;my-suggestion&quot;: &#123;</span><br><span class="line">      &quot;text&quot;: &quot;lucne rock&quot;,</span><br><span class="line">      &quot;term&quot;: &#123;</span><br><span class="line">        &quot;suggest_mode&quot;: &quot;missing&quot;,</span><br><span class="line">        &quot;field&quot;: &quot;body&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&apos;</span><br><span class="line"></span><br><span class="line">curl -XPOST 192.168.253.104:9200/blogs/_search?pretty -d&apos;</span><br><span class="line">&#123; </span><br><span class="line">  &quot;suggest&quot;: &#123;</span><br><span class="line">    &quot;my-suggestion&quot;: &#123;</span><br><span class="line">      &quot;text&quot;: &quot;lucne rock&quot;,</span><br><span class="line">      &quot;term&quot;: &#123;</span><br><span class="line">        &quot;suggest_mode&quot;: &quot;popular&quot;,</span><br><span class="line">        &quot;field&quot;: &quot;body&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&apos;</span><br><span class="line"></span><br><span class="line">#Phrase分析</span><br><span class="line">curl -XPOST 192.168.253.104:9200/blogs/_search?pretty -d&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;suggest&quot;: &#123;</span><br><span class="line">    &quot;my-suggestion&quot;: &#123;</span><br><span class="line">      &quot;text&quot;: &quot;elassearch is  solid&quot;,</span><br><span class="line">      &quot;phrase&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;body&quot;,</span><br><span class="line">        &quot;highlight&quot;: &#123;</span><br><span class="line">          &quot;pre_tag&quot;: &quot;&lt;em&gt;&quot;,</span><br><span class="line">          &quot;post_tag&quot;: &quot;&lt;/em&gt;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> curl -XPOST &apos;192.168.253.104:9200/bookmark/_analyze?pretty=1&amp;analyzer=ik_max_word&apos; -d&apos;</span><br><span class="line">联想召回thinkpads 304笔记本电源线&apos;</span><br><span class="line"></span><br><span class="line">curl -XPOST &apos;192.168.253.104:9200/bookmark/_analyze?pretty=1&amp;analyzer=standard&apos; -d&apos;</span><br><span class="line">联想召回thinkpads 304笔记本电源线&apos;</span><br><span class="line"></span><br><span class="line">curl -XPOST &apos;192.168.253.104:9200/bookmark/_analyze?pretty=1&amp;analyzer=english&apos; -d&apos;</span><br><span class="line">联想召回thinkpads 304笔记本电源线&apos;</span><br><span class="line"></span><br><span class="line">curl -XPOST &apos;192.168.253.104:9200/bookmark/_analyze?pretty=1&amp;analyzer=chinese&apos; -d&apos;</span><br><span class="line">联想召回thinkpads 304笔记本电源线&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="Lucene"><a href="#Lucene" class="headerlink" title="Lucene"></a>Lucene</h2><blockquote>
+<p>a jar for search</p>
+</blockquote>
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><ul>
+<li>创建Directory</li>
+<li>创建IndexWriter</li>
+<li>创建Document对象</li>
+<li>为Document添加Field</li>
+<li>通过IndexWriter添加文档到索引中</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ElasticSearch/" rel="tag"># ElasticSearch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/20/servlet and others/" rel="next" title="Servlet">
+                <i class="fa fa-chevron-left"></i> Servlet
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/11/Storm/" rel="prev" title="Storm">
+                Storm <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ElasticSearch"><span class="nav-number">1.</span> <span class="nav-text">ElasticSearch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单机安装"><span class="nav-number">1.1.</span> <span class="nav-text">单机安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本软件"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件安装"><span class="nav-number">1.1.2.</span> <span class="nav-text">插件安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群安装"><span class="nav-number">1.2.</span> <span class="nav-text">集群安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ElasticSearch的Java-Client类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">ElasticSearch的Java Client类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ELasticSearch-集群状态处理"><span class="nav-number">1.2.2.</span> <span class="nav-text">ELasticSearch 集群状态处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ElasticSearch的Suggesters"><span class="nav-number">1.2.3.</span> <span class="nav-text">ElasticSearch的Suggesters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词器"><span class="nav-number">1.2.4.</span> <span class="nav-text">分词器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lucene"><span class="nav-number">1.3.</span> <span class="nav-text">Lucene</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建索引"><span class="nav-number">1.3.1.</span> <span class="nav-text">创建索引</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

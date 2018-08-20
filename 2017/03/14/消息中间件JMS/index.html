@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JMS规范,MQ," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="JMS规范说明定义java 消息服务（java message service） JMS，是一个java 平台面向消息中间件的API，用于在两个系统之间，或分布式系统中发送、接受消息，进行异步通信 概念 提供者：实现JMS规范的消息中间件服务器 客户端：发送或接受消息的应用程序 生产者/发布者：创建并发送消息的客服端 消费者/订阅者：接受并处理消息的客服端 消息：传递内容 消息模式：传递方式，JM">
+<meta name="keywords" content="JMS规范,MQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息中间件">
+<meta property="og:url" content="http://rtry.xyz/2017/03/14/消息中间件JMS/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="JMS规范说明定义java 消息服务（java message service） JMS，是一个java 平台面向消息中间件的API，用于在两个系统之间，或分布式系统中发送、接受消息，进行异步通信 概念 提供者：实现JMS规范的消息中间件服务器 客户端：发送或接受消息的应用程序 生产者/发布者：创建并发送消息的客服端 消费者/订阅者：接受并处理消息的客服端 消息：传递内容 消息模式：传递方式，JM">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/jms/27612-20160326151335604-951843855.png">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.764Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息中间件">
+<meta name="twitter:description" content="JMS规范说明定义java 消息服务（java message service） JMS，是一个java 平台面向消息中间件的API，用于在两个系统之间，或分布式系统中发送、接受消息，进行异步通信 概念 提供者：实现JMS规范的消息中间件服务器 客户端：发送或接受消息的应用程序 生产者/发布者：创建并发送消息的客服端 消费者/订阅者：接受并处理消息的客服端 消息：传递内容 消息模式：传递方式，JM">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/jms/27612-20160326151335604-951843855.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2017/03/14/消息中间件JMS/"/>
+
+
+
+
+
+  <title>消息中间件 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2017/03/14/消息中间件JMS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">消息中间件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-14T00:00:00+08:00">
+                2017-03-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="JMS规范说明"><a href="#JMS规范说明" class="headerlink" title="JMS规范说明"></a>JMS规范说明</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>java 消息服务（java message service） JMS，是一个java 平台面向消息中间件的API，用于在两个系统之间，或分布式系统中发送、接受消息，进行异步通信</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li>提供者：实现JMS规范的消息中间件服务器</li>
+<li>客户端：发送或接受消息的应用程序</li>
+<li>生产者/发布者：创建并发送消息的客服端</li>
+<li>消费者/订阅者：接受并处理消息的客服端</li>
+<li>消息：传递内容</li>
+<li>消息模式：传递方式，JMS中定义了主题与队列两种</li>
+</ul>
+<h3 id="消息模式"><a href="#消息模式" class="headerlink" title="消息模式"></a>消息模式</h3><h4 id="队列模式"><a href="#队列模式" class="headerlink" title="队列模式"></a>队列模式</h4><ol>
+<li>客服端包括生产者与消费者</li>
+<li>队列中的消息只能被一个消费者消费</li>
+<li>消费者可以随时消费队列中的消息</li>
+</ol>
+<h4 id="主题模式"><a href="#主题模式" class="headerlink" title="主题模式"></a>主题模式</h4><ol>
+<li>客服端包含发布者和订阅者</li>
+<li>主题中消息可以被所有的订阅者消费</li>
+<li>消费者不能消费订阅之前就发送到主题中的消息</li>
+</ol>
+<h3 id="JMS-编码接口"><a href="#JMS-编码接口" class="headerlink" title="JMS 编码接口"></a>JMS 编码接口</h3><table>
+<thead>
+<tr>
+<th>编码接口</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConnectionFactory</td>
+<td>创建连接到消息中间件的连接工厂</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>代表连接通信链路</td>
+</tr>
+<tr>
+<td>Destination</td>
+<td>指消息发布和接收的地点，包括队列和主题</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>代表一个单线程上下文，用于发送与接收消息</td>
+</tr>
+<tr>
+<td>MessageConsumer</td>
+<td>由会话创建，用户接收消息</td>
+</tr>
+<tr>
+<td>MessageProducer</td>
+<td>由会话创建，用于发送消息</td>
+</tr>
+<tr>
+<td>Message</td>
+<td>消息对象，消息头，一组消息属性，一个消息体</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ActiveMQ编码"><a href="#ActiveMQ编码" class="headerlink" title="ActiveMQ编码"></a>ActiveMQ编码</h2><h3 id="ActiveMQ-两种模式-主题-队列-独立编码"><a href="#ActiveMQ-两种模式-主题-队列-独立编码" class="headerlink" title="ActiveMQ 两种模式(主题/队列)独立编码"></a>ActiveMQ 两种模式(主题/队列)独立编码</h3><blockquote>
+<p>代码 <a href="https://git.coding.net/testfelicity/pt.git" target="_blank" rel="noopener">pt-jms</a> </p>
+</blockquote>
+<h3 id="ActiveMQ-与Spring-整合编码"><a href="#ActiveMQ-与Spring-整合编码" class="headerlink" title="ActiveMQ 与Spring 整合编码"></a>ActiveMQ 与Spring 整合编码</h3><table>
+<thead>
+<tr>
+<th>编码接口</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConnectionFactory</td>
+<td>spring提供的管理连接的连接池(SingleConnectionFactory和CachingConnectionFactory)</td>
+</tr>
+<tr>
+<td>JmsTemplate</td>
+<td>用于发送和接收消息的模板类(spring 容器中注入该类就可以使用)</td>
+</tr>
+<tr>
+<td>MessageListerner</td>
+<td>消息监听器(实现onmessage方法就可以)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>代码 <a href="https://git.coding.net/testfelicity/pt.git" target="_blank" rel="noopener">pt-spring-jms</a></p>
+</blockquote>
+<h2 id="ActiveMQ-集群"><a href="#ActiveMQ-集群" class="headerlink" title="ActiveMQ  集群"></a>ActiveMQ  集群</h2><blockquote>
+<p>为实现高可用(一个挂掉，另一个立即顶上，消息不丢失)，负载均衡 （压力不用集中在一个节点上）</p>
+</blockquote>
+<ul>
+<li>ActiveMQ 的cilent-to-broker的连接，叫做传输连接(Transport connectors)</li>
+<li>ActiveMQ 的broker-to-broker间的连接，叫做网络连接(Network connectors)</li>
+<li>ActiveMQ支持许多种客户端与服务器的传输连接。分别是TCP，NIO，UDP，SSL，HTTP(S)，VM，AMQP，MQTT，Peer，Multicast，WebSockets。</li>
+</ul>
+<p>配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;transportConnectors&gt;  </span><br><span class="line">    &lt;transportConnector name=&quot;openwire&quot; uri=&quot;tcp://localhost:61616&quot; /&gt;  </span><br><span class="line">    &lt;transportConnector name=&quot;ssl&quot; uri=&quot;ssl://localhost:61617&quot;/&gt;  </span><br><span class="line">    &lt;transportConnector name=&quot;stomp&quot; uri=&quot;stomp://localhost:61613&quot;/&gt;  </span><br><span class="line">    &lt;transportConnector name=&quot;ws&quot; uri=&quot;ws://localhost:61614/&quot; /&gt;  </span><br><span class="line">    &lt;transportConnector name=&quot;amqp+ssl&quot; uri=&quot;amqp+ssl://localhost:5671/&quot; /&gt;  </span><br><span class="line">&lt;/transportConnectors&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="集群方式"><a href="#集群方式" class="headerlink" title="集群方式"></a>集群方式</h3><ul>
+<li>客户端集群： 让多个消费者消费同一个队列</li>
+<li>Broker cluster ：多个Broker之间同步消息</li>
+<li>Master Slave ：实现高可用</li>
+</ul>
+<blockquote>
+<ul>
+<li>集群使用时需要对客户端进行配置</li>
+<li>ActiveMQ 失效转移</li>
+<li>failover:(uri1,…,uriN)?transportOptions</li>
+</ul>
+</blockquote>
+<h4 id="Broker-cluster"><a href="#Broker-cluster" class="headerlink" title="Broker cluster"></a>Broker cluster</h4><blockquote>
+<p>节点之间通过网络连接器实现节点通信<br>网络连接器：静态连接器/动态连接器</p>
+</blockquote>
+<ul>
+<li>示例图</li>
+</ul>
+<p><img src="/uploads/jms/27612-20160326151335604-951843855.png" alt=""></p>
+<ul>
+<li><p>配置activemq-1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans</span><br><span class="line">        xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">        xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span><br><span class="line">  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;bean class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;locations&quot;&gt;</span><br><span class="line">      &lt;value&gt;file:$&#123;activemq.conf&#125;/credentials.properties&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">  &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">  &lt;broker xmlns=&quot;http://activemq.apache.org/schema/core&quot; brokerName=&quot;activemq-1&quot;&gt;</span><br><span class="line">    &lt;networkConnectors&gt;</span><br><span class="line">      &lt;networkConnector uri=&quot;static:(tcp://127.0.0.1:61626)&quot;/&gt;</span><br><span class="line">    &lt;/networkConnectors&gt;</span><br><span class="line">    &lt;persistenceAdapter&gt;</span><br><span class="line">      &lt;kahaDB directory=&quot;$&#123;activemq.data&#125;/kahadb&quot;/&gt;</span><br><span class="line">    &lt;/persistenceAdapter&gt;</span><br><span class="line">    &lt;transportConnectors&gt;</span><br><span class="line">      &lt;transportConnector name=&quot;openwire&quot;</span><br><span class="line">                          uri=&quot;tcp://0.0.0.0:61616?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600&quot;/&gt;</span><br><span class="line">    &lt;/transportConnectors&gt;</span><br><span class="line">  &lt;/broker&gt;</span><br><span class="line"></span><br><span class="line">  &lt;import resource=&quot;jetty.xml&quot;/&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置activemq-2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans</span><br><span class="line">        xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">        xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span><br><span class="line">  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;locations&quot;&gt;</span><br><span class="line">            &lt;value&gt;file:$&#123;activemq.conf&#125;/credentials.properties&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;broker xmlns=&quot;http://activemq.apache.org/schema/core&quot; brokerName=&quot;activemq-2&quot;&gt;</span><br><span class="line">        &lt;networkConnectors&gt;</span><br><span class="line">            &lt;networkConnector uri=&quot;static:(tcp://127.0.0.1:61616)&quot;/&gt;</span><br><span class="line">        &lt;/networkConnectors&gt;</span><br><span class="line">        &lt;persistenceAdapter&gt;</span><br><span class="line">            &lt;kahaDB directory=&quot;$&#123;activemq.data&#125;/kahadb&quot;/&gt;</span><br><span class="line">        &lt;/persistenceAdapter&gt;</span><br><span class="line">        &lt;transportConnectors&gt;</span><br><span class="line">            &lt;transportConnector name=&quot;openwire&quot;</span><br><span class="line">                                uri=&quot;tcp://0.0.0.0:61626?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600&quot;/&gt;</span><br><span class="line">        &lt;/transportConnectors&gt;</span><br><span class="line">    &lt;/broker&gt;</span><br><span class="line"></span><br><span class="line">    &lt;import resource=&quot;jetty.xml&quot;/&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>详细配置将<a href="http://www.cnblogs.com/yjmyzz/p/activemq-ha-using-networks-of-brokers.html" target="_blank" rel="noopener"> Broker cluster</a></p>
+<blockquote>
+<p>各节点之间的数据可以完整访问（consele，lisetener）</p>
+</blockquote>
+<h4 id="Master-Slave-集群的三种方式"><a href="#Master-Slave-集群的三种方式" class="headerlink" title="Master Slave  集群的三种方式"></a>Master Slave  集群的三种方式</h4><table>
+<thead>
+<tr>
+<th>Master/Slave集群类型</th>
+<th>要求</th>
+<th>好处</th>
+<th>需要考虑的因素</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Share File System Master Slave</td>
+<td>共享文件系统如SAN</td>
+<td>可运行任意多个salves，自动恢复老的master</td>
+<td>需要共享文件系统</td>
+</tr>
+<tr>
+<td>JDBC Master Slave</td>
+<td>公用数据库</td>
+<td>同上</td>
+<td>需要一个公用数据库，较慢因为不能使用高性能日志</td>
+</tr>
+<tr>
+<td>Replicated LevelDB Store</td>
+<td>Zookeeper</td>
+<td>同上 + 非常快</td>
+<td>需要Zookeeper服务器</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 当前状态有且只有一个可以被当做master，同时比如web控制台也只有一个，他们的监听端口什么的 都只会有一个有效，在切换master的时候，会有卡顿的情况</p>
+</blockquote>
+<h5 id="Share-File-System-Master"><a href="#Share-File-System-Master" class="headerlink" title="Share File System Master"></a>Share File System Master</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;persistenceAdapter&gt;  </span><br><span class="line">        &lt;!--&lt;kahaDB directory=&quot;$&#123;activemq.data&#125;/kahadb&quot;/&gt;--&gt;  </span><br><span class="line">    &lt;kahaDB directory=&quot;E:/activeMQ/sharedb&quot;/&gt;  </span><br><span class="line">&lt;/persistenceAdapter</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(&quot;failover:(tcp://127.0.0.1:61616,tcp://127.0.0.1:61617)&quot;);</span><br></pre></td></tr></table></figure>
+<h5 id="JDBC-Master-Slave"><a href="#JDBC-Master-Slave" class="headerlink" title="JDBC Master Slave"></a>JDBC Master Slave</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;persistenceAdapter&gt;  </span><br><span class="line"></span><br><span class="line">       &lt;!-- jdbc --&gt;  </span><br><span class="line">       &lt;jdbcPersistenceAdapter dataDirectory=&quot;$&#123;activemq.data&#125;&quot; dataSource=&quot;#oracle-ds&quot;/&gt;  </span><br><span class="line">       &lt;/persistenceAdapter&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;oracle-ds&quot; class=&quot;org.apache.commons.dbcp.BasicDataSource&quot; destroy-method=&quot;close&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;driverClassName&quot; value=&quot;oracle.jdbc.driver.OracleDriver&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:mqtest&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;username&quot; value=&quot;activemq&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;password&quot; value=&quot;123456&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;poolPreparedStatements&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="Replicated-LevelDB-Store"><a href="#Replicated-LevelDB-Store" class="headerlink" title="Replicated LevelDB Store"></a>Replicated LevelDB Store</h5><p>略</p>
+<p>以上3中配置见<a href="http://blog.csdn.net/andyxuq/article/details/38231961" target="_blank" rel="noopener"> Master Slave  集群的三种方式</a></p>
+<h4 id="两种集群方式的对比"><a href="#两种集群方式的对比" class="headerlink" title="两种集群方式的对比"></a>两种集群方式的对比</h4><table>
+<thead>
+<tr>
+<th>~</th>
+<th>高可用</th>
+<th>负载均衡</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master Slave</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Broker cluster</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="完美集群方案"><a href="#完美集群方案" class="headerlink" title="完美集群方案"></a>完美集群方案</h2><p>Master Slave + Broker cluster</p>
+<table>
+<thead>
+<tr>
+<th>服务端口</th>
+<th>管理端口</th>
+<th>jetty端口</th>
+<th>存储</th>
+<th>网络连接器</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node-a</td>
+<td>61617</td>
+<td>8162</td>
+<td>自存储</td>
+<td>node-b,node-c</td>
+<td>消费者</td>
+</tr>
+<tr>
+<td>node-b</td>
+<td>61618</td>
+<td>8163</td>
+<td>共享存储</td>
+<td>node-a</td>
+<td>生产者，消费者</td>
+</tr>
+<tr>
+<td>node-c</td>
+<td>61619</td>
+<td>8164</td>
+<td>共享存储</td>
+<td>node-a</td>
+<td>生产者，消费者</td>
+</tr>
+</tbody>
+</table>
+<p>按顺序启动ABC</p>
+<blockquote>
+<p> 3台单独服务器，配置方案，以共享文件系统</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>服务端口</th>
+<th>管理端口</th>
+<th>jetty</th>
+<th>网络连接器</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node-a (192.168.253.104)</td>
+<td>61620</td>
+<td>8170</td>
+<td>自存储</td>
+<td>node-b,node-c</td>
+<td>消费者</td>
+</tr>
+<tr>
+<td>node-b (192.168.253.105)</td>
+<td>61620</td>
+<td>8170</td>
+<td>共享存储</td>
+<td>node-a</td>
+<td>生产者，消费者</td>
+</tr>
+<tr>
+<td>node-c (192.168.253.106)</td>
+<td>61620</td>
+<td>8170</td>
+<td>共享存储</td>
+<td>node-a</td>
+<td>生产者，消费者</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>安装nfs共享文件系统</p>
+</blockquote>
+<h2 id="企业实践"><a href="#企业实践" class="headerlink" title="企业实践"></a>企业实践</h2><h3 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h3><ol>
+<li>不同业务系统分别处理同一个消息，同一业务系统负载处理同类消息</li>
+<li>处理消息发送时的一致性问题</li>
+<li>解决消息处理时的幂等性问题</li>
+<li>基于消息机制建立事件总线</li>
+</ol>
+<p>FIX 1: 使用ActiveMQ的虚拟主题解决方法</p>
+<ul>
+<li>发布者：将消息发布到一个主题中，主题名以VirtualTopic.Test开头</li>
+<li>消费者：从队列中获取，在队列中表明身份，Consumer.A.VirtualTopic.Test</li>
+</ul>
+<p>FIX 2：弱一致性<br>1.使用消息表的本地事务解决（数据库）<br>2.使用内存日志</p>
+<p>FIX 3: 幂等性<br>1.使用消息表的本地事务解决（数据库）<br>2.使用内存日志</p>
+<h2 id="其他补充"><a href="#其他补充" class="headerlink" title="其他补充"></a>其他补充</h2><h3 id="什么是AMQP"><a href="#什么是AMQP" class="headerlink" title="什么是AMQP"></a>什么是AMQP</h3><p> AMQP （advanced message queuing protocol） 是一个提供统一消息服务的应用层标准协议，基于此协议的客户端与消息中间件可传递消息，并不受客户端/中间件不同产品，不同开发语言等条件限制</p>
+<h3 id="什么是ActiveMQ"><a href="#什么是ActiveMQ" class="headerlink" title="什么是ActiveMQ"></a>什么是ActiveMQ</h3><p>  是apache出品的，最流行，能力强劲的开源消息总线，完整支持JMS1.1 和J2EE 1.4规范的JMS Provider 实现</p>
+<p> 特点：</p>
+<ul>
+<li>多语言和协议编写客户端，语言支持：java,c,c++,Ruby.php等，应用协议：Openwire，Stomp Rest，XMPP，AMQP 等</li>
+<li>完全支持JMS1.1 和J2EE 1.4规范（持久化，XA消息，事务）</li>
+<li>虚拟主题，组合目的，镜像队列</li>
+</ul>
+<h3 id="什么是RabbitMQ"><a href="#什么是RabbitMQ" class="headerlink" title="什么是RabbitMQ"></a>什么是RabbitMQ</h3><pre><code>一个开源的AMQP实现（pivotal 公司），服务端用Wralang语言编写，用于在分布式系统中存储转发消息
+</code></pre><p> 特点：</p>
+<ul>
+<li>支持多客户端：如 python,java，jms,c ,php 等</li>
+<li>AMQP完整实现</li>
+<li>事务支持/发布确认</li>
+<li>消息持久化</li>
+</ul>
+<h3 id="什么是Kafka"><a href="#什么是Kafka" class="headerlink" title="什么是Kafka"></a>什么是Kafka</h3><p> 一种高吞吐量的分布式发布订阅消息系统</p>
+<p> 特点：</p>
+<ul>
+<li>通过O(1) 的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能保证稳定性</li>
+<li>高吞吐量</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JMS规范/" rel="tag"># JMS规范</a>
+          
+            <a href="/tags/MQ/" rel="tag"># MQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/26/MongoDB 数据存储/" rel="next" title="Mongo">
+                <i class="fa fa-chevron-left"></i> Mongo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/20/servlet and others/" rel="prev" title="Servlet">
+                Servlet <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JMS规范说明"><span class="nav-number">1.</span> <span class="nav-text">JMS规范说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.2.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息模式"><span class="nav-number">1.3.</span> <span class="nav-text">消息模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#队列模式"><span class="nav-number">1.3.1.</span> <span class="nav-text">队列模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主题模式"><span class="nav-number">1.3.2.</span> <span class="nav-text">主题模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMS-编码接口"><span class="nav-number">1.4.</span> <span class="nav-text">JMS 编码接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ActiveMQ编码"><span class="nav-number">2.</span> <span class="nav-text">ActiveMQ编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveMQ-两种模式-主题-队列-独立编码"><span class="nav-number">2.1.</span> <span class="nav-text">ActiveMQ 两种模式(主题/队列)独立编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveMQ-与Spring-整合编码"><span class="nav-number">2.2.</span> <span class="nav-text">ActiveMQ 与Spring 整合编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ActiveMQ-集群"><span class="nav-number">3.</span> <span class="nav-text">ActiveMQ  集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群方式"><span class="nav-number">3.1.</span> <span class="nav-text">集群方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Broker-cluster"><span class="nav-number">3.1.1.</span> <span class="nav-text">Broker cluster</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master-Slave-集群的三种方式"><span class="nav-number">3.1.2.</span> <span class="nav-text">Master Slave  集群的三种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Share-File-System-Master"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">Share File System Master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JDBC-Master-Slave"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">JDBC Master Slave</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Replicated-LevelDB-Store"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">Replicated LevelDB Store</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两种集群方式的对比"><span class="nav-number">3.1.3.</span> <span class="nav-text">两种集群方式的对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完美集群方案"><span class="nav-number">4.</span> <span class="nav-text">完美集群方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#企业实践"><span class="nav-number">5.</span> <span class="nav-text">企业实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#需要解决的问题"><span class="nav-number">5.1.</span> <span class="nav-text">需要解决的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他补充"><span class="nav-number">6.</span> <span class="nav-text">其他补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是AMQP"><span class="nav-number">6.1.</span> <span class="nav-text">什么是AMQP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是ActiveMQ"><span class="nav-number">6.2.</span> <span class="nav-text">什么是ActiveMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是RabbitMQ"><span class="nav-number">6.3.</span> <span class="nav-text">什么是RabbitMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Kafka"><span class="nav-number">6.4.</span> <span class="nav-text">什么是Kafka</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Nexus Maven 私有仓库安装 Nexus Maven 需要jdk1.8的环境   Sonatype Nexus 提供两种版本Nexus Repository Pro （企业版）/Nexus Repository OSS （社区版）  1234567891011121314151617181920212223242526272829303132333435//下载社区版免费wgete htt">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven_Git_Svn私有仓库">
+<meta property="og:url" content="http://rtry.xyz/2018/04/18/Maven_Git_Svn私有仓库/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="Nexus Maven 私有仓库安装 Nexus Maven 需要jdk1.8的环境   Sonatype Nexus 提供两种版本Nexus Repository Pro （企业版）/Nexus Repository OSS （社区版）  1234567891011121314151617181920212223242526272829303132333435//下载社区版免费wgete htt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.820Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven_Git_Svn私有仓库">
+<meta name="twitter:description" content="Nexus Maven 私有仓库安装 Nexus Maven 需要jdk1.8的环境   Sonatype Nexus 提供两种版本Nexus Repository Pro （企业版）/Nexus Repository OSS （社区版）  1234567891011121314151617181920212223242526272829303132333435//下载社区版免费wgete htt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2018/04/18/Maven_Git_Svn私有仓库/"/>
+
+
+
+
+
+  <title>Maven_Git_Svn私有仓库 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2018/04/18/Maven_Git_Svn私有仓库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Maven_Git_Svn私有仓库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T00:00:00+08:00">
+                2018-04-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Nexus-Maven-私有仓库"><a href="#Nexus-Maven-私有仓库" class="headerlink" title="Nexus Maven 私有仓库"></a>Nexus Maven 私有仓库</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>Nexus Maven 需要jdk1.8的环境</p>
+</blockquote>
+<blockquote>
+<p>Sonatype Nexus 提供两种版本Nexus Repository Pro （企业版）/Nexus Repository OSS （社区版）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">//下载社区版免费</span><br><span class="line">wgete https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.10.0-04-unix.tar.gz</span><br><span class="line">//or在迅雷(有缓存节点)中下载好之后上传到Centos中</span><br><span class="line"></span><br><span class="line">//解压</span><br><span class="line">tar -zxvf nexus-3.10.0-04-unix.tar.gz</span><br><span class="line">//解压后两个文件夹nexus-3.10.0-04 ，sonatype-work</span><br><span class="line"></span><br><span class="line">//启动</span><br><span class="line">cd nexus-3.10.0-04</span><br><span class="line"># bin: 启动脚本和启动时的配置文件</span><br><span class="line"># data: 数据存储目录</span><br><span class="line"># etc: 配置文件</span><br><span class="line"># lib: Apache Karaf的二进制包</span><br><span class="line"># public: 公共资源</span><br><span class="line"># system: 系统依赖的组件和插件</span><br><span class="line"></span><br><span class="line">//启动</span><br><span class="line">bin/nexus start</span><br><span class="line"># start：在后台启动服务，不在界面上打印任何启动或者运行时信息。</span><br><span class="line"># run：启动服务，但是在界面上打印出启动信息以及运行时信息以及日志信息。</span><br><span class="line"># stop：关闭服务</span><br><span class="line"># status：查看nexus运行状态</span><br><span class="line"># restart：重启服务</span><br><span class="line"># force-reload：强制重载一遍配置文件，然后重启服务</span><br><span class="line"></span><br><span class="line">//访问</span><br><span class="line">http://localhost:8081 (admin/admin123)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//设置开机启动</span><br><span class="line">从根目录进入/etc/目录，找到rc.local这个文件,编辑rc.local,添加nexus的启动信息，保存退出</span><br><span class="line">/export/nexus-server/nexus-3.10.0-04/bin/nexus start</span><br><span class="line"></span><br><span class="line">//如果有防火墙设置，请打开8081端口</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><blockquote>
+<p>配置端口，什么的，略</p>
+</blockquote>
+<h4 id="仓库类型"><a href="#仓库类型" class="headerlink" title="仓库类型"></a>仓库类型</h4><ul>
+<li>hosted    （宿主）：宿主仓库主要用于存放项目部署的构件，或者第三方构件用于下载</li>
+<li>proxy     （代理）：代理仓库就是对远程仓库的一种代理，从远程仓库下载构件或插件，然后缓存到Nexus仓库中</li>
+<li>group     （仓库组）：对我们已经配置完了的仓库的一种组策略</li>
+</ul>
+<h4 id="Nexus内置的几种仓库说明"><a href="#Nexus内置的几种仓库说明" class="headerlink" title="Nexus内置的几种仓库说明"></a>Nexus内置的几种仓库说明</h4><ul>
+<li>maven-central：策略为Release、代理中央仓库、只会下载和缓存中央仓库中的发布版本构件。</li>
+<li>maven-releases：策略为Release的宿主仓库、用来部署组织内部的发布版本内容。</li>
+<li>maven-snapshots：策略为Snapshot的宿主仓库、用来部署组织内部的快照版本内容。</li>
+<li>maven-public：<strong>该仓库将上述所有策略为Release的仓库聚合并通过一致的地址提供服务。</strong></li>
+<li>nuget-hosted：用来部署nuget构件的宿主仓库</li>
+<li>nuget.org-proxy：代理nuget远程仓库，下载和缓冲nuget构件。</li>
+<li>nuget-group：<strong>该仓库组将nuget-hosted与nuget.org-proxy仓库聚合并通过一致的地址提供服务。</strong></li>
+</ul>
+<p>配置访问的地址一般为 maven-public 组</p>
+<blockquote>
+<p>maven-public 为对我们开发中提供的url,点击copy,会出现访问地址<br><a href="http://192.168.253.104:8081/repository/maven-public" target="_blank" rel="noopener">http://192.168.253.104:8081/repository/maven-public</a></p>
+</blockquote>
+<h4 id="配置一个新的aliyun-proxy仓库"><a href="#配置一个新的aliyun-proxy仓库" class="headerlink" title="配置一个新的aliyun-proxy仓库"></a>配置一个新的aliyun-proxy仓库</h4><p>由于阿里的maven仓库比maven central的要快很多，所以我们可以配置一个新的仓库<br><a href="http://maven.aliyun.com/nexus/content/groups/public" target="_blank" rel="noopener">http://maven.aliyun.com/nexus/content/groups/public</a> 这个是阿里的仓库地址</p>
+<p>然后再public组里面讲这个aliyun-proxy仓库加入，排在maven-central之前即可。</p>
+<p>配置文件存储Blob Stores 可供仓库上传文件使用</p>
+<h4 id="本地setting-xml"><a href="#本地setting-xml" class="headerlink" title="本地setting.xml"></a>本地setting.xml</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span><br><span class="line">	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">	xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 本地仓库地址 --&gt;</span><br><span class="line">	&lt;localRepository&gt;F:\apache-maven-3.3.9\repository_104&lt;/localRepository&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;!-- 服务 --&gt;</span><br><span class="line">	&lt;servers&gt;</span><br><span class="line">		&lt;server&gt;</span><br><span class="line">			&lt;id&gt;releases&lt;/id&gt;</span><br><span class="line">			&lt;username&gt;admin&lt;/username&gt;</span><br><span class="line">			&lt;password&gt;admin123&lt;/password&gt;</span><br><span class="line">		&lt;/server&gt;</span><br><span class="line">		&lt;server&gt;</span><br><span class="line">			&lt;id&gt;snapshots&lt;/id&gt;</span><br><span class="line">			&lt;username&gt;admin&lt;/username&gt;</span><br><span class="line">			&lt;password&gt;admin123&lt;/password&gt;</span><br><span class="line">		&lt;/server&gt;</span><br><span class="line">	&lt;/servers&gt;</span><br><span class="line"></span><br><span class="line">	&lt;mirrors&gt;</span><br><span class="line">		&lt;mirror&gt;</span><br><span class="line">			&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">			&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line">			&lt;url&gt;http://192.168.253.104:8081/repository/maven-public/&lt;/url&gt;</span><br><span class="line">		&lt;/mirror&gt;</span><br><span class="line">	&lt;/mirrors&gt;</span><br><span class="line"></span><br><span class="line">	&lt;profiles&gt;</span><br><span class="line">		&lt;profile&gt;</span><br><span class="line">			&lt;id&gt;dev&lt;/id&gt;</span><br><span class="line">			&lt;repositories&gt;</span><br><span class="line">				&lt;repository&gt;</span><br><span class="line">					&lt;id&gt;Nexus&lt;/id&gt;</span><br><span class="line">					&lt;url&gt;http://192.168.253.104:8081/repository/maven-public/&lt;/url&gt;</span><br><span class="line">					&lt;releases&gt;</span><br><span class="line">						&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">					&lt;/releases&gt;</span><br><span class="line">					&lt;snapshots&gt;</span><br><span class="line">						&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">						&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">					&lt;/snapshots&gt;</span><br><span class="line">				&lt;/repository&gt;</span><br><span class="line">			&lt;/repositories&gt;</span><br><span class="line">			&lt;activation&gt;</span><br><span class="line">				&lt;activeByDefault&gt;true&lt;/activeByDefault&gt;</span><br><span class="line">				&lt;jdk&gt;1.8&lt;/jdk&gt;</span><br><span class="line">			&lt;/activation&gt;</span><br><span class="line">			&lt;properties&gt;</span><br><span class="line">				&lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">				&lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">				&lt;maven.compiler.compilerVersion&gt;1.8&lt;/maven.compiler.compilerVersion&gt;</span><br><span class="line">			&lt;/properties&gt;</span><br><span class="line">		&lt;/profile&gt;</span><br><span class="line">	&lt;/profiles&gt;</span><br><span class="line">	&lt;activeProfiles&gt;</span><br><span class="line">		&lt;activeProfile&gt;dev&lt;/activeProfile&gt;</span><br><span class="line">	&lt;/activeProfiles&gt;</span><br><span class="line"></span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="项目中配置"><a href="#项目中配置" class="headerlink" title="项目中配置"></a>项目中配置</h4><blockquote>
+<p>一般而言，项目中使用经过以上配置的本地maven,在进行包依赖下载的时候，会自动从192.168.253.104上进行下载，如果104上没有，那么104会从远程仓库中获取，然后供内网下载</p>
+</blockquote>
+<ul>
+<li>发布本地项目到私有仓库中</li>
+</ul>
+<ol>
+<li>distributionManagement 节点中，有两个子节点repository/snapshotRepository 一个是快照仓库，一个是正式仓库，在项目中添加了distributionManagement，项目在调用mvn:deploy 的时候就会更加当前项目的版本（判断项目版本号是否包含-SNAPSHOT）发布到不同的仓库中</li>
+<li>两个子仓库的地址来源于私有仓库中，快照，正式地址，id必须跟setting中配置的server一致</li>
+<li>如果项目是快照版本，deploy时，会根据时间戳生成jar,不用该版本号</li>
+<li>如果项目是releases版本，生成的jar,默认是不允许被覆盖的，所以可通过修改版本号发布</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;project&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 发布项目到私有仓库，供团体其他人使用 --&gt;</span><br><span class="line">	&lt;distributionManagement&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;releases&lt;/id&gt;</span><br><span class="line">			&lt;name&gt;Nexus Release Repository&lt;/name&gt;</span><br><span class="line">			&lt;url&gt;http://192.168.253.104:8081/repository/maven-releases/&lt;/url&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">		&lt;snapshotRepository&gt;</span><br><span class="line">			&lt;id&gt;snapshots&lt;/id&gt;</span><br><span class="line">			&lt;name&gt;Nexus Snapshot Repository&lt;/name&gt;</span><br><span class="line">			&lt;url&gt;http://192.168.253.104:8081/repository/maven-snapshots/&lt;/url&gt;</span><br><span class="line">		&lt;/snapshotRepository&gt;</span><br><span class="line">	&lt;/distributionManagement&gt;</span><br><span class="line">	</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果需要发布源码到私有仓库<blockquote>
+<p>在plugins中，增加两个插件，然后默认的deploy,会同时将源码发布到私有库中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 编译源代码插件 --&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.1&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;source&gt;1.8&lt;/source&gt;</span><br><span class="line">		&lt;target&gt;1.8&lt;/target&gt;</span><br><span class="line">		&lt;encoding&gt;$&#123;project.build.sourceEncoding&#125;&lt;/encoding&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 打包源代码插件 --&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;2.2.1&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;attach&gt;true&lt;/attach&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">	&lt;executions&gt;</span><br><span class="line">		&lt;execution&gt;</span><br><span class="line">			&lt;phase&gt;compile&lt;/phase&gt;</span><br><span class="line">			&lt;goals&gt;</span><br><span class="line">				&lt;goal&gt;jar&lt;/goal&gt;</span><br><span class="line">			&lt;/goals&gt;</span><br><span class="line">		&lt;/execution&gt;</span><br><span class="line">	&lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h2 id="Git-私有仓库安装"><a href="#Git-私有仓库安装" class="headerlink" title="Git 私有仓库安装"></a>Git 私有仓库安装</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/01/Https 相关扩展/" rel="next" title="Https 相关扩展">
+                <i class="fa fa-chevron-left"></i> Https 相关扩展
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/jvm/" rel="prev" title="JVM虚拟机笔记">
+                JVM虚拟机笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nexus-Maven-私有仓库"><span class="nav-number">1.</span> <span class="nav-text">Nexus Maven 私有仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#仓库类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">仓库类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nexus内置的几种仓库说明"><span class="nav-number">1.2.2.</span> <span class="nav-text">Nexus内置的几种仓库说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置一个新的aliyun-proxy仓库"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置一个新的aliyun-proxy仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地setting-xml"><span class="nav-number">1.2.4.</span> <span class="nav-text">本地setting.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#项目中配置"><span class="nav-number">1.2.5.</span> <span class="nav-text">项目中配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-私有仓库安装"><span class="nav-number">2.</span> <span class="nav-text">Git 私有仓库安装</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

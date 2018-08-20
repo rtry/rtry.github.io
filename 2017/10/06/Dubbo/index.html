@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Dubbo,java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景 单一应用架构   将所有功能集中在一个服务中，关键在于数据库ORM   垂直应用架构 将数据拆分成不相干的各个独立系统，关键在于前段MVC   分布式服务架构 各系统之间不再独立，通信存在必然，抽离出基础服务等，关键在于RPC框架   流动计算架构 服务大量增加，服务的浪费，需要得到治理，关键在于SOA服务治理     目的一个服务治理框架 解决问题在大规模服务化之前，应用可能只是通过RMI">
+<meta name="keywords" content="Dubbo,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo">
+<meta property="og:url" content="http://rtry.xyz/2017/10/06/Dubbo/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="背景 单一应用架构   将所有功能集中在一个服务中，关键在于数据库ORM   垂直应用架构 将数据拆分成不相干的各个独立系统，关键在于前段MVC   分布式服务架构 各系统之间不再独立，通信存在必然，抽离出基础服务等，关键在于RPC框架   流动计算架构 服务大量增加，服务的浪费，需要得到治理，关键在于SOA服务治理     目的一个服务治理框架 解决问题在大规模服务化之前，应用可能只是通过RMI">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.768Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dubbo">
+<meta name="twitter:description" content="背景 单一应用架构   将所有功能集中在一个服务中，关键在于数据库ORM   垂直应用架构 将数据拆分成不相干的各个独立系统，关键在于前段MVC   分布式服务架构 各系统之间不再独立，通信存在必然，抽离出基础服务等，关键在于RPC框架   流动计算架构 服务大量增加，服务的浪费，需要得到治理，关键在于SOA服务治理     目的一个服务治理框架 解决问题在大规模服务化之前，应用可能只是通过RMI">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2017/10/06/Dubbo/"/>
+
+
+
+
+
+  <title>Dubbo | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2017/10/06/Dubbo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dubbo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-06T00:00:00+08:00">
+                2017-10-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><ol>
+<li>单一应用架构  <ul>
+<li>将所有功能集中在一个服务中，关键在于数据库ORM</li>
+</ul>
+</li>
+<li>垂直应用架构<ul>
+<li>将数据拆分成不相干的各个独立系统，关键在于前段MVC</li>
+</ul>
+</li>
+<li>分布式服务架构<ul>
+<li>各系统之间不再独立，通信存在必然，抽离出基础服务等，关键在于RPC框架</li>
+</ul>
+</li>
+<li>流动计算架构<ul>
+<li>服务大量增加，服务的浪费，需要得到治理，关键在于SOA服务治理</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>一个服务治理框架</p>
+<h4 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h4><p>在大规模服务化之前，应用可能只是通过RMI或Hessian等工具，简单的暴露和引用远程服务，通过配置服务的URL地址进行调用，通过F5等硬件进行负载均衡。</p>
+<ul>
+<li>当服务越来越多时，服务URL配置管理变得非常困难，F5硬件负载均衡器的单点压力也越来越大。</li>
+</ul>
+<p>此时<strong>需要</strong>一个服务注册中心，动态的注册和发现服务，使服务的位置透明。<br>并通过在消费方获取服务提供方地址列表，实现软负载均衡和Failover，降低对F5硬件负载均衡器的依赖，也能减少部分成本。</p>
+<ul>
+<li>当进一步发展，服务间依赖关系变得错踪复杂，甚至分不清哪个应用要在哪个应用之前启动，架构师都不能完整的描述应用的架构关系。</li>
+</ul>
+<p>这时，<strong>需要</strong>自动画出应用间的依赖关系图，以帮助架构师理清理关系。</p>
+<ul>
+<li>接着，服务的调用量越来越大，服务的容量问题就暴露出来，这个服务需要多少机器支撑？什么时候该加机器？</li>
+</ul>
+<p>为了解决这些问题，<strong>需要</strong>：第一步，要将服务现在每天的调用量，响应时间，都统计出来，作为容量规划的参考指标。<br>其次，要可以动态调整权重，在线上，将某台机器的权重一直加大，并在加大的过程中记录响应时间的变化，直到响应时间到达阀值，记录此时的访问量，再以此访问量乘以机器数反推总容量。</p>
+<p>以上是Dubbo最基本的几个需求</p>
+<hr>
+<h3 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h3><h4 id="XML方式"><a href="#XML方式" class="headerlink" title="XML方式"></a>XML方式</h4><ol>
+<li><p>消费者</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xmlns:dubbo=&quot;http://code.alibabatech.com/schema/dubbo&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans    
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://code.alibabatech.com/schema/dubbo 
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 --&gt;
+    &lt;dubbo:application name=&quot;C1&quot; /&gt;
+
+    &lt;!-- 使用ZK --&gt;
+    &lt;dubbo:registry address=&quot;zookeeper://192.168.253.100:2181&quot; /&gt;
+
+    &lt;!-- 生成远程服务代理，可以和本地bean一样使用demoService --&gt;
+    &lt;dubbo:reference id=&quot;demoService&quot;     interface=&quot;sicau.edu.cn.dubbo.common.service.DemoService&quot; /&gt;
+    &lt;dubbo:reference id=&quot;randomService&quot;  interface=&quot;sicau.edu.cn.dubbo.common.service.RandomService&quot; /&gt;
+&lt;/beans&gt;
+</code></pre></li>
+<li><p>提供者</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xmlns:dubbo=&quot;http://code.alibabatech.com/schema/dubbo&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo   
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd&quot;&gt;
+    &lt;!-- 提供方应用信息，用于计算依赖关系 --&gt;
+    &lt;dubbo:application name=&quot;P1&quot; /&gt;
+
+    &lt;!-- 使用multicast广播注册中心暴露服务地址 --&gt;
+    &lt;!-- &lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234&quot; /&gt; --&gt;
+    &lt;!-- 使用ZK --&gt;
+    &lt;dubbo:registry address=&quot;zookeeper://192.168.253.100:2181&quot; /&gt;
+
+    &lt;!-- 用dubbo协议在20880端口暴露服务 --&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot; /&gt;
+
+    &lt;!-- 暴露服务 --&gt;
+    &lt;dubbo:service interface=&quot;sicau.edu.cn.dubbo.common.service.DemoService&quot; ref=&quot;demoServiceInte&quot;&gt;&lt;/dubbo:service&gt;
+    &lt;dubbo:service interface=&quot;sicau.edu.cn.dubbo.common.service.RandomService&quot; ref=&quot;randomService&quot;&gt;&lt;/dubbo:service&gt;
+
+    &lt;!-- spring bean 实例初始化 --&gt;
+    &lt;bean id=&quot;demoServiceInte&quot;     class=&quot;sicau.edu.cn.dubbo.provider.service.impl.DemoServiceImpl&quot;&gt;&lt;/bean&gt;
+    &lt;bean id=&quot;randomService&quot;     class=&quot;sicau.edu.cn.dubbo.provider.service.impl.RandomServiceImpl&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre></li>
+</ol>
+<h4 id="Annotation-方式"><a href="#Annotation-方式" class="headerlink" title="Annotation 方式"></a>Annotation 方式</h4><ol>
+<li><p>消费者</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xmlns:dubbo=&quot;http://code.alibabatech.com/schema/dubbo&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd       
+    http://code.alibabatech.com/schema/dubbo    
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;sicau.edu.cn.dubbo.consumer.action&quot; /&gt;
+
+    &lt;dubbo:application name=&quot;Annotation-C1&quot; /&gt;
+
+    &lt;dubbo:registry address=&quot;zookeeper://192.168.253.100:2181&quot; /&gt;
+
+    &lt;dubbo:annotation package=&quot;sicau.edu.cn.dubbo.consumer.action&quot;&gt;&lt;/dubbo:annotation&gt;
+
+&lt;/beans&gt;
+</code></pre></li>
+<li><p>提供者</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xmlns:dubbo=&quot;http://code.alibabatech.com/schema/dubbo&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd       
+        http://code.alibabatech.com/schema/dubbo    
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd&quot;&gt;
+</code></pre></li>
+</ol>
+<pre><code>    &lt;!-- 提供方应用信息，用于计算依赖关系 --&gt;
+    &lt;dubbo:application name=&quot;Annotation_P1&quot; /&gt;
+
+    &lt;!-- 使用ZK --&gt;
+    &lt;dubbo:registry address=&quot;zookeeper://192.168.253.100:2181&quot; /&gt;
+
+    &lt;!-- 用dubbo协议在20880端口暴露服务 --&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot; /&gt;
+
+    &lt;dubbo:annotation package=&quot;sicau.edu.cn.dubbo.provider.service.annotation&quot;&gt;&lt;/dubbo:annotation&gt;
+    &lt;context:component-scan
+        base-package=&quot;sicau.edu.cn.dubbo.provider.service.annotation&quot; /&gt;
+&lt;/beans&gt;
+</code></pre><h4 id="属性方式与API方式"><a href="#属性方式与API方式" class="headerlink" title="属性方式与API方式"></a>属性方式与API方式</h4><pre><code>略
+</code></pre><blockquote>
+<p>注1： </p>
+<p>注解中，服务提供者，使用的@Service(version = “0.0.1”) 消费者使用依赖使用的是@Reference(version = “0.0.1”)，上面两个是扩展spring来写的，其具体实例是经过重新处理的，非原来本类</p>
+<p>注2：</p>
+<p>dubbo 是弱依赖spring的，比如在 2.5.3 版本中，其默认依赖spring 2.x 版本，可直接升级移除2.x的依赖，自己主动加入4.x等的依赖，同时需要注意的是jdk的版本问题</p>
+<p>注3：</p>
+<p>注解时，游览包需要两者 1.spring的 context:component-scan 2.dubbo扩展的dubbo:annotation 两者都需要路径来声明</p>
+</blockquote>
+<hr>
+<h3 id="启动检查"><a href="#启动检查" class="headerlink" title="启动检查"></a>启动检查</h3><pre><code>1. 关闭单个服务检查
+&lt;dubbo:reference interface=&quot;com.foo.BarService&quot; check=&quot;false&quot; /&gt;
+2. 关闭所有服务检查
+&lt;dubbo:consumer check=&quot;false&quot; /&gt;
+3. 关闭启动中心检查
+&lt;dubbo:registry check=&quot;false&quot; /&gt;
+</code></pre><hr>
+<h3 id="集群容错"><a href="#集群容错" class="headerlink" title="集群容错"></a>集群容错</h3><blockquote>
+<p>警告: 多个不同应用注册了相同服务，请检查aaa-provider和bbb-provider中是否有误暴露</p>
+<p>解决方法： 提供同一个服务的不同provider应该将dubbo.application.name=base-service-provider <strong>改成同一个名字</strong> </p>
+<p>警告： 相同服务，横向扩展时，需要注意</p>
+<ol>
+<li><p>applaction.name 相同</p>
+</li>
+<li><p>每一个横向服务dubbo:protocol 的端口需要修改不同</p>
+</li>
+</ol>
+<p>警告: 如果提供者直接粗暴断开，会造成zk中数据不一致</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dubbo/" rel="tag"># Dubbo</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/21/Effective MySQL/" rel="next" title="effective mysql  读书笔记">
+                <i class="fa fa-chevron-left"></i> effective mysql  读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/08/Docker/" rel="prev" title="docker笔记">
+                docker笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目的"><span class="nav-number">2.</span> <span class="nav-text">目的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决问题"><span class="nav-number">2.1.</span> <span class="nav-text">解决问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置方式"><span class="nav-number">3.</span> <span class="nav-text">配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#XML方式"><span class="nav-number">3.1.</span> <span class="nav-text">XML方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Annotation-方式"><span class="nav-number">3.2.</span> <span class="nav-text">Annotation 方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性方式与API方式"><span class="nav-number">3.3.</span> <span class="nav-text">属性方式与API方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动检查"><span class="nav-number">4.</span> <span class="nav-text">启动检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群容错"><span class="nav-number">5.</span> <span class="nav-text">集群容错</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

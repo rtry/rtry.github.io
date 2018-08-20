@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="协议," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="SCTP 百度百科SCTP(Stream Control Transmission Protocol,流控制传输协议)是IETF(因特网工程任务组)在2000年定义的一个传输层协议 协议栈协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。 简介SCTP是一个面向连接的流传输协议，它可以在两个端点之间提供稳定、有序的数据传递服">
+<meta name="keywords" content="协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="协议">
+<meta property="og:url" content="http://rtry.xyz/2016/11/04/协议Protocol/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="SCTP 百度百科SCTP(Stream Control Transmission Protocol,流控制传输协议)是IETF(因特网工程任务组)在2000年定义的一个传输层协议 协议栈协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。 简介SCTP是一个面向连接的流传输协议，它可以在两个端点之间提供稳定、有序的数据传递服">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/wKioL1Oj0Uqwr-3uAAj-G84jJp4039.jpg">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/TCP4.jpg">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/11182147-200b853b8a954defab784cc653e96402.jpg">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/11182519-1c215a72b08142ae90b4f7143d83e84c.jpg">
+<meta property="og:updated_time" content="2018-08-20T10:21:00.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="协议">
+<meta name="twitter:description" content="SCTP 百度百科SCTP(Stream Control Transmission Protocol,流控制传输协议)是IETF(因特网工程任务组)在2000年定义的一个传输层协议 协议栈协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。 简介SCTP是一个面向连接的流传输协议，它可以在两个端点之间提供稳定、有序的数据传递服">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/protocol/wKioL1Oj0Uqwr-3uAAj-G84jJp4039.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2016/11/04/协议Protocol/"/>
+
+
+
+
+
+  <title>协议 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2016/11/04/协议Protocol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-04T00:00:00+08:00">
+                2016-11-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-20T18:21:00+08:00">
+                2018-08-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="SCTP-百度百科"><a href="#SCTP-百度百科" class="headerlink" title="SCTP 百度百科"></a>SCTP <a href="http://baike.baidu.com/link?url=7KCgn2gL-UfoA6e7qFvHvX6eR8z9yNhwURmPUfN1PatXo1ayiMeNiPrhhSjot2R-a3e0vfv9CbsGCBUgyKMARK" target="_blank" rel="noopener">百度百科</a></h2><p>SCTP(Stream Control Transmission Protocol,流控制传输协议)<br>是IETF(因特网工程任务组)在2000年定义的一个<strong>传输层</strong>协议</p>
+<h3 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h3><p>协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>SCTP是一个面向连接的流传输协议，它可以在两个端点之间提供稳定、有序的数据传递服务。SCTP可以看做是TCP协议的改进，它继承了TCP较为完善的拥塞控制并改进TCP的一些不足之处</p>
+<ol>
+<li>SCTP与TCP的最大不同之处在于它是多宿主（Multi-homing）连接，而TCP是单地址连接。</li>
+<li>一个TCP连接只能支持一个流，一个SCTP连接可以支持多个流（Multi-streaming）。在SCTP协议中，流（Stream）是指从一个SCTP端点到另一端点之间建立的单向逻辑通路，通常情况下所有用户消息在流中按序传递。</li>
+<li>SCTP有更好的安全性。</li>
+</ol>
+<h3 id="SCTP提供如下服务"><a href="#SCTP提供如下服务" class="headerlink" title="SCTP提供如下服务"></a>SCTP提供如下服务</h3><ol>
+<li>确认用户数据的无错误和无复制传输；</li>
+<li>数据分段以符合发现路径最大传输单元的大小；</li>
+<li>在多数据流中用户信息的有序发送，带有一个选项，用户信息可以按到达顺序发送；</li>
+<li>选择性的将多个用户信息绑定到单个SCTP包；</li>
+<li>通过关联的一个终端或两个终端多重宿主支持来为网络故障规定容度。</li>
+</ol>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><h3 id="OSI七层网络架构"><a href="#OSI七层网络架构" class="headerlink" title="OSI七层网络架构"></a>OSI七层网络架构</h3><p><img src="/uploads/protocol/wKioL1Oj0Uqwr-3uAAj-G84jJp4039.jpg" alt="OSI七层网络架构"></p>
+<h3 id="TCP-IP五层模型的协议"><a href="#TCP-IP五层模型的协议" class="headerlink" title="TCP/IP五层模型的协议"></a>TCP/IP五层模型的协议</h3><p><img src="/uploads/protocol/TCP4.jpg" alt="TCP/IP五层模型的协议"></p>
+<h2 id="序列化协议"><a href="#序列化协议" class="headerlink" title="序列化协议"></a>序列化协议</h2><h4 id="几种格式"><a href="#几种格式" class="headerlink" title="几种格式"></a>几种格式</h4><blockquote>
+<p>protobuf,thrift,JSON,XML</p>
+</blockquote>
+<h4 id="protobuf-定义"><a href="#protobuf-定义" class="headerlink" title="protobuf 定义"></a>protobuf 定义</h4><blockquote>
+<p>Protocol Buffers是一种以有效并可扩展的格式编码结构化数据的方式</p>
+</blockquote>
+<h4 id="protobuf-特点"><a href="#protobuf-特点" class="headerlink" title="protobuf 特点"></a>protobuf 特点</h4><ol>
+<li>灵活（方便接口更新）、高效（效率经过google的优化，传输效率比普通的XML，JSON等高很多）；</li>
+<li>易于使用；开发人员通过按照一定的语法定义结构化的消息格式，然后送给命令行工具，工具将自动生成相关的类，可以支持java、c++、python等语言环境。通过将这些类包含在项目中，可以很轻松的调用相关方法来完成业务消息的序列化与反序列化工作。</li>
+<li>语言支持；原生支持c++,java,python（其他方面也有扩展，比如js）</li>
+</ol>
+<h4 id="protobuf-场景"><a href="#protobuf-场景" class="headerlink" title="protobuf 场景"></a>protobuf 场景</h4><ol>
+<li>内部系统之间的信息交互，并且数据大小敏感</li>
+<li>小数据的交互</li>
+<li>原生支持java,c++,python</li>
+<li>支持向后兼容与向前兼容</li>
+</ol>
+<h4 id="protobuf-缺点"><a href="#protobuf-缺点" class="headerlink" title="protobuf 缺点"></a>protobuf 缺点</h4><ol>
+<li>不能自描述，需要依赖生成的文件</li>
+<li>人类不可读，由于是二进制传输，人类无法直接读取</li>
+</ol>
+<h4 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h4><blockquote>
+<p>提供了全套RPC解决方案，包括序列化机制、传输层、并发处理框架等</p>
+</blockquote>
+<blockquote>
+<p>原生支持 C++, Java, Python, Ruby, Perl, PHP, C#, Erlang, Haskell</p>
+</blockquote>
+<h2 id="Web-service"><a href="#Web-service" class="headerlink" title="Web service"></a>Web service</h2><h4 id="restful-WebService"><a href="#restful-WebService" class="headerlink" title="restful WebService"></a>restful WebService</h4><h5 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h5><blockquote>
+<p>RESTful 服务遵循REST(Representational State Transfer)的架构风格，中文翻译为：表现层状态转化</p>
+</blockquote>
+<h5 id="2-特点"><a href="#2-特点" class="headerlink" title="2.特点"></a>2.特点</h5><ul>
+<li>网上的所有事务都可以定义为资源</li>
+<li>每一个资源都有一个资源标识，对资源的操作不会改变这个标识</li>
+<li>所有的操作都是无状态的</li>
+</ul>
+<h5 id="3-轻量级的架构体系选择（Jax-RS实现）"><a href="#3-轻量级的架构体系选择（Jax-RS实现）" class="headerlink" title="3.轻量级的架构体系选择（Jax-RS实现）"></a>3.轻量级的架构体系选择（Jax-RS实现）</h5><ul>
+<li>Jersey     +     Grizzly</li>
+<li>Jersey     +     Jetty</li>
+<li>Dropwizard</li>
+<li>RESTEasy     +     Netty</li>
+<li>RESTEasy     +     Undertow</li>
+</ul>
+<blockquote>
+<p>注：</p>
+</blockquote>
+<ul>
+<li><a href="https://jersey.java.net" target="_blank" rel="noopener">Jersey 官网</a>，<a href="https://grizzly.java.net/" target="_blank" rel="noopener">Grizzly官网</a>，<a href="http://www.dropwizard.io/" target="_blank" rel="noopener">dropwizard</a></li>
+<li>jersey 是基于Java的一个轻量级RESTful风格的Web Services框架。</li>
+<li>JAX-RS 是JAVA EE6引入的一个新技术，全称：Java API fro RESTful Web Wervices ,是一个java语言的应用程序接口，支持REST风格的web服务。JAX-RS使用了JAX-RS 使用了Java SE5引入的标注来简化开发（@Path，@Produces …）</li>
+<li>基于JAX-RS实现的框架有 Jersey,RESTEasy 等，可很方便的部署到Servlet容器中（Tomcat，Jboss）</li>
+<li>Grizzly 是一个应用程序框架，专门解决编写成千上万用户访问服务器时产生的各种问题，使用java nio作为基础，并隐藏其复杂性，当然更重要的你可以把他当成一个NIO框架(当然它是一个应用程序框架)</li>
+<li>Jetty 是一个开源的servlet容器，使用java编写，可嵌入性与精简性（相对于Tomcat），Jetty 属于eclipse</li>
+<li><strong>dropwizard</strong> is a java framework for developing ops-friendly,high-preformance,Restful web service. (一个完整的服务框架，实际上集成了Jersey+Jetty)</li>
+<li>Undertow 嵌入式服务器</li>
+</ul>
+<h5 id="4-轻量级的架构体系选择（非Jax-RS实现）"><a href="#4-轻量级的架构体系选择（非Jax-RS实现）" class="headerlink" title="4.轻量级的架构体系选择（非Jax-RS实现）"></a>4.轻量级的架构体系选择（非Jax-RS实现）</h5><ul>
+<li>Spring Boot</li>
+<li>纯Netty</li>
+<li>Vert.x</li>
+</ul>
+<blockquote>
+<p>注：</p>
+</blockquote>
+<ul>
+<li><a href="http://vertx.io/" target="_blank" rel="noopener">vert.x</a> ,属于Eclipse ，is a tool-kit for building reactive application on the JVM </li>
+<li>vert.x底层使用Netty,可以使用Java 8 Lambda语法</li>
+<li>AWS (亚马逊公司旗下云计算服务平台类同阿里云)</li>
+<li>测试工具（Dubbo Remoting Performance Test Report<br>）</li>
+<li>测试工具 wrk（modern http benchmarking tool）<br><a href="https://github.com/wg/wrk" target="_blank" rel="noopener">wrk</a></li>
+<li><a href="https://github.com/chewiebug/GCViewer" target="_blank" rel="noopener">GCViewer</a><h5 id="5-较重量级的服务器"><a href="#5-较重量级的服务器" class="headerlink" title="5.较重量级的服务器"></a>5.较重量级的服务器</h5>springmvc/cxf + tomcat/Jboss 等</li>
+</ul>
+<h4 id="3-4-5-比较结论："><a href="#3-4-5-比较结论：" class="headerlink" title="3.4.5 比较结论："></a>3.4.5 比较结论：</h4><ul>
+<li>RESTEasy的性能要好于Jersey</li>
+<li>Jersey+Grizzly2和Jersey+Jetty, dropwizard性能差别不大</li>
+<li>纯netty的性能远远高于其它框架</li>
+<li>Vert.x 性能看起来不是太好，而且随着并发量增大吞吐率也随之下降</li>
+</ul>
+<h4 id="SOAP-WebService"><a href="#SOAP-WebService" class="headerlink" title="SOAP WebService"></a>SOAP WebService</h4><h2 id="RPC框架"><a href="#RPC框架" class="headerlink" title="RPC框架"></a>RPC框架</h2><h2 id="安全协议"><a href="#安全协议" class="headerlink" title="安全协议"></a>安全协议</h2><h3 id="ssh-介绍"><a href="#ssh-介绍" class="headerlink" title="ssh 介绍"></a>ssh 介绍</h3><ul>
+<li>openssl 不是协议，而是对协议的实现，SSL/TLS　才是协议。</li>
+<li>openssh 利用 openssl 提供的库。openssl 中也有个叫做 openssl 的工具，是 openssl 中的库的命令行接口。</li>
+</ul>
+<h3 id="openssh版本协议"><a href="#openssh版本协议" class="headerlink" title="openssh版本协议"></a>openssh版本协议</h3><ul>
+<li>openssh V1:存在安装漏洞，现已不再采用 </li>
+<li>openssh V2:现在推出的RHEL系列版本默认采用的版本协议</li>
+</ul>
+<h3 id="openssh命令"><a href="#openssh命令" class="headerlink" title="openssh命令"></a>openssh命令</h3><ul>
+<li>ssh -V （查看版本号）</li>
+<li>ssh <a href="mailto:root@192.168.253.102" target="_blank" rel="noopener">root@192.168.253.102</a> (ssh 远程登录，需要密码验证)</li>
+<li>service sshd restar/stop/start</li>
+<li></li>
+</ul>
+<h3 id="ssh-配置文件"><a href="#ssh-配置文件" class="headerlink" title="ssh 配置文件"></a>ssh 配置文件</h3><ul>
+<li>位置：/etc/ssh/sshd_config</li>
+<li>修改端口：Port 22（默认为22,建议自定义）</li>
+</ul>
+<h3 id="scp-两台主机直接复制数据-加密传输"><a href="#scp-两台主机直接复制数据-加密传输" class="headerlink" title="scp (两台主机直接复制数据,加密传输)"></a>scp (两台主机直接复制数据,加密传输)</h3><ul>
+<li>rpm -qf <code>which scp</code>  (检查是否安装)</li>
+<li>scp hhh.text <a href="mailto:root@192.168.253.102" target="_blank" rel="noopener">root@192.168.253.102</a>:/export/ (将本地当前目录下的hhh.text 文件复制到远程/export/)</li>
+</ul>
+<h3 id="ssh-免密码登录"><a href="#ssh-免密码登录" class="headerlink" title="ssh 免密码登录"></a>ssh 免密码登录</h3><blockquote>
+<p> ssh-keygen -t rsa<br>  <br><br>该命令会在客户机 root/.ssh/ 下面生成id_rsa（私钥） id_rsa.pub（公钥）<br><br><br> ssh-copy-id -i id_rsa.pub <a href="mailto:nick@192.168.2.29" target="_blank" rel="noopener">nick@192.168.2.29</a><br> <br><br> 该命令将公钥上传到待访问机器上<br> <br><br> chmod 700 ~/.ssh<br> <br><br> chmod 600 ~/.ssh/authorized_keys<br> <br><br> 修改 服务器中访问权限</p>
+</blockquote>
+<p>注： 登录日志可查看的文件 /var/log/secure</p>
+<h3 id="Git-之-ssh"><a href="#Git-之-ssh" class="headerlink" title="Git 之 ssh"></a>Git 之 ssh</h3><h3 id="JSR"><a href="#JSR" class="headerlink" title="JSR"></a>JSR</h3><ul>
+<li>JSR是Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。任何人都可以提交JSR，以向Java平台增添新的API和服务。JSR已成为Java界的一个重要标准。</li>
+<li><a href="https://jcp.org/en/home/index" target="_blank" rel="noopener">JSR</a></li>
+</ul>
+<h4 id="常用的标准"><a href="#常用的标准" class="headerlink" title="常用的标准"></a>常用的标准</h4><ul>
+<li>从Spring 3.0开始，Spring开始支持JSR-330标准的注解（依赖注入）。这些注解和Spring注解扫描的方式是一致的</li>
+<li>JSR 303 - Bean Validation （Hibernate Validator）</li>
+<li>Java API for RESTful Web Services (JAX-RS) 1.1 (JSR 311)</li>
+<li>Common Annotations for the Java Platform 1.1 (JSR 250)</li>
+<li>JSR 370: JavaTM API for RESTful Web Services (JAX-RS 2.1) Specification</li>
+</ul>
+<hr>
+<h3 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h3><h4 id="对数"><a href="#对数" class="headerlink" title="对数"></a>对数</h4><ul>
+<li>log表示对数。</li>
+<li>如果a^n = b（a&gt;0，且a≠1），那么数n叫做以a为底b的对数，记做n=log(a)b，【a是下标】</li>
+<li>其中，a叫做“底数”，b叫做“真数”。　　</li>
+<li>相应地，函数y=logaX叫做对数函数。对数函数的定义域是（0，+∞）。零和负数没有对数。</li>
+<li>底数a为常数，其取值范围是（0，1）∪（1，+∞）。</li>
+<li>当a=10时，写作：y=lgx【常用对数】。</li>
+<li>当a=e【自然对数的底数】时，写作y=lnx</li>
+<li>例：2^3 =8</li>
+<li>那么 log(2) 8 = 3</li>
+</ul>
+<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><ul>
+<li>二叉搜索树的特点是，小的值在左边，大的值在右边，即</li>
+</ul>
+<p><img src="/uploads/protocol/11182147-200b853b8a954defab784cc653e96402.jpg" alt="2"></p>
+<ul>
+<li>如实例：</li>
+</ul>
+<p><img src="/uploads/protocol/11182519-1c215a72b08142ae90b4f7143d83e84c.jpg" alt="2"></p>
+<p>可以非常方便的获取最大值，最小值，某元素的前驱，某元素的后驱</p>
+<ul>
+<li><p>最大值：树的最右节点。</p>
+</li>
+<li><p>最小值：树的最左节点。</p>
+</li>
+<li><p>某元素前驱：左子树的最右。</p>
+</li>
+<li><p>某元素的后继：右子树的最左。</p>
+</li>
+</ul>
+<p>由上可知，二叉搜索树的dictionary operation（包括search、insertion、deletion）的时间复杂度均与O(h)相关，h为树的高度（log n），如果按照上述的insertion方法构建树，那么构建出来的树的形状各异，特别是当输入序列有序时，更会退化到链表的程度。所以，如果能用某种方法，将树的高度降低到最小，那么其dictionary operation的时间开销均可以降低，不过相对而言构建树的开销将增大。为了降低二叉搜索树的高度而提出了平衡二叉树（Balanced Binary Tree）的概念。它要求左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。这样就可以将搜索树的高度尽量减小。常用算法有红黑树、AVL、Treap、伸展树等。</p>
+<h4 id="btree索引的常见误区"><a href="#btree索引的常见误区" class="headerlink" title="btree索引的常见误区"></a>btree索引的常见误区</h4><p>以 index(a,b,c) 为例,(注意和顺序有关)</p>
+<ul>
+<li>where a=2 可以用到索引</li>
+<li>where a=1 and b=2 可以用到索引</li>
+<li>where a=1 and b=2 and c=3 可以用到索引</li>
+<li>where b=1 / c=1 不能用到索引</li>
+<li>where a=1 and c=1 a可以发挥索引，c不能使用到索引</li>
+<li>where a=1 and b&gt;10 and c=1 a可以发挥索引，b也可以发挥索引，c不能发挥索引</li>
+<li>where a=1 and b like ‘xxx%’ and c=1 a可以发挥索引，b可以发挥索引，c不能发挥索引</li>
+</ul>
+<blockquote>
+<p>i386 简单理解就是是32位的amd64 是64位的版本，因为是amd把64位率先引进桌面系统的，英特尔也是要追随amd并且保持兼容，一般在软件包里包含这样的字符</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/协议/" rel="tag"># 协议</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/19/自定义注解annotation/" rel="next" title="自定义注解">
+                <i class="fa fa-chevron-left"></i> 自定义注解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/26/MongoDB 数据存储/" rel="prev" title="Mongo">
+                Mongo <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SCTP-百度百科"><span class="nav-number">1.</span> <span class="nav-text">SCTP 百度百科</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议栈"><span class="nav-number">1.1.</span> <span class="nav-text">协议栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCTP提供如下服务"><span class="nav-number">1.3.</span> <span class="nav-text">SCTP提供如下服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络架构"><span class="nav-number">2.</span> <span class="nav-text">网络架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI七层网络架构"><span class="nav-number">2.1.</span> <span class="nav-text">OSI七层网络架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP五层模型的协议"><span class="nav-number">2.2.</span> <span class="nav-text">TCP/IP五层模型的协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化协议"><span class="nav-number">3.</span> <span class="nav-text">序列化协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#几种格式"><span class="nav-number">3.0.1.</span> <span class="nav-text">几种格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf-定义"><span class="nav-number">3.0.2.</span> <span class="nav-text">protobuf 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf-特点"><span class="nav-number">3.0.3.</span> <span class="nav-text">protobuf 特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf-场景"><span class="nav-number">3.0.4.</span> <span class="nav-text">protobuf 场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf-缺点"><span class="nav-number">3.0.5.</span> <span class="nav-text">protobuf 缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#thrift"><span class="nav-number">3.0.6.</span> <span class="nav-text">thrift</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-service"><span class="nav-number">4.</span> <span class="nav-text">Web service</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#restful-WebService"><span class="nav-number">4.0.1.</span> <span class="nav-text">restful WebService</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义"><span class="nav-number">4.0.1.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-特点"><span class="nav-number">4.0.1.2.</span> <span class="nav-text">2.特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-轻量级的架构体系选择（Jax-RS实现）"><span class="nav-number">4.0.1.3.</span> <span class="nav-text">3.轻量级的架构体系选择（Jax-RS实现）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-轻量级的架构体系选择（非Jax-RS实现）"><span class="nav-number">4.0.1.4.</span> <span class="nav-text">4.轻量级的架构体系选择（非Jax-RS实现）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-较重量级的服务器"><span class="nav-number">4.0.1.5.</span> <span class="nav-text">5.较重量级的服务器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-5-比较结论："><span class="nav-number">4.0.2.</span> <span class="nav-text">3.4.5 比较结论：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SOAP-WebService"><span class="nav-number">4.0.3.</span> <span class="nav-text">SOAP WebService</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC框架"><span class="nav-number">5.</span> <span class="nav-text">RPC框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全协议"><span class="nav-number">6.</span> <span class="nav-text">安全协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-介绍"><span class="nav-number">6.1.</span> <span class="nav-text">ssh 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openssh版本协议"><span class="nav-number">6.2.</span> <span class="nav-text">openssh版本协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openssh命令"><span class="nav-number">6.3.</span> <span class="nav-text">openssh命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-配置文件"><span class="nav-number">6.4.</span> <span class="nav-text">ssh 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scp-两台主机直接复制数据-加密传输"><span class="nav-number">6.5.</span> <span class="nav-text">scp (两台主机直接复制数据,加密传输)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-免密码登录"><span class="nav-number">6.6.</span> <span class="nav-text">ssh 免密码登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-之-ssh"><span class="nav-number">6.7.</span> <span class="nav-text">Git 之 ssh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSR"><span class="nav-number">6.8.</span> <span class="nav-text">JSR</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的标准"><span class="nav-number">6.8.1.</span> <span class="nav-text">常用的标准</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数学"><span class="nav-number">6.9.</span> <span class="nav-text">数学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对数"><span class="nav-number">6.9.1.</span> <span class="nav-text">对数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉搜索树"><span class="nav-number">6.9.2.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#btree索引的常见误区"><span class="nav-number">6.9.3.</span> <span class="nav-text">btree索引的常见误区</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
