@@ -91,7 +91,7 @@ netty 是一个用于快速开发可维护的**高性能**协议服务器和客�
 3. ChannelFuture—异步通知
 
  Channels，EventLoops和EventLoopGroups 的关系图
-![网络抽象](http://ifeve.com/wp-content/uploads/2016/06/f3-1.jpg)
+![网络抽象](/uploads/netty/f3-1.jpg)
 
 #### ChannelFuture
 > netty所有的IO都是异步的，因此一个操作可能不会立即返回，我们需要一个方法稍后来判断他的结果，netty提供ChanelFuture ,他的addListener方法注册一个ChanelFutureLiitener,当操作完成时，可接受通知（必然接收）

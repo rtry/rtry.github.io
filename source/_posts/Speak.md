@@ -31,7 +31,7 @@ tags: [大数据,Speak]
  
 #### Spark 组件
 * 包含多个紧密集成的组件
-![组件](http://www.chinacloud.cn/upload/2017-01/170105110839221.jpg)
+![](/uploads/speak/600147-20170628145945430-804401630.png)
 
 * 组件简介
 > Spark Core : 包含Spark的基本功能，包含任务调度，内存管理，容错机制等，内部定义了RDDs（弹性分布式数据集），提供了很多API来创建和操作这些RDDS，为其他组件提供服务
@@ -58,7 +58,7 @@ tags: [大数据,Speak]
 
 ### Speak RDDs
 * Drive Program :包含程序的main() ，RDDs 的定义和操作，他管理很多节点，我们称为executors
-![](http://img0.tuicool.com/QNFvI32.png!web)
+![](/uploads/speak/QNFvI32.png)
 
 * SparkContext : Driver Programs 通过SparkContext对象访问Spark，SparkContext对象代表和一个集群的连接 （在shell 中 自动创建好了的 ==> sc ）
 
@@ -76,11 +76,11 @@ tags: [大数据,Speak]
 
 ### RDD 存储类型
 RDD可以设置不同类型存储方式，只存硬盘、只存内存等。
-![存储类型](http://images.cnitblog.com/i/646474/201407/082101509891293.png)
+![](/uploads/speak/082101509891293.png)
 
 
 ### RDD操作
-![操作API](http://images.cnitblog.com/i/646474/201407/082113342854589.png)
+![](/uploads/speak/082113342854589.png)
 
 * Transformation：根据已有RDD创建新的RDD数据集build
 	
@@ -189,7 +189,7 @@ kafka 	是一个高吞吐量的分布式发布订阅消息系统,它最初由Lin
 * Consumer ： 消息消费者，向Kafka broler 读取消息的客户端
 * Consumer Group ： 每一个Consumer属于一个特定的Consumer Group ，可为每个Consumer指定group ，如果不指定，则属于默认的group
 
-![生产者](http://cdn4.infoqstatic.com/statics_s2_20170411-0445/resource/articles/apache-kafka/zh/resources/0609010.png)
+![](/uploads/speak/1244488-20170928020637934-1434965689.png)
 
 
 ### [Kafka](http://kafka.apache.org/) 存储
@@ -197,7 +197,7 @@ kafka 	是一个高吞吐量的分布式发布订阅消息系统,它最初由Lin
 * 与传统的消息系统不同，Kafka系统中存储的消息没有明确的消息ID
 * 消息通过日志中的逻辑偏移量来公开，这样就避免了维护配套密集寻址，用于映射消息ID到实际消息地址的随机存储索引结构的开销，消息ID是递增的，但是不连续，要计算下一个消息的ID，可以在其逻辑偏移量的技术上加上当前消息的长度
 * 消费者始终从特定分区顺序地获取消息，如果消费者知道特定消息的偏移量，也就说明消费者已经消费了之前的所有消息。消费者向代理发出异步拉请求，准备字节缓冲区用于消费。每个异步拉请求都包含要消费的消息偏移量。Kafka利用sendfile API高效地从代理的日志段文件中分发字节给消费者 
-![存储架构](http://cdn4.infoqstatic.com/statics_s2_20170411-0445/resource/articles/apache-kafka/zh/resources/0609012.png)
+![存储架构](/uploads/speak/kafka-fs-index-correspond-data.png)
 
 ### Kafka性能要好很多的主要原因包括：
 

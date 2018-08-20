@@ -8,7 +8,7 @@ tags: [数据存储,Mongo]
 ## 背景
 * [MongoDB 官网](https://www.mongodb.com),[中文社区](http://mongoing.com/)
 * MongoDB 下载分为企业版与社区版，大体差异只是安全认证，系统认证方面
-![差异](http://files.jb51.net/file_images/article/201410/20141013115135831.jpg)
+![差异](/uploads/mongodb/20141013115135831.jpg)
 * MongoDB推出DaaS解决方案Altas
 * MongoDB 除了社区版/企业版的下载之外，还有OPS Manager/Compass/Connector for BI
 

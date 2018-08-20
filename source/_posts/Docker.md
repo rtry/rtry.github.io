@@ -12,18 +12,18 @@ tags: [docker]
 
 #### Docker架构
 
-![docker架构](http://hainiubl.com/images/2016/architecture.jpg?_=6822905)
+![docker架构](/uploads/docker/architecture.jpg)
 
 ### 镜像 images 
 - [x] 就是一个只读的模板，可以用来创建容器，可包含多个容器
 - [x] 使用 unionfs(Union File System) 来实现文件管理
 
-![images](http://hainiubl.com/images/2016/image_ufs.png?_=6822905)
+![images](/uploads/docker/image_ufs.png)
 
 ### 容器 container
 - [x] 容器是从镜像中创建的运行实例，每个容器相互隔离
 
-![container](http://hainiubl.com/images/2016/container-ufs.png?_=6822905)
+![container](/uploads/docker/container-ufs.png)
 
 
 ### 仓库 repository

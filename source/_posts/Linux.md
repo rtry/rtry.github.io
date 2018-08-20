@@ -57,7 +57,7 @@ tags: [linux]
 * win 追踪域名  tracert www.baidu.com
 
 
-* ll -h  /ll -k
+* ll -h  /ll -k  /ll -rt -F
 
 		以合适阅读大小的方式 列表展示文件及文件夹
 

@@ -75,11 +75,9 @@ http://192.168.253.104:8081/repository/maven-public
 由于阿里的maven仓库比maven central的要快很多，所以我们可以配置一个新的仓库
 http://maven.aliyun.com/nexus/content/groups/public 这个是阿里的仓库地址
 
-![](https://xnstatic-1253397658.file.myqcloud.com/nexus09.png)
 
 然后再public组里面讲这个aliyun-proxy仓库加入，排在maven-central之前即可。
 
-![](https://xnstatic-1253397658.file.myqcloud.com/nexus10.png)
 
 配置文件存储Blob Stores 可供仓库上传文件使用
 

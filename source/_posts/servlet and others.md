@@ -190,13 +190,13 @@ request.getPart("photo").write("/tmp/photo.jpg") 一行。
 
 #### 2. 生命周期
 * Servlet：servlet的生命周期始于它被装入web服务器的内存时，并在web服务器终止或重新装入servlet时结束。servlet一旦被装入web服务器，一般不会从web服务器内存中删除，直至web服务器关闭或重新结束。(单例,extends HttpServlet)
-![](http://img.my.csdn.net/uploads/201301/29/1359424209_4366.png)
+![](/uploads/servlet and others/1359424209_4366.png)
 * Filter：一定要实现javax.servlet包的Filter接口的三个方法init()、doFilter()、destroy()，空实现也行 (启动服务器初始 implements Filter)
 * Listener:针对不同监听，继承/实现某些类 生命周期类似Filter
 
 > 特别说明，Filter执行流程，是会 **来回执行** 的 ，如下图
 > 特别说明，chain.doFilter() 链式传递
-![](http://img.my.csdn.net/uploads/201301/29/1359428942_1310.png)
+![](/uploads/servlet and others/1359428942_1310.png)
 
 
 附录：
@@ -242,5 +242,3 @@ public abstract class HandlerInterceptorAdapter implements AsyncHandlerIntercept
 }
 
 ```
-区别可以见下图
-![](http://img.blog.csdn.net/20150323232841282?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbmxlaXhpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)

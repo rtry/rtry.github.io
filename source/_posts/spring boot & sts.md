@@ -294,7 +294,7 @@ public void addInterceptors(InterceptorRegistry registry) {
 
 #### Spring Boot 日志
 
-![](http://7xqch5.com1.z0.glb.clouddn.com/sringboot7-2.png)
+![](/uploads/spring boot & sts/sringboot7-2.png)
 
 * Spring Boot 默认提供日志支持，是用的logback 来作为日志的实现的
 

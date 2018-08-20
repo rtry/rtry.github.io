@@ -12,7 +12,7 @@ tags: [权限控制,Shiro]
 > * 现成的组件 
 
 ### 模块简介
-![](http://dl2.iteye.com/upload/attachment/0093/9788/d59f6d02-1f45-3285-8983-4ea5f18111d5.png)
+![](/uploads/shiro/d59f6d02-1f45-3285-8983-4ea5f18111d5.png)
 
 
 ### 模块说明
@@ -79,7 +79,7 @@ System.out.println("是否已经登录：" + auth);
 ### 流程图
 > 主要通过 Subject.login(token) 来进行身份认证
 
-![](http://dl2.iteye.com/upload/attachment/0094/0173/8d639160-cd3e-3b9c-8dd6-c7f9221827a5.png)
+![](/uploads/shiro/8d639160-cd3e-3b9c-8dd6-c7f9221827a5.png)
 
 ### 流程分析
 1. 首先调用Subject.login(token)进行登录，其会自动委托给Security Manager，调用之前必
@@ -124,7 +124,7 @@ AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws Authe
 
 > Realm：域，Shiro从从Realm获取安全数据（如用户、角色、权限），就是说SecurityManager要验证用户身份，那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；也需要从Realm得到用户相应的角色/权限进行验证用户是否能进行操作；可以把Realm看成DataSource，即安全数据源。如我们之前的ini配置方式将使用org.apache.shiro.realm.text.IniRealm。
 
-![](http://dl2.iteye.com/upload/attachment/0094/0175/34062d4e-8ac5-378a-a9e2-4845f0828292.png)
+![](/uploads/shiro/34062d4e-8ac5-378a-a9e2-4845f0828292.png)
 
 > 如果身份验证失败请捕获AuthenticationException 或其子类，常见的如：
 > * DisabledAccountException（禁用的帐号）
@@ -435,7 +435,7 @@ Session start(SessionContext context); //启动会话
 Session getSession(SessionKey key) throws SessionException; //根据会话Key获取会话
 ```
 
-![](http://dl2.iteye.com/upload/attachment/0094/6259/eb4cde34-53c1-3c46-abd5-0eda9de6400d.png)
+![](/uploads/shiro/eb4cde34-53c1-3c46-abd5-0eda9de6400d.png)
 
 Shiro提供了三个默认实现：
 * DefaultSessionManager：DefaultSecurityManager使用的默认实现，用于JavaSE环境；
@@ -454,7 +454,7 @@ Shiro提供了三个默认实现：
 
 Shiro内嵌了如下SessionDAO实现
 
-![](http://dl2.iteye.com/upload/attachment/0094/6261/6dac0cd6-f6ca-3e2d-b3ba-f8c7104e1b2a.png)
+![](/uploads/shiro/6dac0cd6-f6ca-3e2d-b3ba-f8c7104e1b2a.png)
 
 > AbstractSessionDAO提供了SessionDAO的基础实现，如生成会话ID等；CachingSessionDAO
 提供了对开发者透明的会话缓存的功能，只需要设置相应的CacheManager 即可；

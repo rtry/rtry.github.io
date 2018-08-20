@@ -11,8 +11,14 @@
 * 联系连接 首页阅读更多
 
 #### 命令
-hexo d    //提交master 网站版本
-hexo g	  //生成html
-hexo s	  //本地启动服务
-git push origin hexo  //提交存储路径到hexo分支
-java ExportYNoteUtil  //生成源文件 .md
+* hexo d    //提交master 网站版本
+* hexo g	  //生成html
+* hexo s	  //本地启动服务
+* git push origin hexo  //提交存储路径到hexo分支
+* java ExportYNoteUtil  //生成源文件 .md
+
+
+### 调整
+> 所有网络图片通过 ExportYNoteUtil 自动转换成本地图片
+
+> ./refush.sh 自动刷新与查看

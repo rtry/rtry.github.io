@@ -99,7 +99,7 @@ MessageListerner    | 消息监听器(实现onmessage方法就可以)
 
 * 示例图
 
-![](http://images2015.cnblogs.com/blog/27612/201603/27612-20160326151335604-951843855.png)
+![](/uploads/jms/27612-20160326151335604-951843855.png)
 
 * 配置activemq-1
 ```

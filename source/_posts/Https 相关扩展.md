@@ -28,7 +28,7 @@ tags: [Https,证书,非对称加密]
 
 ### Https 流程
 
-![](http://files.jb51.net/file_images/article/201212/2012121714270132.png)
+![](/uploads/https/2012121714270132.png)
 > 整体可分为8部分，前提需要服务器端准备证书（其实就是公钥与私钥）
 
 1. 客户端发出请求，（输入https://www.domain.com）
