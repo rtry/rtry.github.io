@@ -31,7 +31,7 @@ tags: [jvm]
 > Oracle JDK里面包含的JVM是HotSpot VM，HotSpot VM只有非常非常少量的功能没有在OpenJDK里，那部分在Oracle内部的代码库里。这些私有部分都不涉及JVM的核心功能。所以说，Oracle/Sun JDK与OpenJDK其实使用的是同一个代码库。
 ![](/uploads/jvm/3ad66b5c-2587-3cc6-b23e-bfa0d2b7da30.png)
 
-### 虚拟机
+### 虚拟机介绍
 
 * JDK 1.0 对应的 SUN Classic VM 与Exact VM 
 * 1997年收购LongView Technoloiges 或得HotSpot VM 
@@ -47,6 +47,8 @@ tags: [jvm]
 * 64位更高性能
 
 ### 特别说明
+![](/uploads/jvm/c8ea15ce36d3d539811b19e83a87e950352ab0f2.jpg)
+
 > 首先，不是所有JVM都采用编译器和解释器并存的架构，但主流商用虚拟机，都同时包含这两部分。
 
 > JIT编译器，英文写作Just-In-Time Compiler，中文意思是即时编译器。
@@ -59,7 +61,7 @@ tags: [jvm]
 
 
 
-###  案例：编译JDK
+###  案例：编译JDK(Open JDK)
 
 - [x] jvm 是C++写的。 
 - [x] java的编译器是java写的。
@@ -147,9 +149,9 @@ tags: [jvm]
 
 * 程序计数器
 
-> 线程私有，字节码解释器工作时就是通过改变这个计数器的值来取吓一跳需要执行的字节码分支,循环，跳转，异常处理，线程恢复都是依赖这个，在虚拟机规范中没有规定任何Outofmemoryerror
+> 线程私有，字节码解释器工作时就是通过改变这个计数器的值来取下一条需要执行的字节码。分支,循环，跳转，异常处理，线程恢复都是依赖这个，在虚拟机规范中没有规定任何Outofmemoryerror
 
-* java (虚拟机)栈
+* java (虚拟机)栈(Stack)
 
 > 线程私有，生命周期与线程同步，每个方法执行时，都会创建一个栈帧（Stack-Frame）,
 用于存储局部变量表，操作数栈，动态链接，方法出口等，每一个方法从调用到执行完成的过程就是一个栈帧在虚拟机中入栈到出栈的过程
@@ -157,25 +159,45 @@ tags: [jvm]
     1. 如果线程请求的栈深度大于虚拟机所允许的深度，将抛出StrackOverFlowError,现在大部分虚拟机允许动态扩展
     2. 如果扩展时，得不到足够的内存，会抛出OutOfMemoryError 
 
-* 本地方法栈
+* 本地方法栈(Stack)
 
-> 同Java虚拟机栈类似，只不过这是为Native方法服务的，有的虚拟机会将Java 虚拟机栈
-与本地方法栈合二为一
-
-* java堆
+> 同Java虚拟机栈类似，只不过这是为Native方法服务的，有的虚拟机会将Java 虚拟机栈与本地方法栈合二为一
+    
+* java堆（Heap）
 
 > 线程共享区域，同时可以分配出多个线程私有化的分配缓冲区。是Java虚拟机管理的内存中最大的一块区域，在虚拟机启动时创建，此内存区域的唯一目的就是存放实例(随着技术成熟,如栈上分配，标量替换优化技术，所有对象都分配在堆上也不那么绝对)
 
 > java堆是垃圾收集器管理的主要区域，称为GC堆，（可记忆为 垃圾堆，垃圾回收堆内存）
 
-> 可细分为
+> 堆可细分为
     * 新生代
     * 老年代
 
-> 再细分为
+> 新生代再细分为
     * Eden空间
     * From Survivor 空间
     * To Surivivor 空间
+
+![](/uploads/jvm/1018541-20170308200940484-1226739905.jpg)
+
+* 有关新生代的JVM参数
+
+    * -XX:NewSize和-XX:MaxNewSize
+
+    用于设置年轻代的大小，建议设为整个堆大小的1/3或者1/4,两个值设为一样大。
+
+    * -XX:SurvivorRatio
+
+    用于设置Eden和其中一个Survivor的比值，这个值也比较重要。
+
+    * -XX:+PrintTenuringDistribution
+
+    这个参数用于显示每次Minor GC时Survivor区中各个年龄段的对象的大小。
+
+    * -XX:InitialTenuringThreshol和-XX:MaxTenuringThreshold
+
+    用于设置晋升到老年代的对象年龄的最小值和最大值，每个对象在坚持过一次Minor GC之后，年龄就加1。
+
 
 > 'java 虚拟机规范' 中，Java堆 可以在物理机上不连续的内存空间，在实现时，既可以固定大小，也可以扩展，当前主流的虚拟机都是按照可扩展实现的（通过 -Xmx 和-Xms控制）。 如果堆内存无法完成实例分配，并且无法扩展，抛出OutOfMemoryError
 
@@ -185,7 +207,7 @@ tags: [jvm]
 
 > 运算时常量池，是方法区的一部分，存放生成的各种字面量
 
-> 另：“直接内存” 并不是虚拟机运算时数据区的一部分，也不是java虚拟机规范的定义区域，在JDK 1.4 新加入的NIO，引入了基于通道（Chanel）与缓冲区（Buffer） 它可以直接使用Native 函数库直接分配堆外内存，然后通过一个存储在Java堆中DirectByteBuffer对象作为这块内存的引用进行操作，避免了Java队和Native堆来回复制数据的，它的大小也不受Java堆大小的限制
+> 另：“直接内存” 并不是虚拟机运算时数据区的一部分，也不是java虚拟机规范的定义区域，在JDK 1.4 新加入的NIO，引入了基于通道（Chanel）与缓冲区（Buffer） 它可以直接使用Native 函数库直接分配**堆外内存**，然后通过一个存储在Java堆中DirectByteBuffer对象作为这块内存的引用进行操作，避免了Java堆和Native堆来回复制数据的，它的大小**不受Java堆大小的限制**
 
 ### HotSpot 虚拟机对象探秘
 
@@ -209,40 +231,74 @@ tags: [jvm]
     
     ![](/uploads/jvm/6631240389027564366.png)
 
-### 案例：OOM 情况
-> OOM (outofmemoryerror 内存溢出)，同时要注意 内存泄漏（内存无法被回收）与内存溢出（对象太多，撑爆了）
+### 案例1：对象分配及回收时GC日志
 
-* java堆内存溢出 -Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError  （-Xms20m -Xmx20m 堆内存的最大值与最小值设置为20M）
+> -XX:+HeapDumpOnOutOfMemoryError  (当出现OOM时，保存堆转存文件)
 
-* 虚拟机栈和本地方法栈内存溢出  -Xss128k (将栈的内存容量设置为128k)
+> -XX:HeapDumpPath=/opt/imhistory/heapdump.hprof (可以指定生成的堆转存文件)
 
-* 方法区内存溢出 -XX:PermSize=10M -XX:MaxPermSize=10M  （将显著方法去的大小）
+> -XX:+PrintGCDetails  打印GC 详细日志
 
-    关于永久代（Permanent Generation ）的替代者：元空间（Metaspace）的信息。我也会比较在执行JAVA 程序时HotSpot 1.7 和 HotSpot 1.8 (b75)的运行行为
+> -verbose:class (打印加载的类信息)
+
+> -Xms20m -Xmx20m 
+
+> -Xss128k
+
+> -XX:PermSize=10M -XX:MaxPermSize=10M (方法区/永久代，需要JVM支持 1.6以下版本都支持)
+
+> -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M  (元空间，要JVM支持，1.7以上)
+
+> -XX:+PrintGCDateStamps 输出GC的时间戳（以日期的形式，如 2013-05-04T21:53:59.234+0800）
+
+> -Xloggc:../logs/gc.log 日志文件的输出路径
+
+
+### 案例2：OOM 情况
+> OOM (outofmemoryerror 内存溢出) 注意: 内存泄漏（内存无法被回收）/ 内存溢出（对象太多，撑爆了）
+
+* java堆(heap)内存溢出 -Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError  (-Xms20m -Xmx20m 堆内存的最大值与最小值设置为20M)
+    
+
+* 虚拟机栈和本地方法栈(stack)内存溢出  -Xss128k (将栈的内存容量设置为128k)
+
+* 方法区(PermGen)内存溢出 -XX:PermSize=10M -XX:MaxPermSize=10M  (将显著方法去的大小)
+    > 运行时常量,必须要在jre <=1.6（运行时常量存放永久代）的情况
+    
 
 * 本地直接溢出 
+
+* 关于永久代（Permanent Generation ）的替代者：元空间（Metaspace）的信息
+
+    * java8的时候去除PermGen，将其中的方法区移到non-heap中的Metaspace
+    * Metaspace与PermGen之间最大的区别在于：Metaspace并不在虚拟机中，而是使用本地内存。
+    * -XX:MetaspaceSize，初始空间大小，达到该值就会触发垃圾收集进行类型卸载，同时GC会对该值进行调整：如果释放了大量的空间，就适当降低该值；如果释放了很少的空间，那么在不超过MaxMetaspaceSize时，适当提高该值
+    * -XX:MaxMetaspaceSize，最大空间，默认是没有限制的。
+    * 将常量池从PermGen剥离到heap中，将元数据从PermGen剥离到Metaspace
+
+
 
 ## 垃圾收集器与内存分配策略
 
 ### 判断死亡
 
 * 引用计数算法
-> 定义：定义一个计数器，在引用成功时+1，失败时-1，任何时候 计数器为0的时候，表示对象不能再使用
+    > 定义：定义一个计数器，在引用成功时+1，失败时-1，任何时候 计数器为0的时候，表示对象不能再使用
 
-> 效率很高的算法，但是主流的java虚拟机却没有使用，因为这种算法不能处理之间相互引用
+    > 效率很高的算法，但是主流的java虚拟机却没有使用，因为这种算法不能处理之间相互引用
 
 * 可达性分析算法
 
-> 通过一系列 “GC Roots” 做为起始点，从这些节点往下搜索，搜索所走过的路径叫 引用链，当一个对象到GC Roots没有任何引用链，则该对象不可用
+    > 通过一系列 “GC Roots” 做为起始点，从这些节点往下搜索，搜索所走过的路径叫 引用链，当一个对象到GC Roots没有任何引用链，则该对象不可用
 
-> 可作为GC Roots 的对象包括：
-    1. 虚拟机栈中引用的对象
-    2. 本地方法栈中JNI引用的对象
-    3. 方法区中静态属性引用的对象
-    4. 方法区中常量的引用对象
+    > 可作为GC Roots 的对象包括：
+        1. 虚拟机栈中引用的对象
+        2. 本地方法栈中JNI引用的对象
+        3. 方法区中静态属性引用的对象
+        4. 方法区中常量的引用对象
 
 * 引用级别
-> JDK 1.2之后，引用进行了扩充，分为
+    > JDK 1.2之后，引用进行了扩充，分为
     1. 强引用
     2. 软引用
     3. 弱引用
@@ -250,12 +306,12 @@ tags: [jvm]
 
 
 * 回收方法区
-> 永久代的垃圾收集主要收集废弃常量，与无用的类，判断一个废弃常量相对容易，判断一个无用的类需满足
+    > 永久代的垃圾收集主要收集废弃常量，与无用的类，判断一个废弃常量相对容易，判断一个无用的类需满足
     1. 该类所有的实例都已回收，
     2. 加载该类的ClassLoader 已经回收
     3. 该类对应的java.lang.Class 对象没有被任何地方引用
 
-> 在大量拥有反射，动态代理，CGLib 等byteCode框架时，都需要虚拟机具备类卸载功能，以保障永久代不会被溢出
+    > 在大量拥有反射，动态代理，CGLib 等byteCode框架时，都需要虚拟机具备类卸载功能，以保障永久代不会被溢出
 
 ### 垃圾收集算法
 * 标记-清除算法 （mark-sweep）
@@ -276,8 +332,9 @@ tags: [jvm]
  
 ### 垃圾回收实现(HotSpot 实现)
 
-> 要实现垃圾回收，第一个问题是要判断 对象是否已经死亡，判断依据前文已经说明，可使用可达性分析，但是可达性分析的 GC Roots 节点 在大的应用程序中，是很多的（现在很多程序光方法区就数百M）另外还有一个文件，就是执行GC时，程序必然要出现一个现象，叫stop the word ,而且无法避免
+> 要实现垃圾回收，第一个问题是要判断 对象是否已经死亡，判断依据前文已经说明，可使用可达性分析，但是可达性分析的 GC Roots 节点 在大的应用程序中，是很多的（现在很多程序光方法区就数百M）另外还有一个文件，就是执行GC时，程序必然要出现一个现象，叫stop the word ,而且**无法避免**
 > hotspot 采用 OopMap的数据结构来确定哪些被引用，不用通篇扫描GC Roots ，在OopMap的协助下，在SafePoint时执行GC，
+
 
 ### 垃圾收集器详解
 
@@ -361,7 +418,7 @@ tags: [jvm]
 
 * 空间分配担保
 
-### 案例1：远程服务器连接 Java VisualVM
+### 案例：远程服务器连接 Java VisualVM
 1. VisualVM 的插件地址已经更改
     > 根据版本选择 https://visualvm.github.io/pluginscenters.html
 
@@ -407,7 +464,6 @@ tags: [jvm]
     # 缺点在于需要改动启动的服务
     ```
 
-### 案例2：对象分配及回收时GC日志
 
 ## 虚拟机性能监视与故障处理工具
 
@@ -422,7 +478,25 @@ tags: [jvm]
     ```
 
 * jstat:虚拟机统计工具
+
 * jinfo：java配置信息工具
+    > 它能通过-flag选项动态修改指定的Java进程中的某些JVM flag的值,虽然这样的flag数量有限
+    * 可先通过jps 查看到进程ID
+    
+    ```
+    # 查看那些可以动态修改
+    java -XX:+PrintFlagsFinal -version|grep manageable 
+    # 查看当前有哪些进程
+    jps
+    # 动态修改参数
+    jinfo -flag +PrintGCDetails 12278
+    jinfo -flag +PrintGC 12278
+    # 关闭动态参数
+    jinfo -flag -PrintGCDetails 12278
+    jinfo -flag -PrintGC 12278
+    ```
+
+
 * jmap：内存映射工具
 * jhat:虚拟机堆转存储快照
 * jstack:堆栈跟踪工具
@@ -432,9 +506,14 @@ tags: [jvm]
 
 * jconsole:java监控与管理工具
 * visualvm:多合一故障处理
+* eclipse MAT 第3方工具
 
 ### 案例：通过工具分析与调优
-> 后续补充
+
+* GC 日志阅读
+* visualvm 分析正在进行的jvm 
+* visualvm 分析堆转存文件
+
 
 ## Class 文件结构
 
