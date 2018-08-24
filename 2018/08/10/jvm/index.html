@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://rtry.xyz/uploads/jvm/20180509131928506189.png">
 <meta property="og:image" content="http://rtry.xyz/uploads/jvm/144324_BSaw_26712.jpg">
 <meta property="og:image" content="http://rtry.xyz/uploads/jvm/921e8b5310d910ac78a627d207bee2f7.png">
-<meta property="og:updated_time" content="2018-08-22T06:59:38.710Z">
+<meta property="og:updated_time" content="2018-08-24T09:48:55.664Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM虚拟机笔记">
 <meta name="twitter:description" content="Java概述java技术体系 SUN 官方定义的JAVA技术体系包含：  java 程序语言设计 java vm (各硬件平台) class 文件格式 第3方类库（商业机构/开源社区）    通常把 java程序设计语言，java虚拟机，java API统称为JDK   把 javaSE API 子集 和java虚拟机 统称为JRE  java 发展史重大事件 1991年4月，James Gosl">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-08-22T14:59:38+08:00">
-                2018-08-22
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-24T17:48:55+08:00">
+                2018-08-24
               </time>
             
           </span>
@@ -671,15 +671,13 @@
 <blockquote>
 <p>JDK 1.2之后，引用进行了扩充，分为</p>
 <ol>
-<li>强引用</li>
-<li>软引用</li>
-<li>弱引用</li>
-<li>虚引用</li>
+<li>强引用<br>Object obj = new Object();</li>
+<li>软引用<br>SoftReference来实现</li>
+<li>弱引用<br>WeakReference来实现    </li>
+<li>虚引用<br>PhantomReference 来实现</li>
 </ol>
 </blockquote>
 </li>
-</ul>
-<ul>
 <li><p>回收方法区</p>
 <blockquote>
 <p>永久代的垃圾收集主要收集废弃常量，与无用的类，判断一个废弃常量相对容易，判断一个无用的类需满足</p>
@@ -892,12 +890,41 @@
 <li>visualvm:多合一故障处理</li>
 <li>eclipse MAT 第3方工具</li>
 </ul>
-<h3 id="案例：通过工具分析与调优"><a href="#案例：通过工具分析与调优" class="headerlink" title="案例：通过工具分析与调优"></a>案例：通过工具分析与调优</h3><ul>
-<li>GC 日志阅读</li>
-<li>visualvm 分析正在进行的jvm </li>
-<li>visualvm 分析堆转存文件</li>
+<h3 id="案例1：通过工具分析与调优"><a href="#案例1：通过工具分析与调优" class="headerlink" title="案例1：通过工具分析与调优"></a>案例1：通过工具分析与调优</h3><ul>
+<li><p>GC 日志阅读</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># -XX:+PrintGCDetails -XX:+PrintGCDateStamps</span><br><span class="line"># 下面是一条GC日志</span><br><span class="line">2018-08-23T10:33:13.006+0800: [GC (Allocation Failure) [PSYoungGen: 5624K-&gt;480K(6144K)] 5624K-&gt;5321K(19968K), 0.0268830 secs] [Times: user=0.00 sys=0.00, real=0.02 secs] </span><br><span class="line"></span><br><span class="line"># 解读</span><br><span class="line">  2018-08-23T10:33:13.006+0800（发生时间）: [GC (Allocation Failure)（gc的类型，发生的原因） [PSYoungGen（年轻代使用收集器）: 5624K（回收前大小）-&gt;480K（年轻代回收后）(6144K（年轻代总大小）)] 5624K-&gt;5321K(19968K), 0.0268830 secs] [Times: user=0.00（用户态消耗CPU时间） sys=0.00（内核态消耗CPU时间）, real=0.02（从开始到结束的墙钟时间） secs] </span><br><span class="line"># 多核的话CPU时间会重叠，墙钟时间包括非CPU（如IO）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>visualvm 分析正在进行的jvm </p>
+</li>
+<li><p>visualvm 分析堆转存文件</p>
+</li>
+<li><p>高性能硬件上程序部署策略</p>
+<blockquote>
+<p>情况：文档查看类站，单机，性能高，堆内存设置大，单Full GC 时间很长，大对象直接进入老年代<br>处理：可采用在单机上实现逻辑集群，前加载一个负载均衡服务。将收集器改为CMS</p>
+</blockquote>
+</li>
+<li>集群间同步<blockquote>
+<p>情况：JBOSSCache 缺陷导致内存溢出，无堆转存文件。<br>处理：</p>
+</blockquote>
+</li>
+<li>堆外内存溢出<blockquote>
+<p>情况：普通pc机，由于设置过大的堆内存，使用了CometD 框架，存在大量NIO操作，Direct Memory 不够导致<br>处理：减少点堆内存设置</p>
+</blockquote>
+</li>
+<li>外部系统访问等待<blockquote>
+<p>情况：普通服务器，服务情况正常，宿主服务器CPU消耗异常，Runtime.getRuntime().exec() 频繁调用<br>处理：去掉shell,改用java api等获取数据</p>
+</blockquote>
+</li>
+<li>服务器JVM进程崩溃<blockquote>
+<p>情况：调用另外系统，响应时间过长，异步调用，大量调用，产生大量等待的Socket<br>处理：可改为消息队列</p>
+</blockquote>
+</li>
+<li>不恰当数据结构占用过大<blockquote>
+<p>情况：一个80M的文件到内存中形成一个100万的HashMap&lt;Long,Long&gt;<br>处理：改进数据结构</p>
+</blockquote>
+</li>
 </ul>
-<h2 id="Class-文件结构"><a href="#Class-文件结构" class="headerlink" title="Class 文件结构"></a>Class 文件结构</h2><ul>
+<h3 id="案例2：调优Eclipse"><a href="#案例2：调优Eclipse" class="headerlink" title="案例2：调优Eclipse"></a>案例2：调优Eclipse</h3><h2 id="Class-文件结构"><a href="#Class-文件结构" class="headerlink" title="Class 文件结构"></a>Class 文件结构</h2><ul>
 <li>Byte与bit</li>
 </ul>
 <blockquote>
@@ -1022,13 +1049,16 @@
 </blockquote>
 <blockquote>
 <p>可以通过以下途径获取</p>
-<pre><code>* 从zip包读取，日后的jar，ear,war 等
-* 从网络获取，applet
-* 运行时计算生成，动态代理，
-* 由其他文件生成，jsp
-* 数据库读取
+</blockquote>
+<pre><code>* 从zip包读取       如 jar，ear,war 等
+* 从网络获取        如 Applet
+* 运行时计算生成    如 动态代理
+* 由其他文件生成    如 jsp 页面
+* 数据库读取        如 SAP NetWeaver
 * ...
-</code></pre></blockquote>
+</code></pre><blockquote>
+<p>开发人员可以通过自定义的类加载器去控制类字节流的获取方式（重写一个类加载器的loadClass()方法）<br>数组本身不通过类加载器加载，但是数组中元素的是需要靠类加载器加载的</p>
+</blockquote>
 <ul>
 <li>验证</li>
 </ul>
@@ -1049,7 +1079,7 @@
 <li>解析</li>
 </ul>
 <blockquote>
-<p>是虚拟机将常量池内的符号引用替换为直接引用的过程，</p>
+<p>是虚拟机将常量池内的符号引用替换为直接引用的过程</p>
 <pre><code>* 类或接口接卸
 * 字段解析
 * 类方法解析
@@ -1068,19 +1098,16 @@
 </blockquote>
 </li>
 </ul>
-<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
-<li>类与类加载器</li>
-</ul>
-<blockquote>
+<h3 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h3><blockquote>
 <p>通过一个类的全限定名来获取此类的二进制字节流，放到Java虚拟机外部实现，实现这个动作的代码模块称为 “类加载器”</p>
 </blockquote>
 <blockquote>
-<p>对于任意一个类，都需要由它的类加载器和这个类本身一同确定其在java虚拟机中的唯一性</p>
+<p>对于任意一个类，都需要由<strong>它的类加载器</strong>和<strong>这个类本身</strong>一同确定其在java虚拟机中的唯一性</p>
 </blockquote>
-<ul>
-<li>双亲委派模型</li>
-</ul>
 <blockquote>
+<p>从虚拟机的角度讲，加载器分为2类，一种是启动加载器，由虚拟机自己实现(C++，不同虚拟机不同)，是虚拟机的一部分，另外一个是其他所有加载器，由java语言实现，独立于虚拟机外部，并且全部继承ClassLoader</p>
+</blockquote>
+<h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><blockquote>
 <p>定义： 如果一个类加载器收到类加载请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，没一层次的类加载器都是如此，因此所有的类加载器请求最终都应该传送到顶层的启动加载器中，只有当父级加载器反馈无法完成加载时(搜索范围内没有找到所需要的类)。子类加载器才会直接加载</p>
 </blockquote>
 <p><img src="/uploads/jvm/921e8b5310d910ac78a627d207bee2f7.png" alt=""></p>
@@ -1088,15 +1115,25 @@
 2. 扩展类加载器：（Extension ClassLoader）,加载java_home\lib\ext
 3. 应用程序类加载器：（Aapplication ClassLoader）,负责加载用户类路径（classpath）上的
 </code></pre><blockquote>
-<p>自定义类加载器 后续补充</p>
+<p>自定义类加载器  （继承 java.lang.ClassLoader 类即可，然后重写loadClass方法，如果本身不能处理。请给它的父类。而它的父类就是sun.misc.Launcher$AppClassLoader）</p>
 </blockquote>
-<ul>
-<li>破坏双亲委派模型<blockquote>
-<p>osgi </p>
+<h3 id="破坏双亲委派模型"><a href="#破坏双亲委派模型" class="headerlink" title="破坏双亲委派模型"></a>破坏双亲委派模型</h3><blockquote>
+<p>父类加载器请求子类加载器完成加载动作（java中所有涉及SPI的加载动作基本如此，如JNDI,JDBC,JCE,JAXB 等）</p>
 </blockquote>
-</li>
-</ul>
-<h2 id="虚拟机字节码执行引擎"><a href="#虚拟机字节码执行引擎" class="headerlink" title="虚拟机字节码执行引擎"></a>虚拟机字节码执行引擎</h2><h3 id="运行时栈帧结构"><a href="#运行时栈帧结构" class="headerlink" title="运行时栈帧结构"></a>运行时栈帧结构</h3><ul>
+<blockquote>
+<p>JNID (java命名和目录接口，是一组在java应用中访问命名和目录的接口)</p>
+<pre><code>* 解耦：通过注册、查找JNDI服务，可以直接使用服务，而无需关心服务提供者，这样程序不至于与访问的资源耦合！
+* 在J2EE容器（如weblogic、websphere、jboss等）中使用
+</code></pre></blockquote>
+<blockquote>
+<p>SPI的全名为Service Provider Interface</p>
+<pre><code>* 当服务的提供者，提供了服务接口的一种实现之后，在jar包的META-INF/services/目录里同时创建一个以服务接口命名的文件。该文件里就是实现该服务接口的具体实现类。而当外部程序装配这个模块的时候，就能通过该jar包META-INF/services/里的配置文件找到具体的实现类名，并装载实例化，完成模块的注入。    
+* java的spi运行流程是运用java.util.ServiceLoader这个类的load方法去在src/META-INF/services/寻找对应的全路径接口名称的文件，然后在文件中找到对应的实现方法并注入实现，然后你可以运用了
+</code></pre></blockquote>
+<blockquote>
+<p>对于动态性的追求（代码热替换HotSwap，板块热部署HotDeployment）典型的 如 osgi </p>
+</blockquote>
+<h3 id="案例：动态实现远程执行功能"><a href="#案例：动态实现远程执行功能" class="headerlink" title="案例：动态实现远程执行功能"></a>案例：动态实现远程执行功能</h3><h2 id="虚拟机字节码执行引擎"><a href="#虚拟机字节码执行引擎" class="headerlink" title="虚拟机字节码执行引擎"></a>虚拟机字节码执行引擎</h2><h3 id="运行时栈帧结构"><a href="#运行时栈帧结构" class="headerlink" title="运行时栈帧结构"></a>运行时栈帧结构</h3><ul>
 <li>局部变量表</li>
 <li>操作数栈</li>
 <li>动态连接</li>
@@ -1113,13 +1150,7 @@
 <li>基于栈指令集与基于寄存器的指令集</li>
 <li>基于栈的解释器执行过程</li>
 </ul>
-<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><ul>
-<li>tomcat：正统的类加载器架构</li>
-<li>osgi:灵活的类加载器架构</li>
-<li>字节码生成技术与动态代理的实现</li>
-<li>retrotranslator:跨越jdk版本</li>
-</ul>
-<h3 id="手动实现远程调试功能"><a href="#手动实现远程调试功能" class="headerlink" title="手动实现远程调试功能"></a>手动实现远程调试功能</h3><h2 id="程序编译与代码优化"><a href="#程序编译与代码优化" class="headerlink" title="程序编译与代码优化"></a>程序编译与代码优化</h2><h3 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h3><ul>
+<h2 id="程序编译与代码优化"><a href="#程序编译与代码优化" class="headerlink" title="程序编译与代码优化"></a>程序编译与代码优化</h2><h3 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h3><ul>
 <li>javac 编译器</li>
 <li>java 语法糖</li>
 <li>实战：插入式注解处理器</li>
@@ -1320,7 +1351,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java概述"><span class="nav-number">1.</span> <span class="nav-text">Java概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java技术体系"><span class="nav-number">1.1.</span> <span class="nav-text">java技术体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-发展史重大事件"><span class="nav-number">1.2.</span> <span class="nav-text">java 发展史重大事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机介绍"><span class="nav-number">1.3.</span> <span class="nav-text">虚拟机介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#待实现功能"><span class="nav-number">1.4.</span> <span class="nav-text">待实现功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特别说明"><span class="nav-number">1.5.</span> <span class="nav-text">特别说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：编译JDK-Open-JDK"><span class="nav-number">1.6.</span> <span class="nav-text">案例：编译JDK(Open JDK)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动内存管理机制"><span class="nav-number">2.</span> <span class="nav-text">自动内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">2.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HotSpot-虚拟机对象探秘"><span class="nav-number">2.2.</span> <span class="nav-text">HotSpot 虚拟机对象探秘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例1：对象分配及回收时GC日志"><span class="nav-number">2.3.</span> <span class="nav-text">案例1：对象分配及回收时GC日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例2：OOM-情况"><span class="nav-number">2.4.</span> <span class="nav-text">案例2：OOM 情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集器与内存分配策略"><span class="nav-number">3.</span> <span class="nav-text">垃圾收集器与内存分配策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断死亡"><span class="nav-number">3.1.</span> <span class="nav-text">判断死亡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">3.2.</span> <span class="nav-text">垃圾收集算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收实现-HotSpot-实现"><span class="nav-number">3.3.</span> <span class="nav-text">垃圾回收实现(HotSpot 实现)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器详解"><span class="nav-number">3.4.</span> <span class="nav-text">垃圾收集器详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收策略"><span class="nav-number">3.5.</span> <span class="nav-text">内存分配与回收策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：远程服务器连接-Java-VisualVM"><span class="nav-number">3.6.</span> <span class="nav-text">案例：远程服务器连接 Java VisualVM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机性能监视与故障处理工具"><span class="nav-number">4.</span> <span class="nav-text">虚拟机性能监视与故障处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK命令行工具"><span class="nav-number">4.1.</span> <span class="nav-text">JDK命令行工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视化工具"><span class="nav-number">4.2.</span> <span class="nav-text">可视化工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：通过工具分析与调优"><span class="nav-number">4.3.</span> <span class="nav-text">案例：通过工具分析与调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-文件结构"><span class="nav-number">5.</span> <span class="nav-text">Class 文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#魔数与class文件版本"><span class="nav-number">5.1.</span> <span class="nav-text">魔数与class文件版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构详情"><span class="nav-number">5.2.</span> <span class="nav-text">结构详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节码指令简介"><span class="nav-number">5.3.</span> <span class="nav-text">字节码指令简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">6.1.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机字节码执行引擎"><span class="nav-number">7.</span> <span class="nav-text">虚拟机字节码执行引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时栈帧结构"><span class="nav-number">7.1.</span> <span class="nav-text">运行时栈帧结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法调用"><span class="nav-number">7.2.</span> <span class="nav-text">方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于栈字节码解释执行请求"><span class="nav-number">7.3.</span> <span class="nav-text">基于栈字节码解释执行请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例"><span class="nav-number">7.4.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动实现远程调试功能"><span class="nav-number">7.5.</span> <span class="nav-text">手动实现远程调试功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序编译与代码优化"><span class="nav-number">8.</span> <span class="nav-text">程序编译与代码优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译器优化"><span class="nav-number">8.1.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行期优化"><span class="nav-number">8.2.</span> <span class="nav-text">运行期优化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java概述"><span class="nav-number">1.</span> <span class="nav-text">Java概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java技术体系"><span class="nav-number">1.1.</span> <span class="nav-text">java技术体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-发展史重大事件"><span class="nav-number">1.2.</span> <span class="nav-text">java 发展史重大事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机介绍"><span class="nav-number">1.3.</span> <span class="nav-text">虚拟机介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#待实现功能"><span class="nav-number">1.4.</span> <span class="nav-text">待实现功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特别说明"><span class="nav-number">1.5.</span> <span class="nav-text">特别说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：编译JDK-Open-JDK"><span class="nav-number">1.6.</span> <span class="nav-text">案例：编译JDK(Open JDK)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动内存管理机制"><span class="nav-number">2.</span> <span class="nav-text">自动内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">2.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HotSpot-虚拟机对象探秘"><span class="nav-number">2.2.</span> <span class="nav-text">HotSpot 虚拟机对象探秘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例1：对象分配及回收时GC日志"><span class="nav-number">2.3.</span> <span class="nav-text">案例1：对象分配及回收时GC日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例2：OOM-情况"><span class="nav-number">2.4.</span> <span class="nav-text">案例2：OOM 情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集器与内存分配策略"><span class="nav-number">3.</span> <span class="nav-text">垃圾收集器与内存分配策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断死亡"><span class="nav-number">3.1.</span> <span class="nav-text">判断死亡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">3.2.</span> <span class="nav-text">垃圾收集算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收实现-HotSpot-实现"><span class="nav-number">3.3.</span> <span class="nav-text">垃圾回收实现(HotSpot 实现)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器详解"><span class="nav-number">3.4.</span> <span class="nav-text">垃圾收集器详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收策略"><span class="nav-number">3.5.</span> <span class="nav-text">内存分配与回收策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：远程服务器连接-Java-VisualVM"><span class="nav-number">3.6.</span> <span class="nav-text">案例：远程服务器连接 Java VisualVM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机性能监视与故障处理工具"><span class="nav-number">4.</span> <span class="nav-text">虚拟机性能监视与故障处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK命令行工具"><span class="nav-number">4.1.</span> <span class="nav-text">JDK命令行工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视化工具"><span class="nav-number">4.2.</span> <span class="nav-text">可视化工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例1：通过工具分析与调优"><span class="nav-number">4.3.</span> <span class="nav-text">案例1：通过工具分析与调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例2：调优Eclipse"><span class="nav-number">4.4.</span> <span class="nav-text">案例2：调优Eclipse</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-文件结构"><span class="nav-number">5.</span> <span class="nav-text">Class 文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#魔数与class文件版本"><span class="nav-number">5.1.</span> <span class="nav-text">魔数与class文件版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构详情"><span class="nav-number">5.2.</span> <span class="nav-text">结构详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节码指令简介"><span class="nav-number">5.3.</span> <span class="nav-text">字节码指令简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类与类加载器"><span class="nav-number">6.1.</span> <span class="nav-text">类与类加载器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派模型"><span class="nav-number">6.2.</span> <span class="nav-text">双亲委派模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#破坏双亲委派模型"><span class="nav-number">6.3.</span> <span class="nav-text">破坏双亲委派模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例：动态实现远程执行功能"><span class="nav-number">6.4.</span> <span class="nav-text">案例：动态实现远程执行功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机字节码执行引擎"><span class="nav-number">7.</span> <span class="nav-text">虚拟机字节码执行引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时栈帧结构"><span class="nav-number">7.1.</span> <span class="nav-text">运行时栈帧结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法调用"><span class="nav-number">7.2.</span> <span class="nav-text">方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于栈字节码解释执行请求"><span class="nav-number">7.3.</span> <span class="nav-text">基于栈字节码解释执行请求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序编译与代码优化"><span class="nav-number">8.</span> <span class="nav-text">程序编译与代码优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译器优化"><span class="nav-number">8.1.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行期优化"><span class="nav-number">8.2.</span> <span class="nav-text">运行期优化</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -94,18 +94,20 @@
 
 
 
-<meta name="description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+<meta name="description" content="简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 ‘约束’如何定义@Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @Target({ MET">
 <meta name="keywords" content="java,JSR303">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JSR303">
 <meta property="og:url" content="http://rtry.xyz/2017/11/12/JSR303/index.html">
 <meta property="og:site_name" content="Rtry&#39;s blog">
-<meta property="og:description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+<meta property="og:description" content="简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 ‘约束’如何定义@Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @Target({ MET">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-21T02:14:24.067Z">
+<meta property="og:image" content="http://rtry.xyz/uploads/jsr303/32fa828ba61ea8d36a654f399a0a304e251f5843.jpg">
+<meta property="og:updated_time" content="2018-08-24T09:35:05.603Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JSR303">
-<meta name="twitter:description" content="第一章 简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 第二章：’约束’如何定义2.1 @Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @">
+<meta name="twitter:description" content="简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 ‘约束’如何定义@Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @Target({ MET">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/jsr303/32fa828ba61ea8d36a654f399a0a304e251f5843.jpg">
 
 
 
@@ -318,8 +320,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-08-21T10:14:24+08:00">
-                2018-08-21
+              <time title="更新于" itemprop="dateModified" datetime="2018-08-24T17:35:05+08:00">
+                2018-08-24
               </time>
             
           </span>
@@ -374,8 +376,8 @@
       
 
       
-        <h2 id="第一章-简介"><a href="#第一章-简介" class="headerlink" title="第一章 简介"></a>第一章 简介</h2><p>JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析</p>
-<h2 id="第二章：’约束’如何定义"><a href="#第二章：’约束’如何定义" class="headerlink" title="第二章：’约束’如何定义"></a>第二章：’约束’如何定义</h2><h3 id="2-1-Constraint"><a href="#2-1-Constraint" class="headerlink" title="2.1 @Constraint"></a>2.1 @Constraint</h3><ol>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析</p>
+<h2 id="‘约束’如何定义"><a href="#‘约束’如何定义" class="headerlink" title="‘约束’如何定义"></a>‘约束’如何定义</h2><h3 id="Constraint"><a href="#Constraint" class="headerlink" title="@Constraint"></a>@Constraint</h3><ol>
 <li>所有验证注解的元注解</li>
 <li><p>方法</p>
 <pre><code>public Class&lt;? extends ConstraintValidator&lt;?, ?&gt;&gt;[] validatedBy();
@@ -393,7 +395,7 @@
     public @interface NotNull {
         ...
     }
-</code></pre><h3 id="2-2-‘每个约束’-必须定义的属性"><a href="#2-2-‘每个约束’-必须定义的属性" class="headerlink" title="2.2 ‘每个约束’ 必须定义的属性"></a>2.2 ‘每个约束’ 必须定义的属性</h3><ol>
+</code></pre><h3 id="‘每个约束’-必须定义的属性"><a href="#‘每个约束’-必须定义的属性" class="headerlink" title="‘每个约束’ 必须定义的属性"></a>‘每个约束’ 必须定义的属性</h3><ol>
 <li><p>message  –&gt; error msg 错误信息</p>
 <pre><code>String message() default &quot;{com.acme.constraint.MyConstraint.message}&quot;;
 </code></pre></li>
@@ -413,7 +415,7 @@ String name;
 <pre><code>Class&lt;? extends Payload&gt;[] payload() default {};
 </code></pre></li>
 </ol>
-<h3 id="2-3-接口-ConstraintValidator"><a href="#2-3-接口-ConstraintValidator" class="headerlink" title="2.3 接口 ConstraintValidator"></a>2.3 接口 ConstraintValidator</h3><blockquote>
+<h3 id="接口-ConstraintValidator"><a href="#接口-ConstraintValidator" class="headerlink" title="接口 ConstraintValidator"></a>接口 ConstraintValidator</h3><blockquote>
 <p>所有约束的实现逻辑需要继承的接口 </p>
 </blockquote>
 <pre><code>public interface ConstraintValidator&lt;A extends Annotation, T&gt; {
@@ -435,31 +437,41 @@ String name;
         return object != null;
     }
 }
-</code></pre><h3 id="2-4-接口-ConstraintValidatorContext"><a href="#2-4-接口-ConstraintValidatorContext" class="headerlink" title="2.4 接口 ConstraintValidatorContext"></a>2.4 接口 ConstraintValidatorContext</h3><blockquote>
+</code></pre><h3 id="接口-ConstraintValidatorContext"><a href="#接口-ConstraintValidatorContext" class="headerlink" title="接口 ConstraintValidatorContext"></a>接口 ConstraintValidatorContext</h3><blockquote>
 <p>该接口为 ‘isValid()方法’ 提供上下文信息 </p>
 </blockquote>
-<h3 id="2-5-ConstraintValidatorFactory"><a href="#2-5-ConstraintValidatorFactory" class="headerlink" title="2.5 ConstraintValidatorFactory"></a>2.5 ConstraintValidatorFactory</h3><blockquote>
+<h3 id="ConstraintValidatorFactory"><a href="#ConstraintValidatorFactory" class="headerlink" title="ConstraintValidatorFactory"></a>ConstraintValidatorFactory</h3><blockquote>
 <p>该接口用来生成具体的验证实现类工厂</p>
 </blockquote>
-<h2 id="第三章：JavaBean如何用注解来描述约定"><a href="#第三章：JavaBean如何用注解来描述约定" class="headerlink" title="第三章：JavaBean如何用注解来描述约定"></a>第三章：JavaBean如何用注解来描述约定</h2><ul>
+<h2 id="JavaBean如何用注解来描述约定"><a href="#JavaBean如何用注解来描述约定" class="headerlink" title="JavaBean如何用注解来描述约定"></a>JavaBean如何用注解来描述约定</h2><ul>
 <li>3.1 ‘约束’ 可以定义到接口及父类，实现类受影响</li>
 <li>3.2 ‘约束’ 可以定义到属性及方法上</li>
 <li>3.3 ‘约束’ 可以应用到 数组及集合上</li>
 </ul>
-<h2 id="第四章：编程中如何使用’约束’来验证JavaBean"><a href="#第四章：编程中如何使用’约束’来验证JavaBean" class="headerlink" title="第四章：编程中如何使用’约束’来验证JavaBean"></a>第四章：编程中如何使用’约束’来验证JavaBean</h2><p>例子：</p>
-<pre><code>ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-Validator validator = factory.getValidator();
-Student s = new Student();
-Set&lt;ConstraintViolation&lt;Object&gt;&gt; validateSet = validator.validate(s);
-</code></pre><h2 id="阅读中遇到的问题摘要"><a href="#阅读中遇到的问题摘要" class="headerlink" title="阅读中遇到的问题摘要"></a>阅读中遇到的问题摘要</h2><h3 id="Java-spi-技术规划"><a href="#Java-spi-技术规划" class="headerlink" title="Java spi 技术规划"></a>Java spi 技术规划</h3><ol>
-<li>javax.validation.spi.ValidationProvider 定义接口 ，在各大厂商进行不同实现时，各大厂商的jar包下 /META-INF/service/javax.validation.spi.ValidationProvider 的文件中，写上具体的实现</li>
-<li><p>在获取具体实现的时候，使用ServiceLoader.load 加载ServerLoader</p>
-<pre><code>ServiceLoader&lt;ValidationProvider&gt; loader = ServiceLoader.load( ValidationProvider.class, classloader );
-Iterator&lt;ValidationProvider&gt; providerIterator = loader.iterator();
-List&lt;ValidationProvider&lt;?&gt;&gt; validationProviderList = new ArrayList&lt;ValidationProvider&lt;?&gt;&gt;();
-</code></pre></li>
+<h2 id="编程中如何使用’约束’来验证JavaBean"><a href="#编程中如何使用’约束’来验证JavaBean" class="headerlink" title="编程中如何使用’约束’来验证JavaBean"></a>编程中如何使用’约束’来验证JavaBean</h2><ul>
+<li><p>例子：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ValidatorFactory factory = Validation.buildDefaultValidatorFactory();</span><br><span class="line">Validator validator = factory.getValidator();</span><br><span class="line">Student s = new Student();</span><br><span class="line">Set&lt;ConstraintViolation&lt;Object&gt;&gt; validateSet = validator.validate(s);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析</p>
+<ol>
+<li>当前所以的API 全是validation 提供的类，在普通开发者眼中，不知道具体的实现是什么，这就是面向接口编程</li>
+<li>Validation.buildDefaultValidatorFactory(); 创建一个验证工厂，是整个系统的入口，其实现内部细节如下<ol>
+<li>先找到通过java spi 实现接口的具体类 ValidationProvider –&gt; HibernateValidator</li>
+<li>通过对ValidationProvider.createGenericConfiguration(BootstrapState state);是面向接口的编程，其实现为，HibernateValidator. createGenericConfiguration() 然后将具体的配置对象ConfigurationImpl 返回给主流程中</li>
+<li>面向接口Configuration 进行调用buildValidatorFactory()方法，其实实现为由ConfigurationImpl. buildValidatorFactory() 完成了Factory 的具体实现</li>
 </ol>
-<h3 id="另1"><a href="#另1" class="headerlink" title="另1"></a>另1</h3><p>java.util.Collections.unmodifiableSet()方法的声明。</p>
+</li>
+<li>获取到ValidatorFactory 然后调用factory.getValidator();，获取具体的Validator—&gt; ValidatorImpl</li>
+<li>最后调用validator.validate()验证对象</li>
+</ol>
+</li>
+</ul>
+<h2 id="阅读中遇到的问题摘要"><a href="#阅读中遇到的问题摘要" class="headerlink" title="阅读中遇到的问题摘要"></a>阅读中遇到的问题摘要</h2><h3 id="Java-spi-技术规划"><a href="#Java-spi-技术规划" class="headerlink" title="Java spi 技术规划"></a>Java spi 技术规划</h3><ol>
+<li>javax.validation.spi.ValidationProvider 定义接口 ，在各大厂商进行不同实现时，各大厂商的jar包下 /META-INF/service/javax.validation.spi.ValidationProvider 的文件中，写上具体的实现</li>
+<li>在获取具体实现的时候，使用ServiceLoader.load 加载ServerLoader</li>
+</ol>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ServiceLoader&lt;ValidationProvider&gt; loader = ServiceLoader.load( ValidationProvider.class, classloader );</span><br><span class="line">Iterator&lt;ValidationProvider&gt; providerIterator = loader.iterator();</span><br><span class="line">List&lt;ValidationProvider&lt;?&gt;&gt; validationProviderList = new ArrayList&lt;ValidationProvider&lt;?&gt;&gt;();</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="另1"><a href="#另1" class="headerlink" title="另1"></a>另1</h3><p>java.util.Collections.unmodifiableSet()方法的声明。</p>
 <pre><code>public static &lt;T&gt; boolean addAll(Collection&lt;? super T&gt; c, T.. a)
 </code></pre><p>在方法调用返回指定set的不可修改视图。</p>
 <p>test</p>
@@ -545,6 +557,7 @@ public final class Void {
 }
 </code></pre><h3 id="枚举容器"><a href="#枚举容器" class="headerlink" title="枚举容器"></a>枚举容器</h3><p>EnumMap从名字我们可以看出这个Map是给枚举类用的。它的key为枚举元素，value自定义。在工作中我们也可以用其他的Map来实现我们关于枚举的需求，但是为什么要用这个EnumMap呢？因为它的性能高</p>
 <p>EnumSet这是一个用来操作Enum的集合，是一个抽象类，它有两个继承类：JumboEnumSet和RegularEnumSet。在使用的时候，需要制定枚举类型。它的特点也是速度非常快，为什么速度很快呢？因为每次add的时候，每个枚举值只占一个长整型的一位。</p>
+<p><img src="/uploads/jsr303/32fa828ba61ea8d36a654f399a0a304e251f5843.jpg" alt=""></p>
 
       
     </div>
@@ -743,7 +756,7 @@ public final class Void {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-简介"><span class="nav-number">1.</span> <span class="nav-text">第一章 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章：’约束’如何定义"><span class="nav-number">2.</span> <span class="nav-text">第二章：’约束’如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Constraint"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 @Constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-‘每个约束’-必须定义的属性"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ‘每个约束’ 必须定义的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-接口-ConstraintValidator"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 接口 ConstraintValidator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-接口-ConstraintValidatorContext"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 接口 ConstraintValidatorContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-ConstraintValidatorFactory"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 ConstraintValidatorFactory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章：JavaBean如何用注解来描述约定"><span class="nav-number">3.</span> <span class="nav-text">第三章：JavaBean如何用注解来描述约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章：编程中如何使用’约束’来验证JavaBean"><span class="nav-number">4.</span> <span class="nav-text">第四章：编程中如何使用’约束’来验证JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读中遇到的问题摘要"><span class="nav-number">5.</span> <span class="nav-text">阅读中遇到的问题摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-spi-技术规划"><span class="nav-number">5.1.</span> <span class="nav-text">Java spi 技术规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另1"><span class="nav-number">5.2.</span> <span class="nav-text">另1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另2"><span class="nav-number">5.3.</span> <span class="nav-text">另2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><span class="nav-number">5.4.</span> <span class="nav-text">另3 ResourceBundle 依据locale来读取properties文件，实现国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validation-api-文档结构"><span class="nav-number">5.5.</span> <span class="nav-text">validation-api 文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-Constructor-构造器类"><span class="nav-number">5.6.</span> <span class="nav-text">java.lang.reflect.Constructor  构造器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-jpa"><span class="nav-number">5.7.</span> <span class="nav-text">另 jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-java-lang-Void"><span class="nav-number">5.8.</span> <span class="nav-text">另 java.lang.Void</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举容器"><span class="nav-number">5.9.</span> <span class="nav-text">枚举容器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#‘约束’如何定义"><span class="nav-number">2.</span> <span class="nav-text">‘约束’如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Constraint"><span class="nav-number">2.1.</span> <span class="nav-text">@Constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘每个约束’-必须定义的属性"><span class="nav-number">2.2.</span> <span class="nav-text">‘每个约束’ 必须定义的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidator"><span class="nav-number">2.3.</span> <span class="nav-text">接口 ConstraintValidator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidatorContext"><span class="nav-number">2.4.</span> <span class="nav-text">接口 ConstraintValidatorContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConstraintValidatorFactory"><span class="nav-number">2.5.</span> <span class="nav-text">ConstraintValidatorFactory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaBean如何用注解来描述约定"><span class="nav-number">3.</span> <span class="nav-text">JavaBean如何用注解来描述约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程中如何使用’约束’来验证JavaBean"><span class="nav-number">4.</span> <span class="nav-text">编程中如何使用’约束’来验证JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读中遇到的问题摘要"><span class="nav-number">5.</span> <span class="nav-text">阅读中遇到的问题摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-spi-技术规划"><span class="nav-number">5.1.</span> <span class="nav-text">Java spi 技术规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另1"><span class="nav-number">5.2.</span> <span class="nav-text">另1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另2"><span class="nav-number">5.3.</span> <span class="nav-text">另2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><span class="nav-number">5.4.</span> <span class="nav-text">另3 ResourceBundle 依据locale来读取properties文件，实现国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validation-api-文档结构"><span class="nav-number">5.5.</span> <span class="nav-text">validation-api 文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-Constructor-构造器类"><span class="nav-number">5.6.</span> <span class="nav-text">java.lang.reflect.Constructor  构造器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-jpa"><span class="nav-number">5.7.</span> <span class="nav-text">另 jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-java-lang-Void"><span class="nav-number">5.8.</span> <span class="nav-text">另 java.lang.Void</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举容器"><span class="nav-number">5.9.</span> <span class="nav-text">枚举容器</span></a></li></ol></li></ol></div>
             
 
           </div>
