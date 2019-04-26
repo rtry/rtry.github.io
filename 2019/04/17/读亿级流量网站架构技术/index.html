@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="系统架构," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="一些设计原则高并发原则 （High Concurrency） 通常指：保证系统能够同时并行处理很多请求    响应时间 Response Time（系统对请求做出响应的时间） 吞吐量 Throughput （单位时间内处理的请求数量） QPS 每秒响应请求数 并发用户数    无状态  应用无状态（便于水平扩展）   拆分  系统拆分      按系统业务 按读写 AOP 模块维度 （web,Se">
+<meta name="keywords" content="系统架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读亿级流量网站架构技术">
+<meta property="og:url" content="http://rtry.xyz/2019/04/17/读亿级流量网站架构技术/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="一些设计原则高并发原则 （High Concurrency） 通常指：保证系统能够同时并行处理很多请求    响应时间 Response Time（系统对请求做出响应的时间） 吞吐量 Throughput （单位时间内处理的请求数量） QPS 每秒响应请求数 并发用户数    无状态  应用无状态（便于水平扩展）   拆分  系统拆分      按系统业务 按读写 AOP 模块维度 （web,Se">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-25T06:18:44.957Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读亿级流量网站架构技术">
+<meta name="twitter:description" content="一些设计原则高并发原则 （High Concurrency） 通常指：保证系统能够同时并行处理很多请求    响应时间 Response Time（系统对请求做出响应的时间） 吞吐量 Throughput （单位时间内处理的请求数量） QPS 每秒响应请求数 并发用户数    无状态  应用无状态（便于水平扩展）   拆分  系统拆分      按系统业务 按读写 AOP 模块维度 （web,Se">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2019/04/17/读亿级流量网站架构技术/"/>
+
+
+
+
+
+  <title>读亿级流量网站架构技术 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2019/04/17/读亿级流量网站架构技术/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">读亿级流量网站架构技术</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-17T00:00:00+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-25T14:18:44+08:00">
+                2019-04-25
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一些设计原则"><a href="#一些设计原则" class="headerlink" title="一些设计原则"></a>一些设计原则</h2><h3 id="高并发原则-（High-Concurrency）"><a href="#高并发原则-（High-Concurrency）" class="headerlink" title="高并发原则 （High Concurrency）"></a>高并发原则 （High Concurrency）</h3><blockquote>
+<p>通常指：保证系统能够同时并行处理很多请求</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>响应时间 Response Time（系统对请求做出响应的时间）</li>
+<li>吞吐量 Throughput （单位时间内处理的请求数量）</li>
+<li>QPS 每秒响应请求数</li>
+<li>并发用户数</li>
+</ul>
+</blockquote>
+<ol>
+<li><p>无状态</p>
+<blockquote>
+<p>应用无状态（便于水平扩展）</p>
+</blockquote>
+</li>
+<li><p>拆分</p>
+<blockquote>
+<p>系统拆分</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<ul>
+<li>按系统业务</li>
+<li>按读写</li>
+<li>AOP</li>
+<li>模块维度 （web,Service,DAO）</li>
+</ul>
+</blockquote>
+<ol>
+<li><p>服务化</p>
+<blockquote>
+<p>随着调用的增多，应该考虑服务化，与服务的自动发现与注册<br>SOA(Service-Oriented Architecture 面向服务编程 dubbo thrift)</p>
+</blockquote>
+</li>
+<li><p>消息队列</p>
+<blockquote>
+<p>用来解耦一些不需要同步调用的服务或者订阅一些自己系统关系的变化</p>
+</blockquote>
+</li>
+<li><p>数据闭环</p>
+<blockquote>
+<p>先通数据异构收集数据，再进行数据聚合，目的在于实现数据的自我控制，当其他系统出现问题时，不影响自己的系统</p>
+</blockquote>
+</li>
+<li><p>缓存银弹</p>
+<blockquote>
+<p>数据离客户越近越好</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>客户端&gt;游览器&gt;CDN缓存&gt;NGINX缓存&gt;应用缓存&gt;统一缓存</p>
+</blockquote>
+<ol>
+<li>并发化<blockquote>
+<p>对同时需要对多个其他系统进行依赖，可并行请求，减少等待时间</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="高可用原则-（High-Availability）"><a href="#高可用原则-（High-Availability）" class="headerlink" title="高可用原则 （High Availability）"></a>高可用原则 （High Availability）</h3><blockquote>
+<p>通常指：通过设计减少系统不能提供提供服务的时间</p>
+</blockquote>
+<ol>
+<li>降级<blockquote>
+<p>当服务器压力剧增时，根据实际业务及流量，对一些服务有策略的不处理或简单处理，从而保证主要服务的可用</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<ul>
+<li>配置开关集中化管理，通过推送机制把开关推送到各个应用</li>
+<li>可降低的多级服务</li>
+<li>业务降级，同步变异步等</li>
+</ul>
+</blockquote>
+<ol>
+<li>限流<blockquote>
+<p>防止恶意流量，恶意攻击，或者 正常流程超过系统峰值</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<ul>
+<li>恶意请求流量只访问到Cache   </li>
+<li>对于穿透到后端应用的流量可以考虑使用Nginx的limit 模块</li>
+<li>恶意IP可使用nginx deny 进行屏蔽</li>
+</ul>
+</blockquote>
+<ol>
+<li>切流程<blockquote>
+<p>在某机房，或者某台服务器挂了之后，需要将打在这台机器上的流量切换到其他正常的服务器上</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<ul>
+<li>DNS 切域名</li>
+<li>HTTP DNS ,主要在APP场景下，在客户端分配好流量入口，绕过运营商LocalDNS ,并实现精准的流量调度</li>
+<li>LVS/HaProxy</li>
+<li>Nginx</li>
+</ul>
+</blockquote>
+<ol>
+<li>可回滚<blockquote>
+<p>包括代码，数据存储的回滚</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="业务设计原理"><a href="#业务设计原理" class="headerlink" title="业务设计原理"></a>业务设计原理</h3><ol>
+<li>防重设计</li>
+<li>幂等设计</li>
+<li>流程可定义</li>
+<li>状态与状态机</li>
+<li>后台系统操作可反馈</li>
+<li>后台系统审核话</li>
+<li>文档与备注</li>
+<li>备份</li>
+</ol>
+<blockquote>
+<p>缓存：提高系统访问速度增大系统处理能力，抗高并发流量银弹；</p>
+</blockquote>
+<blockquote>
+<p>降级：当服务出现问题，或者影响到核心服务时，降级处理，如直接屏蔽，高峰过后再打开；</p>
+</blockquote>
+<blockquote>
+<p>限流：不能通过降级来处理，比如核心业务，只能通过限流，挡掉一部分请求；</p>
+</blockquote>
+<h2 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h2><ul>
+<li>可扩展学习 LVS+HaProxy</li>
+</ul>
+<h3 id="Nginx-配置"><a href="#Nginx-配置" class="headerlink" title="Nginx 配置"></a>Nginx 配置</h3><h4 id="upsteam-配置"><a href="#upsteam-配置" class="headerlink" title="upsteam 配置"></a>upsteam 配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 weight=1;</span><br><span class="line">    server 192.168.1.21:9081 weight=2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location  / &#123;</span><br><span class="line">    proxy_pass http://backend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h4><ul>
+<li>round-robin : 轮询</li>
+<li>ip_hash ：根据客户IP进行负载均衡</li>
+<li>hash key [consistent]</li>
+<li>least_conn : 将请求负载到最不活跃的服务器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server 192.168.1.21:9080 weight=1;</span><br><span class="line">    server 192.168.1.21:9081 weight=2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="失败重试"><a href="#失败重试" class="headerlink" title="失败重试"></a>失败重试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 max_fails=2 fail_timeout=10s weight=1;</span><br><span class="line">    server 192.168.1.21:9081 max_fails=2 fail_timeout=10s  weight=2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在10s内失败2次，则认为该服务不可用，摘除，然后10s后会进行重试</span><br><span class="line"></span><br><span class="line">location  / &#123;</span><br><span class="line">    proxy_connect_timeout 5s;</span><br><span class="line">    proxy_read_timeout  5s;</span><br><span class="line">    proxy_send_timeout  5s;</span><br><span class="line">    </span><br><span class="line">    proxy_next_upstream error timeout;</span><br><span class="line">    proxy_next_upstream_timeout 10s;</span><br><span class="line">    proxy_next_upstream_tries 2;</span><br><span class="line">    </span><br><span class="line">    proxy_pass http://backend;</span><br><span class="line">    </span><br><span class="line">    add_header upstream_addr $upstream_addr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h4><blockquote>
+<p>nginx 默认采用惰性检查，可集成 nginx_upstream_check_modul 来支持TCP 心跳和HTTP 心跳来实现健康检查<br>不安装不起作用，另 抓包工具   wireshark</p>
+</blockquote>
+<ol>
+<li><p>TCP </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 weight=1;</span><br><span class="line">    server 192.168.1.21:9081 weight=2;</span><br><span class="line">    check interval=3000 rise=1 fall=3 timeout=20000 type=tcp;</span><br><span class="line">&#125;</span><br><span class="line">    //interval 检查间隔时间，此处为3s 检查1次</span><br><span class="line">    //fail 检查失败多少次，标记上游不存活</span><br><span class="line">    //rise 检查成功多少次，标记上游存活，可处理请求</span><br><span class="line">    //timeout 检测请求超时时间配置</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>HTTP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 weight=1;</span><br><span class="line">    server 192.168.1.21:9081 weight=2;</span><br><span class="line">    check interval=3000 rise=1 fall=3 timeout=20000 type=tcp;</span><br><span class="line">    check_http_send &quot;HEAD /status HTTP/1.0 \r\n\r\n&quot;;</span><br><span class="line">    check_http_expect_alive http_2xx http_3xx;</span><br><span class="line">&#125;</span><br><span class="line">    //check_http_send 检查时发的HTTP请求内容</span><br><span class="line">    //check_http_expect_alive 当上游服务器返回匹配的响应状态码，则标记存活</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 weight=1 ;</span><br><span class="line">    server 192.168.1.21:9081 weight=2 backup; //当所有服务器不存活，流量才会打到该节点</span><br><span class="line">    server 192.168.1.21:9081 weight=3 down; //永久不可用，可用来摘除服务器</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="长连接"><a href="#长连接" class="headerlink" title="长连接"></a>长连接</h4><blockquote>
+<p>特指 Nginx 与上游服务器的长连接，上游服务器不要忘记开启长连接</p>
+</blockquote>
+<h4 id="缓存配置"><a href="#缓存配置" class="headerlink" title="缓存配置"></a>缓存配置</h4><ol>
+<li>全局配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">proxy_buffering             on;</span><br><span class="line">proxy_buffer_size           4k;</span><br><span class="line">proxy_buffers               512 4k;</span><br><span class="line">proxy_busy_buffers_size     64k;</span><br><span class="line">proxy_temp_file_write_size  256k;</span><br><span class="line">proxy_cache_lock            on;</span><br><span class="line">proxy_cache_lock_timeout    200ms;</span><br><span class="line">proxy_temp_path             /tmpfs/proxy_temp;</span><br><span class="line">proxy_cache_path            /tmpfs/proxy_cache levels=1:2 keys_zone=cache:512m inactive=5m max_size=8g;</span><br><span class="line">proxy_connect_timeout       3s;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>location 配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">location  / &#123;</span><br><span class="line"> </span><br><span class="line">    proxy_next_upstream error timeout;</span><br><span class="line">    proxy_next_upstream_timeout 10s;</span><br><span class="line">    proxy_next_upstream_tries 2;</span><br><span class="line"> </span><br><span class="line">    //请求上游服务器使用GET方法</span><br><span class="line">    proxy_method GET;</span><br><span class="line">    //不给上游服务器传递请求体</span><br><span class="line">    proxy_pass_request_body off;</span><br><span class="line">    //不给上游服务器传递请求头</span><br><span class="line">    proxy_pass_request_headers off;</span><br><span class="line">    //设置上游服务器那些响应头不发送给客户端</span><br><span class="line">    proxy_hide_header Vary;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    proxy_set_header Referer $http_referer;</span><br><span class="line">    proxy_set_header Cookie $http_cookie;</span><br><span class="line">    </span><br><span class="line">    //可以开启gzip</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    proxy_pass http://backend;</span><br><span class="line">    </span><br><span class="line">    add_header upstream_addr $upstream_addr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="HTTP-动态负载均衡"><a href="#HTTP-动态负载均衡" class="headerlink" title="HTTP 动态负载均衡"></a>HTTP 动态负载均衡</h4><blockquote>
+<p>动态的实现 上游服务器的增减</p>
+<ol>
+<li>Consul + Consul-template</li>
+<li>Consul + OpenResty</li>
+</ol>
+</blockquote>
+<h3 id="隔离术"><a href="#隔离术" class="headerlink" title="隔离术"></a>隔离术</h3><ol>
+<li><p>爬虫隔离</p>
+<blockquote>
+<p>在使用OpenResty 不仅对爬虫 user-agent 过滤，还会过滤一些恶意IP（通过统计IP访问量来配阀值），将他们分流到固定的分组，这种情况存在一定误杀，因为公司的公网IP 一般是同一个，所以 可以考虑 IP+Cookie 的方式进行过滤</p>
+</blockquote>
+</li>
+<li><p>热点隔离</p>
+</li>
+</ol>
+<blockquote>
+<p>秒杀，抢购 属于热点，可做成独立系统，保证秒杀，抢购出线问题不会影响主流程</p>
+</blockquote>
+<h4 id="使用-Hystrix-实现隔离"><a href="#使用-Hystrix-实现隔离" class="headerlink" title="使用 Hystrix 实现隔离"></a>使用 Hystrix 实现隔离</h4><blockquote>
+<p>Hystrix 是 Netflix 开源的一款针对分布式系统的延迟和容错库，目的是用来隔离分布式服务故障</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>提供信号量和线程隔离，以减少不同服务之间资源的竞争带来的相互影响</li>
+<li>提供优雅降级机制</li>
+<li>提供熔断机制，使服务可以快速失败，而不是一直阻塞等待服务，并能快速恢复</li>
+<li>提供请求缓存，请求合并等灵活功能</li>
+</ul>
+</blockquote>
+<h4 id="基于Servlet-3-实现请求隔离"><a href="#基于Servlet-3-实现请求隔离" class="headerlink" title="基于Servlet 3 实现请求隔离"></a>基于Servlet 3 实现请求隔离</h4><blockquote>
+<p>必须使用实现了Servlet 3规范的容器进行处理，如Tomcat 7.x</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>基于NIO能处理更高的并发连接数，使用JDK 7 配合 Tomcat 7 </li>
+<li>请求解析和业务处理线程池分离</li>
+<li>根据业务重要性对业务分级，并分级线程池</li>
+<li>对业务线程池进行监控、运维、降级等处理</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>异步化之后吞吐量上升，响应时间不会减少</p>
+</blockquote>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>常用的限流有</p>
+<blockquote>
+<ul>
+<li>限制总并发数（如 数据库连接池，线程池）</li>
+<li>限制瞬时并发数（如 Nginx 的limit_conn 模块）</li>
+<li>限制时间窗口内的平均速率（如 Guava 的RateLimiter, Nginx 的limit_req 模块）</li>
+<li>限制远程接口调用速率，限制MQ消费速率等</li>
+<li>还可以根据网络连接数，网络流量，CPU或内存负载</li>
+</ul>
+</blockquote>
+<h4 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h4><blockquote>
+<ul>
+<li>令牌桶 ：放一个固定容量令牌的桶，按固定速率往桶里添加令牌</li>
+<li>漏桶算法 ：一个固定容量的漏桶，按固定的速率流出水滴</li>
+</ul>
+</blockquote>
+<h4 id="应用级限流"><a href="#应用级限流" class="headerlink" title="应用级限流"></a>应用级限流</h4><ul>
+<li>对于一个应用系统来说，一定会有极限并发/请求数，如使用Tomcat ,Connector 有一些配置</li>
+</ul>
+<blockquote>
+<ul>
+<li>acceptCount：如果Tomcat线程忙，新来的连接会进入队列排队</li>
+<li>maxConnections:瞬时最大连接数，超出会排队</li>
+<li>maxThreads：处理请求的最大线程数，</li>
+</ul>
+</blockquote>
+<ul>
+<li>对于接口，现在总并发/平均速率<blockquote>
+<p>Java中的AtomicLong ；Hystrix 信号量模式下 使用Semaphore ；Guava的Cache存储计数量；Guava 的RateLimiter；</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="分布式限流"><a href="#分布式限流" class="headerlink" title="分布式限流"></a>分布式限流</h4><blockquote>
+<p>分布式限流最关键的是要将限流服务做成原子化</p>
+</blockquote>
+<ol>
+<li><p>Redis+Lua 实现</p>
+</li>
+<li><p>Nginx+Lua 实现</p>
+</li>
+</ol>
+<h4 id="接入层限流"><a href="#接入层限流" class="headerlink" title="接入层限流"></a>接入层限流</h4><blockquote>
+<p>接入层：通常指流量的入口，该层如要目的有：负载均衡，非法请求过滤，请求聚合，缓存，降级，限流，A/B测试，服务质量监控等</p>
+</blockquote>
+<blockquote>
+<p>对于使用Nginx 接入层限流，可使用Nginx 自带的两个模块 </p>
+<ul>
+<li>ngx_http_limit_conn_module ：连接数限流模块 </li>
+<li>ngx_http_limit_req_module  ：漏桶算法实现请求限流模块<br>还可使用OpenResty 提供的Lua 限流模块 lua-resty-limit-traffic</li>
+</ul>
+</blockquote>
+<h3 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h3><ul>
+<li><p>自动降级</p>
+<blockquote>
+<p>根据系统负载，资源使用情况，SLA 等指标进行自动降级，</p>
+</blockquote>
+</li>
+<li><p>人工降级</p>
+<blockquote>
+<p>一般大促期间，线上灰度测试 等 可手工降级</p>
+</blockquote>
+</li>
+<li>配置中心<blockquote>
+<ul>
+<li>如使用properties本地文件 ，可借助JDK 7 WatchService 实现文件变更监听</li>
+<li>如使用分布式配置中心（ZK,Consul）</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>扩展：使用Consul 实现配置中心<br>扩展：使用Hystrix 实现降级，实现熔断</p>
+<h3 id="超时与重试"><a href="#超时与重试" class="headerlink" title="超时与重试"></a>超时与重试</h3><blockquote>
+<p>超时会导致请求等待时间延长，重试会导致请求增多，所以需要对他们进行一些配置</p>
+</blockquote>
+<h4 id="代理层"><a href="#代理层" class="headerlink" title="代理层"></a>代理层</h4><ol>
+<li>Nginx<br>主要有4类设置</li>
+</ol>
+<ul>
+<li><p>客户端超时设置</p>
+<ul>
+<li>client_header_timeout xxx  ：设置读取客户端请求头超时，默认60s,响应408状态给客户端</li>
+<li>client_body_timeout xxx    : 设置读取客户端内容超时，默认60s,是指两次成功读取操作时间间隔，不是整个请求体的超时时间，返回408</li>
+<li>send_timeout xxx           ：设置发送响应到客户端的超时时间，默认60s,同样指两次间隔，如果客户端没有收到响应，Nginx关闭此了解</li>
+<li>keepalive_timeout xxx [yyy]    : 设置Http 长连接超时时间，xxx 表示Nginx长连接超时，默认75s,yyy 设置响应头 “Keep-Alive: timeout=yyy” 告知客户端长连接超时时间，可不一样 ，如果 xxx = 0 表示禁用长连接<blockquote>
+<p>此参数需要配合 keepalive_disable（禁用那些游览器长连接，默认 msie6）与keepalive_requests（长连接请求数，默认100）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>代理超时设置</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server 192.168.1.21:9080 max_fails=2 fail_timeout=10s weight=1;</span><br><span class="line">    server 192.168.1.21:9081 max_fails=2 fail_timeout=10s weight=1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在10s内失败2次，则认为该服务不可用，摘除，然后10s后会进行重试</span><br><span class="line"></span><br><span class="line">location  / &#123;</span><br><span class="line">    </span><br><span class="line">    //设置与上游服务器建立连接超时时间，默认60s,此事件不超过75s</span><br><span class="line">    proxy_connect_timeout 5s;</span><br><span class="line">    //设置与上游服务器读取响应超时时间，默认60s,指两次成功读操作时间间隔。</span><br><span class="line">    proxy_read_timeout  5s;</span><br><span class="line">    //设置与上游服务器发送请求超时时间，默认60s,两次间隔</span><br><span class="line">    proxy_send_timeout  5s;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    //设置什么情况下，请求下一台服务器进行重试</span><br><span class="line">    proxy_next_upstream error timeout;</span><br><span class="line">    //设置重试最大超时时间，默认0,表示不限制</span><br><span class="line">    proxy_next_upstream_timeout 10s;</span><br><span class="line">    //设置重试次数，默认0， 不限制</span><br><span class="line">    proxy_next_upstream_tries 2;</span><br><span class="line">    </span><br><span class="line">    //以上表示：当error/timeout 时重试 upsteam 中的下一台上游服务器，如果重试总时间超过10s 或者重试了1次（之前请求过1次，2-1），表示重试失败，Nginx 结束重试并返回客户端响应。</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    proxy_pass http://backend;</span><br><span class="line">    </span><br><span class="line">    add_header upstream_addr $upstream_addr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上配置有3组，网络连接/读/写超时设置；失败重试机制设置；upstream存活超时设置</p>
+<ul>
+<li>Twemproxy<blockquote>
+<p>Twitter 开源的Redis 和Memcache 代理中间件，减少后端缓存服务器连接数<br>扩展学习  Twemproxy</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Web容器"><a href="#Web容器" class="headerlink" title="Web容器"></a>Web容器</h4><p>以 Tomcat 8.5 为例</p>
+<ul>
+<li>connectionTimeout:配置与客户端建立连接超时时间，默认 60*1000 （60s） </li>
+<li>socket.soTimeout: 从客户端读取请求的超时时间，默认同上，扩展阅读 NIO 与NIO2 </li>
+<li>asyncTimeout:Servlet 3 异步请求超时时间 默认 30000（30s）</li>
+<li>disableUploadTimeout 和 connectionUploadTimeout：文件上传超时与否，超时时间。</li>
+<li>keepAliveTimeout 和 maxKeepAliveRequests ，keepAliveTimeout 默认为connectionTimeout，配置-1 表示永不超时。maxKeepAliveRequests 默认100</li>
+</ul>
+<h4 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h4><p>以 Dubbo 为例，配置服务提供端与注册中心进行注册、发现的超时时间</p>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>以 Druid 为例，设置连接池的超时</p>
+<h4 id="NoSQl"><a href="#NoSQl" class="headerlink" title="NoSQl"></a>NoSQl</h4><p>以 MongoDB ，使用 spring-data-mongodb 客户端，配置超时时间<br>以 Redis，使用 Jedis 客户端，设置超时时间</p>
+<h4 id="Ajax-超时"><a href="#Ajax-超时" class="headerlink" title="Ajax 超时"></a>Ajax 超时</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line"> url:&quot;http://xxxxx&quot;,</span><br><span class="line"> timeout:2000,</span><br><span class="line"> xxxx:xxxxx</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>JSONP 超时</p>
+</blockquote>
+<h3 id="回滚机制"><a href="#回滚机制" class="headerlink" title="回滚机制"></a>回滚机制</h3><h4 id="事务回滚"><a href="#事务回滚" class="headerlink" title="事务回滚"></a>事务回滚</h4><blockquote>
+<p>在分布式系统中，一般采用最终一致性进行事务回滚，可采用: 事务表，消息队列，补偿机制，TCC模式（预占/确认/取消）， Sagas模式(拆分事务+补偿机制)</p>
+</blockquote>
+<h4 id="部署版本回滚"><a href="#部署版本回滚" class="headerlink" title="部署版本回滚"></a>部署版本回滚</h4><blockquote>
+<p>版本的备份，灰度发布，通过Nginx A/B方式 慢慢讲流量引入到新版本集群</p>
+</blockquote>
+<h4 id="静态资源回滚"><a href="#静态资源回滚" class="headerlink" title="静态资源回滚"></a>静态资源回滚</h4><blockquote>
+<p>静态资源一般会放在CDN上，如果需要回滚需要清除CDN</p>
+</blockquote>
+<h2 id="高并发"><a href="#高并发" class="headerlink" title="高并发"></a>高并发</h2><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
+<li><p>缓存命中率 = 从缓存中读取次数/总读取次数（从缓存中读取次数+从慢速设备上读取的次数）</p>
+</li>
+<li><p>缓存回收策略</p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>基于空间：如设置10MB ，当达到存储空间上限时，按照一定的策略移除数据</li>
+<li>基于容量：设置最大大小，当条目超过最大时，按照一定的策略移除数据</li>
+<li>基于事件：TTL(Time to live) 存活期，缓存过了存活期，就将删除；TTI (Time to Idel) 空闲期，既缓存多久没有被访问后，将别移除</li>
+<li>基于Java对象引用 ：软引用，弱引用</li>
+</ul>
+</blockquote>
+<ul>
+<li>缓存回收算法<blockquote>
+<p>使用基于空间和基于容量的缓存会使用一定的策略移除旧数据，常见有</p>
+<ul>
+<li>FIFO(First In First Out) :先进先出算法</li>
+<li>LRU(Least Recently Used) :最近最少使用算法</li>
+<li>LFU(Least Frequently Used):最不常用算法</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h4 id="Java-缓存类型"><a href="#Java-缓存类型" class="headerlink" title="Java 缓存类型"></a>Java 缓存类型</h4><blockquote>
+<p>Guava Cache 只提供堆缓存，小巧灵活，性能最好</p>
+</blockquote>
+<blockquote>
+<p>Ehchache 3.x 提供 堆缓存，堆外缓存，磁盘缓存，分布式缓存，但API不完善，2.x API较稳定（不支持堆外缓存）</p>
+</blockquote>
+<blockquote>
+<p>MapDB 是一款嵌入式Java 数据库引擎和集合框架，提供Maps,Sets,Lists,Queues,Bitmaps 的支持，还支持ACID事务，增量备份。支持堆缓存，堆外缓存，磁盘缓存。</p>
+</blockquote>
+<ul>
+<li><p>堆缓存</p>
+<blockquote>
+<p>推荐使用Gauva Cache</p>
+</blockquote>
+</li>
+<li><p>堆外缓存</p>
+</li>
+<li><p>磁盘缓存</p>
+</li>
+<li><p>分布式缓存</p>
+<blockquote>
+<p>推荐使用Redis (有主从与集群模式)</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="多级缓存封装"><a href="#多级缓存封装" class="headerlink" title="多级缓存封装"></a>多级缓存封装</h4><blockquote>
+<p>如果项目中使用了多级缓存，（不仅会使用本地缓存，还会使用分布式缓存），需要适当的API封装，以简化操作</p>
+<ul>
+<li>定义NULL 对象<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final String NULL_STRING = new String();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>当DB没有数据时，写入NULL对象到缓存，防止当KEY对应的数据再DB中不存在时，频繁的查询DB</p>
+</blockquote>
+<ul>
+<li>强制获取最新数据</li>
+<li>失败统计</li>
+<li>延迟报警</li>
+</ul>
+<h4 id="缓存使用模式实践"><a href="#缓存使用模式实践" class="headerlink" title="缓存使用模式实践"></a>缓存使用模式实践</h4><blockquote>
+<p>是否需要在程序中同时操作缓存与SOR 来区别</p>
+<ul>
+<li>Cache-Aside（同时操作）</li>
+<li>Cache-As-SoR（只操作缓存，由缓存作为中间件操作SOR）</li>
+</ul>
+</blockquote>
+<h3 id="HTTP缓存"><a href="#HTTP缓存" class="headerlink" title="HTTP缓存"></a>HTTP缓存</h3><h4 id="HTTP缓存-1"><a href="#HTTP缓存-1" class="headerlink" title="HTTP缓存"></a>HTTP缓存</h4><ul>
+<li>Last-Modified: 表示文档最后修改时间，当去服务器验证的时候，会用到这个时间。</li>
+<li>Expires: http/1.0 规范定义，表示文档在游览器中的过期时间，当缓存内容时间超过这个时间，则需要重新去服务器获取最新内容</li>
+<li>Cache-Control: http/1.1规范定义，表示游览器缓存控制，max-age=20 表示文档可以在游览器中缓存20秒</li>
+</ul>
+<blockquote>
+<p>根据规范定义 Cache-Control 优先级高于 Expres,实际使用时可以两个都用，或者使用Cache-Control 就可以。</p>
+</blockquote>
+<blockquote>
+<p>按F5刷新时候，请求头会包含 Cache-Control，If-Modified-Since(值为上次返回的 Last-Modified) </p>
+<ul>
+<li>Age /Vary ：一般用于缓存代理层（如 CDN）</li>
+<li>ETag:可理解为文档的摘要</li>
+</ul>
+</blockquote>
+<h4 id="HttpClient客户端缓存"><a href="#HttpClient客户端缓存" class="headerlink" title="HttpClient客户端缓存"></a>HttpClient客户端缓存</h4><blockquote>
+<p>HttpClient 4.3版本开始提供 Http 1.1 兼容的客户端缓存，可以把该层当做游览器缓存，通过责任链模式来支持可插拔的组件结构，来实现客户端缓存。</p>
+</blockquote>
+<blockquote>
+<p>另扩展阅读 http 1.0 与http 1.1</p>
+</blockquote>
+<h4 id="Nginx-代理层缓存"><a href="#Nginx-代理层缓存" class="headerlink" title="Nginx 代理层缓存"></a>Nginx 代理层缓存</h4><blockquote>
+<p>Nginx 提供 expires,etag,if-modified-since 指令来实现游览器缓存控制</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location /img&#123;</span><br><span class="line">    alias /export/img/;</span><br><span class="line">    expires 1d;</span><br><span class="line">&#125;</span><br><span class="line">//当访问静态资源时，会响应头会返回 ,Cache-Control:max-age=86400  Etag:&quot;zxc223&quot; Last-Modified:xxxx</span><br><span class="line">// 可通过设置 etag off 关闭自动生成 ETag</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Nginx proxy_pass</p>
+<ol>
+<li>游览器发出请求，Nginx 根据URL在本地查找是否有缓存</li>
+<li>没找到，回源，Nginx 本地缓存刷新</li>
+<li>找到缓存，验证文档是否过期，过期回源，不过期返回</li>
+</ol>
+</blockquote>
+<h3 id="多级缓存"><a href="#多级缓存" class="headerlink" title="多级缓存"></a>多级缓存</h3><ul>
+<li>如何缓存数据</li>
+<li>分布式缓存与应用负载均衡</li>
+<li>热点数据与更新缓存</li>
+</ul>
+<blockquote>
+<p>如商品这种，可才分如基础属性，图片列表，上下架，规格等，实现增量更新，减少全量更新<br>使用Redis时，要警惕大Vaue,可拆解小的或者压缩<br>热点数据如果经常访问分布式缓存，可能造成分布式缓存流量集中，可在本地设置缓存</p>
+</blockquote>
+<ul>
+<li>缓存崩溃与快速修复<blockquote>
+<ul>
+<li>主从机制，做好冗余，既其中一部分不可用，将对等的部分补上去</li>
+<li>如果因为缓存导致性能下降，可考虑部分用户降级，通过Worker预热缓存数据</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="池化技术"><a href="#池化技术" class="headerlink" title="池化技术"></a>池化技术</h3><ul>
+<li>数据库连接池</li>
+<li>HttpClient 连接池</li>
+<li>线程池</li>
+</ul>
+<h3 id="异步并发实战"><a href="#异步并发实战" class="headerlink" title="异步并发实战"></a>异步并发实战</h3><ul>
+<li>异步Future</li>
+<li>异步Callback</li>
+<li>异步编排 CompletableFuture</li>
+<li>异步Web服务实现</li>
+<li>请求缓存与请求合并</li>
+</ul>
+<h3 id="扩容与拆分"><a href="#扩容与拆分" class="headerlink" title="扩容与拆分"></a>扩容与拆分</h3><ul>
+<li>单系统水平扩容，垂直扩容</li>
+<li>应用拆分</li>
+<li>数据库拆分<blockquote>
+<p>使用sharding-jdbc 分库分表</p>
+</blockquote>
+</li>
+<li>数据异构</li>
+</ul>
+<h3 id="队列术"><a href="#队列术" class="headerlink" title="队列术"></a>队列术</h3><blockquote>
+<p>队列，在数据结构中是一种线性表，从一端插入数据，从另一端删除数据，在实际中经常使用队列来进行异步处理，系统解耦，数据同步，流量削峰，扩展性，缓冲。 在设计时，需要注意 是否需要保证消息处理的有序性，重复消息，幂等性等问题。</p>
+</blockquote>
+<ul>
+<li><p>缓冲队列</p>
+<blockquote>
+<p>典型的如Log4j 日志缓冲区，当我们使用log4j时，可配置字节缓冲区，当字节缓冲区满时，会立即同步到磁盘，他使用BufferedWriter 实现</p>
+</blockquote>
+</li>
+<li><p>任务队列</p>
+<blockquote>
+<p>可以将一些不需要与主线程同步执行的任务，扔到任务队列进行异步处理。如 线程池队列（LinkedBloackingQueue,Disruptor,RingBuffer）</p>
+</blockquote>
+</li>
+<li><p>消息队列</p>
+<blockquote>
+<p>如 各种JMS实现，扩展阅读ActiveMQ,Kafka</p>
+</blockquote>
+</li>
+<li><p>数据总线队列</p>
+<blockquote>
+<p>扩展阅读 Canal(阿里),Databus(LinkedIn)，otter,kettle</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Disruptor-Redis-队列"><a href="#Disruptor-Redis-队列" class="headerlink" title="Disruptor+Redis 队列"></a>Disruptor+Redis 队列</h4><ul>
+<li>简介</li>
+<li>XML 配置</li>
+<li>EventWorker</li>
+<li>EventPublishThread</li>
+<li>EventHandler</li>
+<li>EventQueue</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/系统架构/" rel="tag"># 系统架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/10/jvm/" rel="next" title="JVM虚拟机笔记">
+                <i class="fa fa-chevron-left"></i> JVM虚拟机笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些设计原则"><span class="nav-number">1.</span> <span class="nav-text">一些设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高并发原则-（High-Concurrency）"><span class="nav-number">1.1.</span> <span class="nav-text">高并发原则 （High Concurrency）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高可用原则-（High-Availability）"><span class="nav-number">1.2.</span> <span class="nav-text">高可用原则 （High Availability）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务设计原理"><span class="nav-number">1.3.</span> <span class="nav-text">业务设计原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高可用"><span class="nav-number">2.</span> <span class="nav-text">高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-配置"><span class="nav-number">2.1.</span> <span class="nav-text">Nginx 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#upsteam-配置"><span class="nav-number">2.1.1.</span> <span class="nav-text">upsteam 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#负载均衡算法"><span class="nav-number">2.1.2.</span> <span class="nav-text">负载均衡算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#失败重试"><span class="nav-number">2.1.3.</span> <span class="nav-text">失败重试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#健康检查"><span class="nav-number">2.1.4.</span> <span class="nav-text">健康检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他配置"><span class="nav-number">2.1.5.</span> <span class="nav-text">其他配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#长连接"><span class="nav-number">2.1.6.</span> <span class="nav-text">长连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存配置"><span class="nav-number">2.1.7.</span> <span class="nav-text">缓存配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-动态负载均衡"><span class="nav-number">2.1.8.</span> <span class="nav-text">HTTP 动态负载均衡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离术"><span class="nav-number">2.2.</span> <span class="nav-text">隔离术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Hystrix-实现隔离"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用 Hystrix 实现隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于Servlet-3-实现请求隔离"><span class="nav-number">2.2.2.</span> <span class="nav-text">基于Servlet 3 实现请求隔离</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">2.3.</span> <span class="nav-text">限流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#限流算法"><span class="nav-number">2.3.1.</span> <span class="nav-text">限流算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用级限流"><span class="nav-number">2.3.2.</span> <span class="nav-text">应用级限流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式限流"><span class="nav-number">2.3.3.</span> <span class="nav-text">分布式限流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接入层限流"><span class="nav-number">2.3.4.</span> <span class="nav-text">接入层限流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">2.4.</span> <span class="nav-text">降级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超时与重试"><span class="nav-number">2.5.</span> <span class="nav-text">超时与重试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代理层"><span class="nav-number">2.5.1.</span> <span class="nav-text">代理层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web容器"><span class="nav-number">2.5.2.</span> <span class="nav-text">Web容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中间件"><span class="nav-number">2.5.3.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库"><span class="nav-number">2.5.4.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NoSQl"><span class="nav-number">2.5.5.</span> <span class="nav-text">NoSQl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ajax-超时"><span class="nav-number">2.5.6.</span> <span class="nav-text">Ajax 超时</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚机制"><span class="nav-number">2.6.</span> <span class="nav-text">回滚机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事务回滚"><span class="nav-number">2.6.1.</span> <span class="nav-text">事务回滚</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署版本回滚"><span class="nav-number">2.6.2.</span> <span class="nav-text">部署版本回滚</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态资源回滚"><span class="nav-number">2.6.3.</span> <span class="nav-text">静态资源回滚</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高并发"><span class="nav-number">3.</span> <span class="nav-text">高并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">3.1.</span> <span class="nav-text">缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-缓存类型"><span class="nav-number">3.1.1.</span> <span class="nav-text">Java 缓存类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多级缓存封装"><span class="nav-number">3.1.2.</span> <span class="nav-text">多级缓存封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存使用模式实践"><span class="nav-number">3.1.3.</span> <span class="nav-text">缓存使用模式实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP缓存"><span class="nav-number">3.2.</span> <span class="nav-text">HTTP缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP缓存-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">HTTP缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HttpClient客户端缓存"><span class="nav-number">3.2.2.</span> <span class="nav-text">HttpClient客户端缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-代理层缓存"><span class="nav-number">3.2.3.</span> <span class="nav-text">Nginx 代理层缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多级缓存"><span class="nav-number">3.3.</span> <span class="nav-text">多级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#池化技术"><span class="nav-number">3.4.</span> <span class="nav-text">池化技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步并发实战"><span class="nav-number">3.5.</span> <span class="nav-text">异步并发实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩容与拆分"><span class="nav-number">3.6.</span> <span class="nav-text">扩容与拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列术"><span class="nav-number">3.7.</span> <span class="nav-text">队列术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Disruptor-Redis-队列"><span class="nav-number">3.7.1.</span> <span class="nav-text">Disruptor+Redis 队列</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
