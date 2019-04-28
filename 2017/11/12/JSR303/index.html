@@ -103,7 +103,7 @@
 <meta property="og:description" content="简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 ‘约束’如何定义@Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @Target({ MET">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://rtry.xyz/uploads/jsr303/32fa828ba61ea8d36a654f399a0a304e251f5843.jpg">
-<meta property="og:updated_time" content="2019-04-17T07:52:36.017Z">
+<meta property="og:updated_time" content="2019-04-28T09:24:42.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JSR303">
 <meta name="twitter:description" content="简介JSR303 是java标准的一个验证bean的框架，本文主要用来记录对其使用及设计的各种剖析 ‘约束’如何定义@Constraint 所有验证注解的元注解 方法 public Class&amp;lt;? extends ConstraintValidator&amp;lt;?, ?&amp;gt;&amp;gt;[] validatedBy();  定义验证的具体逻辑实现类    如      @Target({ MET">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-17T15:52:36+08:00">
-                2019-04-17
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-28T17:24:42+08:00">
+                2019-04-28
               </time>
             
           </span>
@@ -558,6 +558,17 @@ public final class Void {
 </code></pre><h3 id="枚举容器"><a href="#枚举容器" class="headerlink" title="枚举容器"></a>枚举容器</h3><p>EnumMap从名字我们可以看出这个Map是给枚举类用的。它的key为枚举元素，value自定义。在工作中我们也可以用其他的Map来实现我们关于枚举的需求，但是为什么要用这个EnumMap呢？因为它的性能高</p>
 <p>EnumSet这是一个用来操作Enum的集合，是一个抽象类，它有两个继承类：JumboEnumSet和RegularEnumSet。在使用的时候，需要制定枚举类型。它的特点也是速度非常快，为什么速度很快呢？因为每次add的时候，每个枚举值只占一个长整型的一位。</p>
 <p><img src="/uploads/jsr303/32fa828ba61ea8d36a654f399a0a304e251f5843.jpg" alt=""></p>
+<h2 id="JSR"><a href="#JSR" class="headerlink" title="JSR"></a>JSR</h2><ul>
+<li>JSR是Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。任何人都可以提交JSR，以向Java平台增添新的API和服务。JSR已成为Java界的一个重要标准。</li>
+<li><a href="https://jcp.org/en/home/index" target="_blank" rel="noopener">JSR</a></li>
+</ul>
+<h3 id="常用的标准"><a href="#常用的标准" class="headerlink" title="常用的标准"></a>常用的标准</h3><ul>
+<li>从Spring 3.0开始，Spring开始支持JSR-330标准的注解（依赖注入）。这些注解和Spring注解扫描的方式是一致的</li>
+<li>JSR 303 - Bean Validation （Hibernate Validator）</li>
+<li>Java API for RESTful Web Services (JAX-RS) 1.1 (JSR 311)</li>
+<li>Common Annotations for the Java Platform 1.1 (JSR 250)</li>
+<li>JSR 370: JavaTM API for RESTful Web Services (JAX-RS 2.1) Specification</li>
+</ul>
 
       
     </div>
@@ -701,7 +712,7 @@ public final class Void {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -756,7 +767,7 @@ public final class Void {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#‘约束’如何定义"><span class="nav-number">2.</span> <span class="nav-text">‘约束’如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Constraint"><span class="nav-number">2.1.</span> <span class="nav-text">@Constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘每个约束’-必须定义的属性"><span class="nav-number">2.2.</span> <span class="nav-text">‘每个约束’ 必须定义的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidator"><span class="nav-number">2.3.</span> <span class="nav-text">接口 ConstraintValidator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidatorContext"><span class="nav-number">2.4.</span> <span class="nav-text">接口 ConstraintValidatorContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConstraintValidatorFactory"><span class="nav-number">2.5.</span> <span class="nav-text">ConstraintValidatorFactory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaBean如何用注解来描述约定"><span class="nav-number">3.</span> <span class="nav-text">JavaBean如何用注解来描述约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程中如何使用’约束’来验证JavaBean"><span class="nav-number">4.</span> <span class="nav-text">编程中如何使用’约束’来验证JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读中遇到的问题摘要"><span class="nav-number">5.</span> <span class="nav-text">阅读中遇到的问题摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-spi-技术规划"><span class="nav-number">5.1.</span> <span class="nav-text">Java spi 技术规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另1"><span class="nav-number">5.2.</span> <span class="nav-text">另1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另2"><span class="nav-number">5.3.</span> <span class="nav-text">另2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><span class="nav-number">5.4.</span> <span class="nav-text">另3 ResourceBundle 依据locale来读取properties文件，实现国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validation-api-文档结构"><span class="nav-number">5.5.</span> <span class="nav-text">validation-api 文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-Constructor-构造器类"><span class="nav-number">5.6.</span> <span class="nav-text">java.lang.reflect.Constructor  构造器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-jpa"><span class="nav-number">5.7.</span> <span class="nav-text">另 jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-java-lang-Void"><span class="nav-number">5.8.</span> <span class="nav-text">另 java.lang.Void</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举容器"><span class="nav-number">5.9.</span> <span class="nav-text">枚举容器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#‘约束’如何定义"><span class="nav-number">2.</span> <span class="nav-text">‘约束’如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Constraint"><span class="nav-number">2.1.</span> <span class="nav-text">@Constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘每个约束’-必须定义的属性"><span class="nav-number">2.2.</span> <span class="nav-text">‘每个约束’ 必须定义的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidator"><span class="nav-number">2.3.</span> <span class="nav-text">接口 ConstraintValidator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-ConstraintValidatorContext"><span class="nav-number">2.4.</span> <span class="nav-text">接口 ConstraintValidatorContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConstraintValidatorFactory"><span class="nav-number">2.5.</span> <span class="nav-text">ConstraintValidatorFactory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaBean如何用注解来描述约定"><span class="nav-number">3.</span> <span class="nav-text">JavaBean如何用注解来描述约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程中如何使用’约束’来验证JavaBean"><span class="nav-number">4.</span> <span class="nav-text">编程中如何使用’约束’来验证JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读中遇到的问题摘要"><span class="nav-number">5.</span> <span class="nav-text">阅读中遇到的问题摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-spi-技术规划"><span class="nav-number">5.1.</span> <span class="nav-text">Java spi 技术规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另1"><span class="nav-number">5.2.</span> <span class="nav-text">另1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另2"><span class="nav-number">5.3.</span> <span class="nav-text">另2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另3-ResourceBundle-依据locale来读取properties文件，实现国际化"><span class="nav-number">5.4.</span> <span class="nav-text">另3 ResourceBundle 依据locale来读取properties文件，实现国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validation-api-文档结构"><span class="nav-number">5.5.</span> <span class="nav-text">validation-api 文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-Constructor-构造器类"><span class="nav-number">5.6.</span> <span class="nav-text">java.lang.reflect.Constructor  构造器类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-jpa"><span class="nav-number">5.7.</span> <span class="nav-text">另 jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另-java-lang-Void"><span class="nav-number">5.8.</span> <span class="nav-text">另 java.lang.Void</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举容器"><span class="nav-number">5.9.</span> <span class="nav-text">枚举容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSR"><span class="nav-number">6.</span> <span class="nav-text">JSR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的标准"><span class="nav-number">6.1.</span> <span class="nav-text">常用的标准</span></a></li></ol></li></ol></div>
             
 
           </div>
