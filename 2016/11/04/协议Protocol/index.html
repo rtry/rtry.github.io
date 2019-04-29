@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="协议," />
+  <meta name="keywords" content="协议,webservice," />
 
 
 
@@ -95,7 +95,7 @@
 
 
 <meta name="description" content="网络协议栈 协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。  OSI七层模型 TCP/IP四层模型 联系与区别 ISO 制定的OSI 7层过于庞大，由技术人员自己开发的4层协议栈 更为广泛的应用TCP/IP 是一个协议族，包含很多协议(UDP,TCP,IP 等见上图，命名为TCP/IP 是因为这个很重要而已)    记忆">
-<meta name="keywords" content="协议">
+<meta name="keywords" content="协议,webservice">
 <meta property="og:type" content="article">
 <meta property="og:title" content="协议">
 <meta property="og:url" content="http://rtry.xyz/2016/11/04/协议Protocol/index.html">
@@ -107,7 +107,9 @@
 <meta property="og:image" content="http://rtry.xyz/uploads/protocol/OSIVSTCP.jpg">
 <meta property="og:image" content="http://rtry.xyz/uploads/protocol/03130354-7e5d6884f4e942a192e74a56fb6fe302.png">
 <meta property="og:image" content="http://rtry.xyz/uploads/protocol/03130354-7e5d6884f4e942a192e74a56fb6fe302.png">
-<meta property="og:updated_time" content="2019-04-28T09:24:42.776Z">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/1189489-20180514091936031-871926134.png">
+<meta property="og:image" content="http://rtry.xyz/uploads/protocol/640.jpg">
+<meta property="og:updated_time" content="2019-04-29T05:58:54.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="协议">
 <meta name="twitter:description" content="网络协议栈 协议栈是指网络中各层协议的总和，它形象的反映了网络中消息的传输过程：即由上层应用协议到底层协议，再由底层传输协议到上层协议。  OSI七层模型 TCP/IP四层模型 联系与区别 ISO 制定的OSI 7层过于庞大，由技术人员自己开发的4层协议栈 更为广泛的应用TCP/IP 是一个协议族，包含很多协议(UDP,TCP,IP 等见上图，命名为TCP/IP 是因为这个很重要而已)    记忆">
@@ -324,8 +326,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-28T17:24:42+08:00">
-                2019-04-28
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-29T13:58:54+08:00">
+                2019-04-29
               </time>
             
           </span>
@@ -474,11 +476,7 @@
 <li>Jersey     +     Jetty</li>
 <li>Dropwizard</li>
 <li>RESTEasy     +     Netty</li>
-<li>RESTEasy     +     Undertow</li>
-</ul>
-<blockquote>
-<p>注：</p>
-</blockquote>
+<li><p>RESTEasy     +     Undertow</p>
 <ul>
 <li><a href="https://jersey.java.net" target="_blank" rel="noopener">Jersey 官网</a>，<a href="https://grizzly.java.net/" target="_blank" rel="noopener">Grizzly官网</a>，<a href="http://www.dropwizard.io/" target="_blank" rel="noopener">dropwizard</a></li>
 <li>jersey 是基于Java的一个轻量级RESTful风格的Web Services框架。</li>
@@ -489,28 +487,99 @@
 <li><strong>dropwizard</strong> is a java framework for developing ops-friendly,high-preformance,Restful web service. (一个完整的服务框架，实际上集成了Jersey+Jetty)</li>
 <li>Undertow 嵌入式服务器</li>
 </ul>
-<h4 id="4-轻量级的架构体系选择（非Jax-RS实现）"><a href="#4-轻量级的架构体系选择（非Jax-RS实现）" class="headerlink" title="4.轻量级的架构体系选择（非Jax-RS实现）"></a>4.轻量级的架构体系选择（非Jax-RS实现）</h4><ul>
+</li>
+</ul>
+<h4 id="轻量级的架构体系选择（非Jax-RS实现）"><a href="#轻量级的架构体系选择（非Jax-RS实现）" class="headerlink" title="轻量级的架构体系选择（非Jax-RS实现）"></a>轻量级的架构体系选择（非Jax-RS实现）</h4><ul>
 <li>Spring Boot</li>
 <li>纯Netty</li>
-<li>Vert.x</li>
-</ul>
-<blockquote>
-<p>注：</p>
-</blockquote>
+<li><p>Vert.x</p>
 <ul>
 <li><a href="http://vertx.io/" target="_blank" rel="noopener">vert.x</a> ,属于Eclipse ，is a tool-kit for building reactive application on the JVM </li>
 <li>vert.x底层使用Netty,可以使用Java 8 Lambda语法</li>
-<li>AWS (亚马逊公司旗下云计算服务平台类同阿里云)</li>
-<li>测试工具（Dubbo Remoting Performance Test Report<br>）</li>
+<li>测试工具（Dubbo Remoting Performance Test Report）</li>
 <li>测试工具 wrk（modern http benchmarking tool）<br><a href="https://github.com/wg/wrk" target="_blank" rel="noopener">wrk</a></li>
-<li><a href="https://github.com/chewiebug/GCViewer" target="_blank" rel="noopener">GCViewer</a><h4 id="5-较重量级的服务器"><a href="#5-较重量级的服务器" class="headerlink" title="5.较重量级的服务器"></a>5.较重量级的服务器</h4>springmvc/cxf + tomcat/Jboss 等</li>
+<li><a href="https://github.com/chewiebug/GCViewer" target="_blank" rel="noopener">GCViewer</a></li>
 </ul>
-<h4 id="3-4-5-比较结论："><a href="#3-4-5-比较结论：" class="headerlink" title="3.4.5 比较结论："></a>3.4.5 比较结论：</h4><ul>
+</li>
+</ul>
+<h4 id="较重量级的服务器"><a href="#较重量级的服务器" class="headerlink" title="较重量级的服务器"></a>较重量级的服务器</h4><p>springmvc/cxf + tomcat/Jboss 等</p>
+<h4 id="比较结论"><a href="#比较结论" class="headerlink" title="比较结论"></a>比较结论</h4><ul>
 <li>RESTEasy的性能要好于Jersey</li>
 <li>Jersey+Grizzly2和Jersey+Jetty, dropwizard性能差别不大</li>
 <li>纯netty的性能远远高于其它框架</li>
 <li>Vert.x 性能看起来不是太好，而且随着并发量增大吞吐率也随之下降</li>
 </ul>
+<h2 id="HTTP-协议"><a href="#HTTP-协议" class="headerlink" title="HTTP 协议"></a>HTTP 协议</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><blockquote>
+<p>超文本传输协议(HyperTxt Transfter Protocol) ,基于请求与响应模式的，无状态的，应用层协议，基于TCP连接</p>
+</blockquote>
+<ul>
+<li>主要版本有 Http 1.0,1.1,2.0</li>
+<li>常用的HTTP方法有 GET，POST，PUT，HEAD，DELETE,OPTIONS</li>
+<li>http请求与响应报文都包含3部分，起始行，消息头，消息题，CRLF作为分隔符</li>
+<li>常见的状态码 略</li>
+<li><p>数据传输过程</p>
+<p>  <img src="/uploads/protocol/1189489-20180514091936031-871926134.png" alt=""></p>
+</li>
+</ul>
+<h3 id="版本详解"><a href="#版本详解" class="headerlink" title="版本详解"></a>版本详解</h3><blockquote>
+<p>版本发布历史</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1991</td>
+<td>HTTP/0.9</td>
+</tr>
+<tr>
+<td>1996</td>
+<td>HTTP/1.0</td>
+</tr>
+<tr>
+<td>1999</td>
+<td>HTTP/1.1</td>
+</tr>
+<tr>
+<td>2015</td>
+<td>HTTP/2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="HTTP1-0和HTTP1-1的一些区别"><a href="#HTTP1-0和HTTP1-1的一些区别" class="headerlink" title="HTTP1.0和HTTP1.1的一些区别"></a>HTTP1.0和HTTP1.1的一些区别</h4><ul>
+<li>缓存处理：在1.0中主要使用header里的 If-Modified-Since,Expires 来做缓存判断，1.1引入了更多的控制策略如 Entity tag,If-Unnodifie-Since,If-Match,If-None-Match</li>
+<li>带宽优化及网络连接使用：1.1 在请求头引入了 range 头域，它允许请求资源的某个部分，返回状态为 206，</li>
+<li>新增的状态码（409，410）</li>
+<li>Host 头处理：1.1请求消息与响应消息都支持Host 头域</li>
+<li>长连接：1.1支持长连接（PersistentConnection） 和请求的流水线（Pipelining） 处理，在一个TCP连接上可以传送多个请求与响应，减少建立与关闭的消耗与延迟，1.1默认开启</li>
+</ul>
+<blockquote>
+<p>Google 在2012年推出过SPDY（SPeeDY） 用来优化1.1的一些不足，引起了业界强烈反响，后来互联网工程任务组（IETF）对谷歌提出的SPDY协议进行了标准化，于2015年5推出了类似于SPDY协议的 HTTP 2.0 协议标准（简称HTTP/2），这就是HTTP 2.0的由来</p>
+</blockquote>
+<h4 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a>HTTP 2.0</h4><p><a href="https://link.zhihu.com/?target=https://http2.akamai.com/demo" target="_blank" rel="noopener">2.0 性能惊人例子</a></p>
+<ul>
+<li>新的二进制格式（Binary Format）：1.x解析是基于文本的，2.0是居于二进制，使用更广泛</li>
+<li>多路复用（MultiPlexing）：及连接共享，每一个request 都是用作连接共享执行的，一个request对应一个ID，这样一个连接上可以有多个request，每个连接的request可以随机的杂糅到一起，接收方根据request的id来进行分发</li>
+<li>header 压缩：2.0使用encoder来减少传输的header大小</li>
+<li>服务器推送（server push）</li>
+</ul>
+<blockquote>
+<p>HTTP 2.0 其实可支持非 HTTPS的，但是主流游览器像chrome,firefox只支持居于TLS 的Http2.0(及HTTPS)</p>
+</blockquote>
+<h4 id="2-0-多路复用与1-1-长连接区别"><a href="#2-0-多路复用与1-1-长连接区别" class="headerlink" title="2.0 多路复用与1.1 长连接区别"></a>2.0 多路复用与1.1 长连接区别</h4><ul>
+<li>1.0 一次请求，一次响应，用完关闭，新请求再建立连接</li>
+<li>1.1 Pipeling 若干请求串行化，后面的请求必须要等前面的请求返回才能执行，一旦有阻塞，造成 线头阻塞</li>
+<li><p>2.0 多个请求同时执行</p>
+<p>  <img src="/uploads/protocol/640.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h4><blockquote>
+<p>一个页面有100个资源，每个请求1kb消息头，需要消耗100kb,2.0采用维护一个字典，进行差量更新，大大降低头传输</p>
+</blockquote>
 
       
     </div>
@@ -529,6 +598,8 @@
         <div class="post-tags">
           
             <a href="/tags/协议/" rel="tag"># 协议</a>
+          
+            <a href="/tags/webservice/" rel="tag"># webservice</a>
           
         </div>
       
@@ -652,7 +723,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -707,7 +778,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络协议栈"><span class="nav-number">1.</span> <span class="nav-text">网络协议栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI七层模型"><span class="nav-number">1.1.</span> <span class="nav-text">OSI七层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP四层模型"><span class="nav-number">1.2.</span> <span class="nav-text">TCP/IP四层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#联系与区别"><span class="nav-number">1.3.</span> <span class="nav-text">联系与区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输层协议详解"><span class="nav-number">2.</span> <span class="nav-text">传输层协议详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-协议"><span class="nav-number">2.1.</span> <span class="nav-text">TCP 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手（建立连接）"><span class="nav-number">2.1.1.</span> <span class="nav-text">三次握手（建立连接）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四次握手（断开连接）"><span class="nav-number">2.1.2.</span> <span class="nav-text">四次握手（断开连接）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-协议"><span class="nav-number">2.2.</span> <span class="nav-text">UDP 协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCTP-协议"><span class="nav-number">2.3.</span> <span class="nav-text">SCTP 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">2.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SCTP提供如下服务"><span class="nav-number">2.3.2.</span> <span class="nav-text">SCTP提供如下服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化协议"><span class="nav-number">3.</span> <span class="nav-text">序列化协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-定义"><span class="nav-number">3.1.</span> <span class="nav-text">protobuf 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-特点"><span class="nav-number">3.2.</span> <span class="nav-text">protobuf 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-场景"><span class="nav-number">3.3.</span> <span class="nav-text">protobuf 场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-缺点"><span class="nav-number">3.4.</span> <span class="nav-text">protobuf 缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#thrift"><span class="nav-number">3.5.</span> <span class="nav-text">thrift</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-service"><span class="nav-number">4.</span> <span class="nav-text">Web service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#restful-WebService"><span class="nav-number">4.1.</span> <span class="nav-text">restful WebService</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">4.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特点"><span class="nav-number">4.1.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轻量级的架构体系选择（Jax-RS实现）"><span class="nav-number">4.1.3.</span> <span class="nav-text">轻量级的架构体系选择（Jax-RS实现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-轻量级的架构体系选择（非Jax-RS实现）"><span class="nav-number">4.1.4.</span> <span class="nav-text">4.轻量级的架构体系选择（非Jax-RS实现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-较重量级的服务器"><span class="nav-number">4.1.5.</span> <span class="nav-text">5.较重量级的服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-5-比较结论："><span class="nav-number">4.1.6.</span> <span class="nav-text">3.4.5 比较结论：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络协议栈"><span class="nav-number">1.</span> <span class="nav-text">网络协议栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI七层模型"><span class="nav-number">1.1.</span> <span class="nav-text">OSI七层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP四层模型"><span class="nav-number">1.2.</span> <span class="nav-text">TCP/IP四层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#联系与区别"><span class="nav-number">1.3.</span> <span class="nav-text">联系与区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输层协议详解"><span class="nav-number">2.</span> <span class="nav-text">传输层协议详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-协议"><span class="nav-number">2.1.</span> <span class="nav-text">TCP 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手（建立连接）"><span class="nav-number">2.1.1.</span> <span class="nav-text">三次握手（建立连接）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四次握手（断开连接）"><span class="nav-number">2.1.2.</span> <span class="nav-text">四次握手（断开连接）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-协议"><span class="nav-number">2.2.</span> <span class="nav-text">UDP 协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCTP-协议"><span class="nav-number">2.3.</span> <span class="nav-text">SCTP 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">2.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SCTP提供如下服务"><span class="nav-number">2.3.2.</span> <span class="nav-text">SCTP提供如下服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化协议"><span class="nav-number">3.</span> <span class="nav-text">序列化协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-定义"><span class="nav-number">3.1.</span> <span class="nav-text">protobuf 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-特点"><span class="nav-number">3.2.</span> <span class="nav-text">protobuf 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-场景"><span class="nav-number">3.3.</span> <span class="nav-text">protobuf 场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protobuf-缺点"><span class="nav-number">3.4.</span> <span class="nav-text">protobuf 缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#thrift"><span class="nav-number">3.5.</span> <span class="nav-text">thrift</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-service"><span class="nav-number">4.</span> <span class="nav-text">Web service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#restful-WebService"><span class="nav-number">4.1.</span> <span class="nav-text">restful WebService</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">4.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特点"><span class="nav-number">4.1.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轻量级的架构体系选择（Jax-RS实现）"><span class="nav-number">4.1.3.</span> <span class="nav-text">轻量级的架构体系选择（Jax-RS实现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轻量级的架构体系选择（非Jax-RS实现）"><span class="nav-number">4.1.4.</span> <span class="nav-text">轻量级的架构体系选择（非Jax-RS实现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#较重量级的服务器"><span class="nav-number">4.1.5.</span> <span class="nav-text">较重量级的服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较结论"><span class="nav-number">4.1.6.</span> <span class="nav-text">比较结论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-协议"><span class="nav-number">5.</span> <span class="nav-text">HTTP 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">5.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本详解"><span class="nav-number">5.2.</span> <span class="nav-text">版本详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP1-0和HTTP1-1的一些区别"><span class="nav-number">5.2.1.</span> <span class="nav-text">HTTP1.0和HTTP1.1的一些区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-2-0"><span class="nav-number">5.2.2.</span> <span class="nav-text">HTTP 2.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-0-多路复用与1-1-长连接区别"><span class="nav-number">5.2.3.</span> <span class="nav-text">2.0 多路复用与1.1 长连接区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头部压缩"><span class="nav-number">5.2.4.</span> <span class="nav-text">头部压缩</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
