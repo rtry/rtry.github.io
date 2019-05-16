@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="数据存储,mysql," />
+  <meta name="keywords" content="数据存储,MySQL," />
 
 
 
@@ -95,16 +95,16 @@
 
 
 <meta name="description" content="简介：MySQL索引的分类，建立，分析；MySQL 的配置；事务4大特性;Spring 事务的配置与使用；数据库锁的使用">
-<meta name="keywords" content="数据存储,mysql">
+<meta name="keywords" content="数据存储,MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="effective mysql  读书笔记">
+<meta property="og:title" content="Effective MySQL 读书笔记">
 <meta property="og:url" content="http://rtry.xyz/2017/09/21/Effective MySQL/index.html">
 <meta property="og:site_name" content="Rtry&#39;s blog">
 <meta property="og:description" content="简介：MySQL索引的分类，建立，分析；MySQL 的配置；事务4大特性;Spring 事务的配置与使用；数据库锁的使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-06T08:05:36.548Z">
+<meta property="og:updated_time" content="2019-05-16T10:09:51.361Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="effective mysql  读书笔记">
+<meta name="twitter:title" content="Effective MySQL 读书笔记">
 <meta name="twitter:description" content="简介：MySQL索引的分类，建立，分析；MySQL 的配置；事务4大特性;Spring 事务的配置与使用；数据库锁的使用">
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <title>effective mysql  读书笔记 | Rtry's blog</title>
+  <title>Effective MySQL 读书笔记 | Rtry's blog</title>
   
 
 
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">effective mysql  读书笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Effective MySQL 读书笔记</h1>
         
 
         <div class="post-meta">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-06T16:05:36+08:00">
-                2019-05-06
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T18:09:51+08:00">
+                2019-05-16
               </time>
             
           </span>
@@ -641,11 +641,72 @@ key_leng:92 //varchar(30) null charset=utf8
 <td>8</td>
 <td>-9223372036854775808 ~~ 9223372036854775807(带符号) / 0~~18446744073709551615(unsigned)</td>
 </tr>
+<tr>
+<td>FLOAT</td>
+<td>4</td>
+<td>(-3.402823466E+38，-1.175494351E-38)，0，(1.175494351E-38，3.402823466351E+38)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>8</td>
+<td>-</td>
+</tr>
 </tbody>
 </table>
 <ul>
 <li><p>在数据库设计的时候，比如tinyint(1) 与tinyint(2) 占用的空间是一样的，都是1个字节，存储数字的范围都是（带符号，-128–127），不一样的点在于，存储的位数比如你用ZEROFILL，显示查询结果时使用该宽度，还有一点在于java类型与数据库类型的默认转换规则是tinyint(1) 会自动转换成boolean，而tinyint(2)会转换为byte</p>
 </li>
+<li><p>MySQL 字符占用字节</p>
+<blockquote>
+<p>CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET<br>可灵活指定占多少字节</p>
+</blockquote>
+<ul>
+<li>char(n) 固定长度，char(4)不管是存入几个字符，都将占用4个字节</li>
+<li>char类型的字符串检索速度要比varchar类型的快</li>
+<li>varchar可指定n，text不能指定，内部存储varchar是存入的实际字符数+1个字节（n&lt;=255）或2个字节(n&gt;255)，text是实际字符数+2个字节</li>
+<li>varchar可直接创建索引，text创建索引要指定前多少个字符</li>
+</ul>
+</li>
+<li><p>MySQL 日期占用字节</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>存储字节</th>
+<th>最小值<-->最大值</--></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATE</td>
+<td>3</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>3</td>
+<td>HH:MM:SS</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>1</td>
+<td>YYYY</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>8</td>
+<td>YYYY-MM-DD HH:MM:SS</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4</td>
+<td>YYYYMMDD HHMMSS    </td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li><p>JAVA中整型存储范围与占用字节</p>
 <blockquote>
 <ul>
@@ -751,7 +812,7 @@ key_leng:92 //varchar(30) null charset=utf8
           
             <a href="/tags/数据存储/" rel="tag"># 数据存储</a>
           
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           
         </div>
       
@@ -853,7 +914,7 @@ key_leng:92 //varchar(30) null charset=utf8
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -875,7 +936,7 @@ key_leng:92 //varchar(30) null charset=utf8
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

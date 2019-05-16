@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据存储,MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="简介：MySQL各版本差异；单机，集群安装；8.x试用；灾备处理">
+<meta name="keywords" content="数据存储,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 文档">
+<meta property="og:url" content="http://rtry.xyz/2019/05/07/MySQL 文档/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="简介：MySQL各版本差异；单机，集群安装；8.x试用；灾备处理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/mysql/576154-20181017215459987-571184601.png">
+<meta property="og:image" content="http://rtry.xyz/uploads/mysql/014526_i6nC_2720166.png">
+<meta property="og:image" content="http://rtry.xyz/uploads/mysql/7236980-ec85513460bb5cd6.jpg">
+<meta property="og:updated_time" content="2019-05-16T10:15:23.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 文档">
+<meta name="twitter:description" content="简介：MySQL各版本差异；单机，集群安装；8.x试用；灾备处理">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/mysql/576154-20181017215459987-571184601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2019/05/07/MySQL 文档/"/>
+
+
+
+
+
+  <title>MySQL 文档 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2019/05/07/MySQL 文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL 文档</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-07T00:00:00+08:00">
+                2019-05-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T18:15:23+08:00">
+                2019-05-16
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简介：MySQL各版本差异；单机，集群安装；8.x试用；灾备处理<br><a id="more"></a></p>
+<h2 id="MySQL版本"><a href="#MySQL版本" class="headerlink" title="MySQL版本"></a>MySQL版本</h2><h3 id="版本类型"><a href="#版本类型" class="headerlink" title="版本类型"></a>版本类型</h3><blockquote>
+<p>MySQL Community Server 是开源免费的，这也是我们通常用的MySQL的版本</p>
+</blockquote>
+<ol>
+<li>MySQL Community Server 社区版本，开源免费，但不提供官方技术支持。</li>
+<li>MySQL Enterprise Edition 企业版本，需付费，可以试用30天。</li>
+<li>MySQL Cluster 集群版，开源免费。可将几个MySQL Server封装成一个Server。</li>
+<li>MySQL Cluster CGE 高级集群版，需付费。</li>
+<li>MySQL Workbench（GUI TOOL）一款专为MySQL设计的ER/数据库建模工具。它是著名的数据库设计工具DBDesigner4的继任者。MySQL Workbench又分为两个版本，分别是社区版（MySQL Workbench OSS）、商用版（MySQL Workbench SE）。</li>
+</ol>
+<blockquote>
+<p>我们选择Generally Available（GA）Release 去下载。GA 是指软件的通用版本，一般指正式发布的版本。</p>
+</blockquote>
+<h3 id="版本的差异对比"><a href="#版本的差异对比" class="headerlink" title="版本的差异对比"></a>版本的差异对比</h3><h4 id="MySQL-5-5-特性"><a href="#MySQL-5-5-特性" class="headerlink" title="MySQL 5.5 特性"></a>MySQL 5.5 特性</h4><blockquote>
+<p>2010年，MySQL 5.5发布</p>
+</blockquote>
+<ul>
+<li>默认存储引擎的改变，从默认的MyISAM 到 INNODB。</li>
+<li>多核扩展，能更充分地使用多核CPU。</li>
+<li>行级锁(一致性的非锁定读 MVCC)</li>
+<li>原InnoDB只有一个UndoSegment，最多支持1023的并发；现在有128个Segments，支持128K个并发（同样，解决高并发带来的事务回滚）。</li>
+<li>Linux上实现异步IO</li>
+</ul>
+<blockquote>
+<p>总结而言，5.5 版本较5.1性能有一个很大的提高</p>
+</blockquote>
+<h4 id="MySQL-5-6-特性"><a href="#MySQL-5-6-特性" class="headerlink" title="MySQL 5.6 特性"></a>MySQL 5.6 特性</h4><blockquote>
+<p>2013年，MySQL 5.6发布</p>
+</blockquote>
+<ul>
+<li>表空间增长大小：innodb_autoextend_increment</li>
+<li>是否独享表空间：innodb_file_per_table</li>
+<li>支持全文索引</li>
+<li>支持online DDL create,alter,drop</li>
+<li>undo log可独立出系统表空间</li>
+<li>redo log最大可增长到512G</li>
+</ul>
+<blockquote>
+<p>总结而言，MySQL 5.6是MySQL历史上一个里程碑式的版本</p>
+</blockquote>
+<h4 id="MySQL-5-7-特性"><a href="#MySQL-5-7-特性" class="headerlink" title="MySQL 5.7 特性"></a>MySQL 5.7 特性</h4><blockquote>
+<p>2015年，MySQL 5.7发布</p>
+</blockquote>
+<ul>
+<li>安全性 用户表 mysql.user 的 plugin字段不允许为空， 默认值是 mysql_native_password，而不是 mysql_old_password，不再支持旧密码格式</li>
+<li>MySQL数据库从5.7.8版本开始，也提供了对JSON的支持</li>
+<li>临时表的性能改进</li>
+<li>复制性能的改进 （支持多线程复制（Multi-Threaded Slaves, 简称MTS）</li>
+<li>支持多源复制（Multi-source replication）</li>
+</ul>
+<h4 id="MySQL-8-0-特性"><a href="#MySQL-8-0-特性" class="headerlink" title="MySQL 8.0 特性"></a>MySQL 8.0 特性</h4><blockquote>
+<p>2018年，MySQL 8.0发布</p>
+</blockquote>
+<ul>
+<li>整合了存储有关数据库对象信息的事务数据字典，所有的元数据都用InnoDB引擎进行存储</li>
+<li>innodb 增强</li>
+<li>MySQL 8.0 更好支持文档型数据库和JSON</li>
+<li>MySQL 8.0 版本开始支持期待已久直方图</li>
+<li>窗口函数(Window Functions)</li>
+<li>隐藏索引,降序索引</li>
+<li>从 MySQL 8 开始，使用 utf8mb4 作为 MySQL 的默认字符集</li>
+</ul>
+<blockquote>
+<p>总结而言，官方表示 MySQL 8 要比 MySQL 5.7 快 2 倍，还带来了大量的改进和更快的性能！</p>
+</blockquote>
+<p><img src="/uploads/mysql/576154-20181017215459987-571184601.png" alt=""></p>
+<p><img src="/uploads/mysql/014526_i6nC_2720166.png" alt=""></p>
+<h4 id="MySQL-8-0-不兼容问题"><a href="#MySQL-8-0-不兼容问题" class="headerlink" title="MySQL 8.0 不兼容问题"></a>MySQL 8.0 不兼容问题</h4><ul>
+<li><p>MySQL 8.0对关键字的处理做了进一步严格约束，这在MySQL5.7是没有的，或者约束较少，一个叫 “admin”的表，不能在8.0版本中声明</p>
+</li>
+<li><p>创建用户和授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#先创建一个用户</span><br><span class="line">create user &apos;hong&apos;@&apos;%&apos; identified by &apos;123123&apos;;</span><br><span class="line"></span><br><span class="line">#再进行授权</span><br><span class="line">grant all privileges on *.* to &apos;hong&apos;@&apos;%&apos; with grant option;</span><br><span class="line"></span><br><span class="line">#如果还是用原来5.7的那种方式</span><br><span class="line">grant all privileges on *.* to &apos;hong&apos;@&apos;%&apos; identified by &apos;123123&apos;;</span><br><span class="line"></span><br><span class="line">#会报错误：</span><br><span class="line">ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to</span><br><span class="line">your MySQL server version for the right syntax to use near &apos;identified by &apos;123123&apos;&apos; at line 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>远程登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select host,user,authentication_string,plugin from user;</span><br><span class="line">update user set host=&apos;%&apos; where user=&apos;root&apos;;</span><br><span class="line">flush privileges;</span><br><span class="line"># 还不行 因为 8.0 之前的版本中加密规则是mysql_native_password,而在mysql8之后,加密规则是caching_sha2_password</span><br><span class="line">ALTER USER &apos;root&apos;@&apos;%&apos; IDENTIFIED BY &apos;password&apos; PASSWORD EXPIRE NEVER; #修改加密规则</span><br><span class="line">ALTER USER &apos;root&apos;@&apos;%&apos; IDENTIFIED WITH mysql_native_password BY &apos;password&apos;; #更新一下用户的密码</span><br><span class="line">FLUSH PRIVILEGES; #刷新权限</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Java 驱动改动</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#5.7</span><br><span class="line">com.mysql.jdbc.Driver</span><br><span class="line">#8.0</span><br><span class="line">com.mysql.cj.jdbc.Driver</span><br><span class="line"></span><br><span class="line"># Maven</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;8.0.12&lt;/version&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数据库连接地址一定要显示指定SSL验证为false(如果有验证就指定为true),MYSQL8.0默认SSL使用验证：useSSL=false;时区指定</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc_url=jdbc:mysql://localhost:3306/xxxx?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL-单机安装"><a href="#MySQL-单机安装" class="headerlink" title="MySQL 单机安装"></a>MySQL 单机安装</h2><h3 id="MySQL-5-7-Centos-6-5-安装"><a href="#MySQL-5-7-Centos-6-5-安装" class="headerlink" title="MySQL 5.7,Centos 6.5 安装"></a>MySQL 5.7,Centos 6.5 安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># 判断系统</span><br><span class="line">rpm -qa | grep mysql</span><br><span class="line"></span><br><span class="line"># 卸载已有的</span><br><span class="line">yum -y remove mysql-libs-5.1.66-2.el6_3.x86_64</span><br><span class="line"></span><br><span class="line">#判断是否需要手动清除遗留数据</span><br><span class="line">rm -fr /usr/lib/mysql</span><br><span class="line">rm -fr /usr/include/mysql</span><br><span class="line">rm -f /etc/my.cnf</span><br><span class="line">rm -fr /var/lib/mysql</span><br><span class="line">rm -fr /usr/share/mysql</span><br><span class="line"></span><br><span class="line"># yum 安装依赖</span><br><span class="line">yum -y install make gcc-c++ cmake bison-devel ncurses-devel libaio libaio-devel</span><br><span class="line"></span><br><span class="line"># rpm 安装MySQL</span><br><span class="line">tar xvf mysql-5.7.13-1.el6.x86_64.rpm-bundle.tar</span><br><span class="line">rpm -ivh mysql-community-common-5.7.13-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh mysql-community-libs-5.7.13-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh mysql-community-client-5.7.13-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh mysql-community-server-5.7.13-1.el6.x86_64.rpm</span><br><span class="line"></span><br><span class="line"># 初始化mysql root 的密码</span><br><span class="line">mysqld --initialize --user=mysql</span><br><span class="line"># 生成密码存放位置</span><br><span class="line">vim /var/log/mysqld.log </span><br><span class="line"></span><br><span class="line"># 启动</span><br><span class="line">service mysqld start</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line">#修改密码</span><br><span class="line">msql&gt;alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;rootroot&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt;use mysql;</span><br><span class="line"></span><br><span class="line">#运行远程登录</span><br><span class="line">msyql&gt;update user set user.Host=&apos;%&apos; where user.User=&apos;root&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt;flush privileges;</span><br><span class="line"></span><br><span class="line">mysql&gt;quit</span><br><span class="line"></span><br><span class="line">#第二次修改密码时，因为已经修改了远程登录</span><br><span class="line">msql&gt;alter user &apos;root&apos;@&apos;%&apos; identified by &apos;123456&apos;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#查看iptables在/etc/sysconfig/是否存在</span><br><span class="line">-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL-集群安装"><a href="#MySQL-集群安装" class="headerlink" title="MySQL 集群安装"></a>MySQL 集群安装</h2><h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><blockquote>
+<p>主服务器数据库的每次操作都会记录在其二进制文件 mysql-binlog.xxx（该文件可以在mysql目录下的data目录中看到）中，从服务器的I/O线程使用专用账号登录到主服务器中读取该二进制文件，并将文件内容写入到自己本地的中继日志relay-log文件中，然后从服务器的SQL线程会根据中继日志中的内容执行SQL语句</p>
+</blockquote>
+<p><img src="/uploads/mysql/7236980-ec85513460bb5cd6.jpg" alt=""></p>
+<blockquote>
+<p>MySQL主从同步的作用</p>
+<ol>
+<li>可以作为备份机制，相当于热备份</li>
+<li>可以用来做读写分离，均衡数据库负载</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>master 配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">### 1 my.cnf 配置 [mysqld] 下增加###</span><br><span class="line"></span><br><span class="line">#主从配置-master</span><br><span class="line">server-id=1</span><br><span class="line">#log-bin 名称</span><br><span class="line">log-bin=/var/lib/mysql/mysql-binlog</span><br><span class="line">#设置MySQL不控制binlog的刷新，由文件系统自己控制它的缓存的刷新。这时候的性能是最好的，但是风险也是最大的</span><br><span class="line">#因为一旦系统Crash，在binlog_cache中的所有binlog信息都会被丢失</span><br><span class="line">sync_binlog=0</span><br><span class="line">#设置日志过期天数</span><br><span class="line">expire_logs_days=3</span><br><span class="line">#设置binlog日志大小</span><br><span class="line">binlog_cache_size=1M</span><br><span class="line"></span><br><span class="line">### 2 在master 服务上创建账号 ###</span><br><span class="line">mysql&gt; create user &apos;repl&apos;@&apos;192.168.253.%&apos; identified by &apos;123456&apos;;</span><br><span class="line">mysql&gt; GRANT REPLICATION SLAVE ON *.* TO &apos;repl&apos;@&apos;192.168.253.%&apos;;</span><br><span class="line"></span><br><span class="line">### 3 master 服务常用命令 ###</span><br><span class="line">show master status;</span><br><span class="line"># 查看当前 bin-log 名字与pos</span><br><span class="line"></span><br><span class="line">show slave hosts;</span><br><span class="line"># 查看从服务器列表</span><br><span class="line"></span><br><span class="line">show binary logs;</span><br><span class="line"># 获取binlog文件列表</span><br><span class="line"></span><br><span class="line">SHOW PROCESSLIST;</span><br><span class="line"># 如果有 SUPER 权限，则可以看到全部的线程，否则，只能看到自己发起的线程（这是指，当前对应的 MySQL 帐户运行的线程）</span><br><span class="line"># 其中有一个Binlog Dump 线程 是slave 连接过来的</span><br><span class="line"></span><br><span class="line">select host,user from mysql.user;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>slave 配置</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">### 1 my.cnf 配置 [mysqld] 下增加###</span><br><span class="line"></span><br><span class="line">#主从配置-slave</span><br><span class="line">server-id=2</span><br><span class="line">read_only=1</span><br><span class="line"># 指定同步的表（只会同步felicity库下）</span><br><span class="line">replicate-wild-do-table=felicity.%</span><br><span class="line">#设置binlog日志大小</span><br><span class="line">binlog_cache_size=1M</span><br><span class="line"></span><br><span class="line">### 2 在slave 连接master 服务（用master建的用户） ###</span><br><span class="line">mysql&gt; CHANGE MASTER TO MASTER_HOST=&apos;192.168.253.105&apos;, MASTER_USER=&apos;repl&apos;, MASTER_PASSWORD=&apos;123456&apos;, MASTER_LOG_FILE=&apos;mysql-binlog.000001&apos;, MASTER_LOG_POS=812;</span><br><span class="line"></span><br><span class="line">### 3 启动slave ###</span><br><span class="line">mysql&gt; start slave;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 4 slave 服务常用命令 ###</span><br><span class="line">show slave status \G;</span><br><span class="line">#  观察线程状态：Slave_IO_Running: Yes 和Slave_SQL_Running: Yes，如果都是yes，说明运行正常。在出错的请求下，观察error</span><br><span class="line"></span><br><span class="line">stop slave;</span><br><span class="line"># 如果同步服务出现异常，可停到slave,然后重写连接到指定的 binglog and pos,然后再启动</span><br><span class="line">mysql&gt; CHANGE MASTER TO MASTER_HOST=&apos;192.168.253.105&apos;, MASTER_USER=&apos;repl&apos;, MASTER_PASSWORD=&apos;123456&apos;, MASTER_LOG_FILE=&apos;mysql-binlog.000003&apos;, MASTER_LOG_POS=154;</span><br><span class="line"></span><br><span class="line">SHOW PROCESSLIST;</span><br><span class="line"># 如果有 SUPER 权限，则可以看到全部的线程，否则，只能看到自己发起的线程（这是指，当前对应的 MySQL 帐户运行的线程）。</span><br><span class="line"># 其中有2个线程，IO线程，SQL线程</span><br></pre></td></tr></table></figure>
+<h3 id="主从复制说明"><a href="#主从复制说明" class="headerlink" title="主从复制说明"></a>主从复制说明</h3><h4 id="MySQL主从复制大体有3种方式"><a href="#MySQL主从复制大体有3种方式" class="headerlink" title="MySQL主从复制大体有3种方式"></a>MySQL主从复制大体有3种方式</h4><ul>
+<li><p>异步复制：在主节点写入日志即返回成功，默认情况下MySQL5.5/5.6/5.7和mariaDB10.0/10.1的复制功能是异步的。异步复制可以实现最佳的性能，主库把binlog日志发送给从库，这一动作就结束了，并不验证从库，会造成主从库数据不一致。</p>
+<blockquote>
+<p>上文配置 即是</p>
+</blockquote>
+</li>
+<li><p>半同步复制：一主多从模式下，有一个从节点返回成功，即成功，不必等待多个节点全部返回。</p>
+<blockquote>
+<p>MySQL5.5由Google贡献的补丁才开始支持半同步复制（semi Replication）模式，该模式可以确保从服务器接收完主服务器发送的binlog日志文件并写入自己的中继日志（relay log）里，然后会给主服务器一个反馈，告诉对方已经接收到完毕，这时主库线程才返回当前session告知操作完成，当出现超时情况时，源主服务器会暂时切换到异步复制模式，直到至少有一台设置为半同步复制模式的从服务器及时收到信息为止</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>GTID复制模式GTID复制：（global transaction id 全局事务标识符） MySQL5.6版本开始支持<blockquote>
+<p>GTID复制不像传统的复制方式（异步复制、半同步复制）需要找到binlog（MASTER_LOG_FILE）和POS点（MASTER_LOG_POS），只需要知道master的IP、端口、账号、密码即可。因为复制是自动的，MySQL会通过内部机制GTID自动找点同步。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>主从复制延迟，可查看主库是否写压力过大，主从网络延迟，主库慢SQL多，硬件太差等</li>
+<li>主从数据库用户建立技巧，主从操作数据用户相同（非Root）,从库设置read_only=1 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">用户：developer 密码：123546 端口：3306 数据库：felicity</span><br><span class="line">权限：SELECT,INSERT,UPDATE,DELETE</span><br><span class="line"></span><br><span class="line">命令：</span><br><span class="line">mysql&gt; create user &apos;developer&apos;@&apos;%&apos; identified by &apos;123456&apos;; (可忽略这句直接用下面一句)</span><br><span class="line">mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE ON felicity.* to &apos;developer&apos;@&apos;%&apos; identified by &apos;123546&apos;;</span><br><span class="line">#由于从库设置了read-only，非super权限是无法写入的，因为通过read-only参数就可以</span><br><span class="line">mysql&gt;  flush privileges;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">问题：如果主从创建的这个developer用户 远程，本地都无法登陆尝试下面2种方式</span><br><span class="line">1. delete from user where user=&apos;&apos;;</span><br><span class="line">2. mysqld_safe 命令</span><br><span class="line">    * 关闭服务 service mysqld stop</span><br><span class="line">    * 执行命令 mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</span><br><span class="line">    * 登陆root 用户，修改developer 密码 ，刷新后退出</span><br><span class="line">    alter user &apos;developer&apos;@&apos;%&apos; identified by &apos;123456&apos;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>数据备份问题，可选择其中一台slave(最好是不对外提供服务的数据)，开启从库的binlog</p>
+<blockquote>
+<p>备份时可以选择只停止SQL线程，停止应用SQL语句到数据库，I/O线程保留工作状态，执行命令为stop slave sql_thread；备份方式可以采取mysqldump逻辑备份或者直接物理备份，例如使用cp、tar（针对目录）工具，或xtrabackup（第三方的物理备份软件）进行备份，逻辑备份和物理备份的选择，一般是根据总的备份数据量的多少进行选择，数据库低于20G，建议选择mysqldump逻辑备份方法，安全稳定，最后把全量和binlog数据发送到备份服务器上留存</p>
+</blockquote>
+</li>
+<li><p>master 宕机</p>
+</li>
+</ul>
+<ol>
+<li><p>如果主库可以SSH连接，bin-log数据没丢，要把主库的bin-log补全到所有库 </p>
+<p> a. 提升S1为M1的操作</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 调配置read-only，授权用户select，变成增删改查，开启binlog</span><br><span class="line">2. rm -rf master.info relay-log*</span><br><span class="line">3. 登录数据库reset master</span><br><span class="line">4. 重启数据库，提升S1为M1完毕</span><br></pre></td></tr></table></figure>
+<p> b. 所有从库:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CHANGE MASTER TO,MASTER_LOG_FILE=’mysql-bin.000001’,MASTER_LOG_POS=107</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果主库连接不上</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 半同步从库提升主库，半同步数据，补全到所有从库半同步从库提升主库的操作1-a，所有从库执行同1-b</span><br><span class="line">2. S1 只当做备库的方法 提升S1为主库，操作见1-a步骤，所有从库CHANGE MASTER 同1-b</span><br><span class="line">3. 主库宕机实现没有指定从库为主库</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><blockquote>
+<p>在有了主从复制的基础上，可进行读写分离，目前市面上大体有2种思路来进行解决</p>
+<ol>
+<li>应用层，程序内容定义读写数据源，由程序直接连接读写库</li>
+<li>中间件，程序和库之间架设一个中间件，由中间件来路由SQL请求，区别读写</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>两者各有优点，应用层处理效率更高，但耦合高，扩展麻烦，运维无法切入，中间件，耦合低，程序不需要任何改动直接接入，但是由于是中间件，性能会有所降低，单点问题等</p>
+</blockquote>
+<blockquote>
+<p>由于数据是会增加的，单纯的讨论读写分离，不具有前瞻性，需要对分库分表进行一定的设计。所以就着重讨论Sharding-JDBC（在应用层的一个中间件）<br>和MyCat (代理层的一个中间件)</p>
+</blockquote>
+<blockquote>
+<p>对于MySQL存储的设计，其实在需要自建的时候才考虑，如果不需要自建，分布式云数据库是一个不错的选择<br>如 数据库类型 :MySQL 5.7  存储空间 :150GB ( 本地SSD盘 ) 规格 :1 核 2G<br>购买时长 :1年 购买量 :1个最大连接数：600 ; IOPS：1000(同时最大查询量)</p>
+</blockquote>
+<h2 id="MySQL-中间件"><a href="#MySQL-中间件" class="headerlink" title="MySQL 中间件"></a>MySQL 中间件</h2><h3 id="ShardingSphere"><a href="#ShardingSphere" class="headerlink" title="ShardingSphere"></a>ShardingSphere</h3><blockquote>
+<p>ShardingSphere是一套开源的分布式数据库中间件解决方案组成的生态圈，它由Sharding-JDBC、Sharding-Proxy和Sharding-Sidecar（计划中）这3款相互独立的产品组成。 他们均提供标准化的数据分片、分布式事务和数据库治理功能，可适用于如Java同构、异构语言、容器、云原生等各种多样化的应用场景。ShardingSphere目前已经进入Apache孵化器<br><a href="https://shardingsphere.apache.org/document/current/cn/overview/" target="_blank" rel="noopener">官方文档</a> | <a href="https://github.com/apache/incubator-shardingsphere" target="_blank" rel="noopener">Git源码</a></p>
+</blockquote>
+<h3 id="Sharding-JDBC-发展版本"><a href="#Sharding-JDBC-发展版本" class="headerlink" title="Sharding-JDBC 发展版本"></a>Sharding-JDBC 发展版本</h3><blockquote>
+<p>在加入Apache孵化器之前有3个大版本</p>
+<ul>
+<li>1.x 关注SQL兼容性、分库分表、读写分离、分布式主键、柔性事务等分片功能</li>
+<li>2.x 提供的数据治理能力，注册中心分发配置，基于Opentracing协议的APM系统观察跟踪</li>
+<li>3.x 改名Sharding-Sphere，组成生态圈</li>
+</ul>
+</blockquote>
+<h3 id="Sharding-JDBC-使用"><a href="#Sharding-JDBC-使用" class="headerlink" title="Sharding-JDBC 使用"></a>Sharding-JDBC 使用</h3><h4 id="读写分离-1"><a href="#读写分离-1" class="headerlink" title="读写分离"></a>读写分离</h4><blockquote>
+<p>版本（spring 4.x 内使用 3.1），注意引入的命名空间</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.shardingsphere&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;sharding-jdbc-spring-namespace&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Sharding-JDBC 不提供数据库的复制功能，需要自行完成（如MySQL主从复制），只需要将数据源配置成新的数据源对象即可，如在spring 4.x 中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 主从配置 --&gt;</span><br><span class="line">&lt;master-slave:data-source id=&quot;shardingDataSource&quot;</span><br><span class="line">	master-data-source-name=&quot;master&quot; slave-data-source-names=&quot;slave1&quot;&gt;</span><br><span class="line">	&lt;master-slave:props&gt;</span><br><span class="line">		&lt;prop key=&quot;sql.show&quot;&gt;true&lt;/prop&gt;</span><br><span class="line">		&lt;prop key=&quot;executor.size&quot;&gt;10&lt;/prop&gt;</span><br><span class="line">		&lt;prop key=&quot;foo&quot;&gt;bar&lt;/prop&gt;</span><br><span class="line">	&lt;/master-slave:props&gt;</span><br><span class="line">&lt;/master-slave:data-source&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h4><blockquote>
+<p>分库分表 需要指定分库策略，分表策略，然后将数据源替换为新的数据源，如在spring 4.x 中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 分库策略 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;databaseStrategy&quot;</span><br><span class="line">	sharding-column=&quot;user_id&quot; algorithm-expression=&quot;ds$-&gt;&#123;user_id % 2&#125;&quot; /&gt;</span><br><span class="line">&lt;!-- t_order 分表策略 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;orderTableStrategy&quot;</span><br><span class="line">	sharding-column=&quot;order_id&quot; algorithm-expression=&quot;t_order_$-&gt;&#123;order_id % 2&#125;&quot; /&gt;</span><br><span class="line">&lt;!-- t_order_item 分表策略 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;orderItemTableStrategy&quot;</span><br><span class="line">	sharding-column=&quot;order_id&quot; algorithm-expression=&quot;t_order_item_$-&gt;&#123;order_id % 2&#125;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 数据源 --&gt;</span><br><span class="line">&lt;sharding:data-source id=&quot;shardingDataSource&quot;&gt;</span><br><span class="line">	&lt;sharding:sharding-rule data-source-names=&quot;ds0,ds1&quot;&gt;</span><br><span class="line">		&lt;sharding:table-rules&gt;</span><br><span class="line">			&lt;sharding:table-rule logic-table=&quot;t_order&quot;</span><br><span class="line">				actual-data-nodes=&quot;ds$-&gt;&#123;0..1&#125;.t_order_$-&gt;&#123;0..1&#125;&quot;</span><br><span class="line">				database-strategy-ref=&quot;databaseStrategy&quot; table-strategy-ref=&quot;orderTableStrategy&quot; /&gt;</span><br><span class="line">			&lt;sharding:table-rule logic-table=&quot;t_order_item&quot;</span><br><span class="line">				actual-data-nodes=&quot;ds$-&gt;&#123;0..1&#125;.t_order_item_$-&gt;&#123;0..1&#125;&quot;</span><br><span class="line">				database-strategy-ref=&quot;databaseStrategy&quot; table-strategy-ref=&quot;orderItemTableStrategy&quot; /&gt;</span><br><span class="line">		&lt;/sharding:table-rules&gt;</span><br><span class="line">	&lt;/sharding:sharding-rule&gt;</span><br><span class="line">&lt;/sharding:data-source&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="读写分离-AND-分库分表"><a href="#读写分离-AND-分库分表" class="headerlink" title="读写分离 AND 分库分表"></a>读写分离 AND 分库分表</h4><blockquote>
+<p>主从的配置，需要到sharding:data-source 下配置而不是在外部master-slave：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 主从配置 --&gt;</span><br><span class="line">&lt;bean id=&quot;randomStrategy&quot; class=&quot;io.shardingsphere.api.algorithm.masterslave.RandomMasterSlaveLoadBalanceAlgorithm&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 分库策略配置 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;databaseStrategy&quot;</span><br><span class="line">	sharding-column=&quot;user_id&quot; algorithm-expression=&quot;ds$-&gt;&#123;user_id % 2&#125;&quot; /&gt;</span><br><span class="line">&lt;!-- t_order 分表策略 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;orderTableStrategy&quot;</span><br><span class="line">	sharding-column=&quot;order_id&quot; algorithm-expression=&quot;t_order_$-&gt;&#123;order_id % 2&#125;&quot; /&gt;</span><br><span class="line">&lt;!-- t_order_item 分表策略 --&gt;</span><br><span class="line">&lt;sharding:inline-strategy id=&quot;orderItemTableStrategy&quot;</span><br><span class="line">	sharding-column=&quot;order_id&quot; algorithm-expression=&quot;t_order_item_$-&gt;&#123;order_id % 2&#125;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 数据源配置 --&gt;</span><br><span class="line">&lt;sharding:data-source id=&quot;shardingDataSource&quot;&gt;</span><br><span class="line">	&lt;sharding:sharding-rule data-source-names=&quot;ds0,ds0_slave,ds1,ds1_slave&quot;&gt;</span><br><span class="line">	</span><br><span class="line">		&lt;!-- 主从规则 --&gt;</span><br><span class="line">		&lt;sharding:master-slave-rules&gt;</span><br><span class="line">            &lt;sharding:master-slave-rule id=&quot;ms0&quot; master-data-source-name=&quot;ds0&quot; slave-data-source-names=&quot;ds0_slave&quot; strategy-ref=&quot;randomStrategy&quot; /&gt;</span><br><span class="line">            &lt;sharding:master-slave-rule id=&quot;ms1&quot; master-data-source-name=&quot;ds1&quot; slave-data-source-names=&quot;ds1_slave&quot; strategy-ref=&quot;randomStrategy&quot; /&gt;</span><br><span class="line">        &lt;/sharding:master-slave-rules&gt;</span><br><span class="line">		</span><br><span class="line">		&lt;!-- 分库分表规则 --&gt;</span><br><span class="line">		&lt;sharding:table-rules&gt;</span><br><span class="line">			&lt;!-- 此处actual-data-nodes 的数据库应该使用主从新ID --&gt;</span><br><span class="line">			&lt;sharding:table-rule logic-table=&quot;t_order&quot;  	actual-data-nodes=&quot;ms$-&gt;&#123;0..1&#125;.t_order_$-&gt;&#123;0..1&#125;&quot; 		database-strategy-ref=&quot;databaseStrategy&quot; table-strategy-ref=&quot;orderTableStrategy&quot; /&gt;</span><br><span class="line">			&lt;sharding:table-rule logic-table=&quot;t_order_item&quot; actual-data-nodes=&quot;ms$-&gt;&#123;0..1&#125;.t_order_item_$-&gt;&#123;0..1&#125;&quot; 	database-strategy-ref=&quot;databaseStrategy&quot; table-strategy-ref=&quot;orderItemTableStrategy&quot; /&gt;</span><br><span class="line">		&lt;/sharding:table-rules&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;/sharding:sharding-rule&gt;</span><br><span class="line">&lt;/sharding:data-source&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="分库分表下-支持的SQL"><a href="#分库分表下-支持的SQL" class="headerlink" title="分库分表下 支持的SQL"></a>分库分表下 支持的SQL</h4><p><a href="https://shardingsphere.apache.org/document/legacy/3.x/document/cn/features/sharding/use-norms/sql/" target="_blank" rel="noopener">SQL 支持情况</a></p>
+<h3 id="MyCat"><a href="#MyCat" class="headerlink" title="MyCat"></a>MyCat</h3><blockquote>
+<p>暂无</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据存储/" rel="tag"># 数据存储</a>
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/读亿级流量网站架构技术/" rel="next" title="读亿级流量网站架构技术">
+                <i class="fa fa-chevron-left"></i> 读亿级流量网站架构技术
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL版本"><span class="nav-number">1.</span> <span class="nav-text">MySQL版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本类型"><span class="nav-number">1.1.</span> <span class="nav-text">版本类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本的差异对比"><span class="nav-number">1.2.</span> <span class="nav-text">版本的差异对比</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-5-5-特性"><span class="nav-number">1.2.1.</span> <span class="nav-text">MySQL 5.5 特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-5-6-特性"><span class="nav-number">1.2.2.</span> <span class="nav-text">MySQL 5.6 特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-5-7-特性"><span class="nav-number">1.2.3.</span> <span class="nav-text">MySQL 5.7 特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-8-0-特性"><span class="nav-number">1.2.4.</span> <span class="nav-text">MySQL 8.0 特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-8-0-不兼容问题"><span class="nav-number">1.2.5.</span> <span class="nav-text">MySQL 8.0 不兼容问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-单机安装"><span class="nav-number">2.</span> <span class="nav-text">MySQL 单机安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-5-7-Centos-6-5-安装"><span class="nav-number">2.1.</span> <span class="nav-text">MySQL 5.7,Centos 6.5 安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-集群安装"><span class="nav-number">3.</span> <span class="nav-text">MySQL 集群安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制"><span class="nav-number">3.1.</span> <span class="nav-text">主从复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制说明"><span class="nav-number">3.2.</span> <span class="nav-text">主从复制说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL主从复制大体有3种方式"><span class="nav-number">3.2.1.</span> <span class="nav-text">MySQL主从复制大体有3种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">3.2.2.</span> <span class="nav-text">常见问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写分离"><span class="nav-number">3.3.</span> <span class="nav-text">读写分离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-中间件"><span class="nav-number">4.</span> <span class="nav-text">MySQL 中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere"><span class="nav-number">4.1.</span> <span class="nav-text">ShardingSphere</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sharding-JDBC-发展版本"><span class="nav-number">4.2.</span> <span class="nav-text">Sharding-JDBC 发展版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sharding-JDBC-使用"><span class="nav-number">4.3.</span> <span class="nav-text">Sharding-JDBC 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#读写分离-1"><span class="nav-number">4.3.1.</span> <span class="nav-text">读写分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分库分表"><span class="nav-number">4.3.2.</span> <span class="nav-text">分库分表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读写分离-AND-分库分表"><span class="nav-number">4.3.3.</span> <span class="nav-text">读写分离 AND 分库分表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分库分表下-支持的SQL"><span class="nav-number">4.3.4.</span> <span class="nav-text">分库分表下 支持的SQL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyCat"><span class="nav-number">4.4.</span> <span class="nav-text">MyCat</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
