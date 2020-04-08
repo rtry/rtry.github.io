@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="简介：JAVA 线程，JMM，DCL，CAS">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA并发编程">
+<meta property="og:url" content="http://rtry.xyz/2020/04/08/java 并发编程/index.html">
+<meta property="og:site_name" content="Rtry&#39;s blog">
+<meta property="og:description" content="简介：JAVA 线程，JMM，DCL，CAS">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://rtry.xyz/uploads/java/231641008434227.png">
+<meta property="og:image" content="http://rtry.xyz/uploads/java/690169-20180630231133468-875140136.png">
+<meta property="og:updated_time" content="2020-04-08T06:06:32.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA并发编程">
+<meta name="twitter:description" content="简介：JAVA 线程，JMM，DCL，CAS">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/java/231641008434227.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rtry.xyz/2020/04/08/java 并发编程/"/>
+
+
+
+
+
+  <title>JAVA并发编程 | Rtry's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rtry's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">活在当下 积极向上</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rtry.xyz/2020/04/08/java 并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Felicity.R.try">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rtry's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JAVA并发编程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-08T00:00:00+08:00">
+                2020-04-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T14:06:32+08:00">
+                2020-04-08
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作与学习/" itemprop="url" rel="index">
+                    <span itemprop="name">工作与学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简介：JAVA 线程，JMM，DCL，CAS<br><a id="more"></a></p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><h4 id="线程的5种状态"><a href="#线程的5种状态" class="headerlink" title="线程的5种状态"></a>线程的5种状态</h4><ul>
+<li>New:新建</li>
+<li>Runnable:就绪</li>
+<li>Running:运行中</li>
+<li>Blocked:阻塞</li>
+<li>Dead:死亡</li>
+</ul>
+<h4 id="wait-notify-notifyAll"><a href="#wait-notify-notifyAll" class="headerlink" title="wait/notify/notifyAll"></a>wait/notify/notifyAll</h4><ul>
+<li>Object 类中方法，为native ,也就是说每个对象都有</li>
+<li>wait(1000) ，如果没有notify或notifAll方法的唤醒，也会自动唤醒</li>
+<li>这3个方法必须要在同步块中，因为线程等待需要获取锁，如果没有同步锁，如何获取monitor</li>
+</ul>
+<h4 id="sleep-yield-join"><a href="#sleep-yield-join" class="headerlink" title="sleep/yield/join"></a>sleep/yield/join</h4><ul>
+<li>在Thread 类中</li>
+<li>sleep(1000)，线程休眠1000，不依赖于同步块，让出CPU，但不释放锁</li>
+<li>yield 暂停线程，改变线程执行状态从 Runing-&gt;Runable</li>
+<li>join　父线程等待子线程执行完成后再执行，就是将异步执行的线程合并为同步的线程,等待加入的线程执行完之后再执行自己</li>
+</ul>
+<h3 id="Java内存模型-JMM"><a href="#Java内存模型-JMM" class="headerlink" title="Java内存模型(JMM)"></a>Java内存模型(JMM)</h3><h4 id="重排序与顺序一致性"><a href="#重排序与顺序一致性" class="headerlink" title="重排序与顺序一致性"></a>重排序与顺序一致性</h4><blockquote>
+<p>Java的并发模型采用的是共享内存模型，java线程之间的通信总是隐式进行，整个通信过程对程序员完全透明。</p>
+</blockquote>
+<p><img src="/uploads/java/231641008434227.png" alt=""></p>
+<p>JMM对共享内存的操作做出了如下两条规定：</p>
+<ul>
+<li>线程对共享内存的所有操作都必须在自己的工作内存中进行，不能直接从主内存中读写</li>
+<li>不同线程无法直接访问其他线程工作内存中的变量，因此共享变量的值传递需要通过主内存完成</li>
+</ul>
+<blockquote>
+<p>在执行程序时，为了提高性能，编译器和处理器常常会对指令做重排序</p>
+</blockquote>
+<ol>
+<li>编译器优化的重排序。编译器在不改变单线程程序语义的前提下，可以重新安排语句的执行顺序。（编译器重排序）</li>
+<li>指令级并行的重排序。现代处理采用了指令级并行技术来将多条指令重叠执行。如果不存在数据依赖性，处理器可以改变语句对应及其指令的执行顺序。（处理器重排序）</li>
+<li>内存系统的重排序。由于处理器使用缓存和读/写缓冲区，这使得加载和存储操作看上去可能是在乱序执行。（处理器重排序）</li>
+</ol>
+<p><img src="/uploads/java/690169-20180630231133468-875140136.png" alt=""></p>
+<p>并不是所有的都会进行重排序</p>
+<ul>
+<li>happens-before</li>
+<li>as-if-serial</li>
+</ul>
+<h3 id="Double-Check-Lock-DCL"><a href="#Double-Check-Lock-DCL" class="headerlink" title="Double Check Lock(DCL)"></a>Double Check Lock(DCL)</h3><blockquote>
+<p>JAVA多线程编程中的双重检查锁定</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class SingleModel4 &#123;</span><br><span class="line"></span><br><span class="line">	// 静态常量，随class初始化</span><br><span class="line">	public static volatile SingleModel4 model;</span><br><span class="line">	// 私有构造方法，其他地方不可调用</span><br><span class="line">	private SingleModel4() &#123;</span><br><span class="line">	&#125;;</span><br><span class="line">	// 懒汉，等需要的时候再创建</span><br><span class="line">	public static SingleModel4 getSingle() &#123;</span><br><span class="line">		if (model == null)&#123;								//1</span><br><span class="line">			synchronized (SingleModel4.class) &#123;			//2</span><br><span class="line">				if(model==null)&#123;						//3</span><br><span class="line">					model = new SingleModel4();			//4</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return model;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">DCL （double check lock） java 多线程双重检查锁定</span><br><span class="line">原因在于当线程A或者到锁进行到4时，由于4的重排序，先对model地址进行赋值，然后再初始，那么此时，如果有线程B进入到1，会判断model不为空，但其实model 还未初始化</span><br><span class="line">解决方式：加上volatile SingleModel4 model;</span><br></pre></td></tr></table></figure>
+<h3 id="compare-and-swap-CAS"><a href="#compare-and-swap-CAS" class="headerlink" title="compare-and-swap(CAS)"></a>compare-and-swap(CAS)</h3><blockquote>
+<p>一种无锁的原子性操作,性能出色，但会产生ABA问题，后面那个A是其他线程改的，解决方式是加上版本号，1A-2B-3A</p>
+</blockquote>
+<h3 id="AbstractQueuedSynchronizer"><a href="#AbstractQueuedSynchronizer" class="headerlink" title="AbstractQueuedSynchronizer"></a>AbstractQueuedSynchronizer</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><ul>
+<li>在jdk1.5的时候，synchronized 是重量级的，在线程切换的时候耗时严重，同时中断等操作不方便，再加上没有相关的工具类。</li>
+<li>Doug Lea 设计一个通用的同步器，可方便用户扩展自己的同步器<h4 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h4>同步器的核心方法是acquire和release操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public final void acquire(int arg) &#123;</span><br><span class="line">        if (!tryAcquire(arg) &amp;&amp;</span><br><span class="line">            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">            selfInterrupt();</span><br><span class="line">&#125;</span><br><span class="line">public final boolean release(int arg) &#123;</span><br><span class="line">    if (tryRelease(arg)) &#123;</span><br><span class="line">        Node h = head;</span><br><span class="line">        if (h != null &amp;&amp; h.waitStatus != 0)</span><br><span class="line">            unparkSuccessor(h);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>为了实现这两个操作，需要协调三大关键操作引申出来的三个基本组件：</p>
+<ul>
+<li>同步器状态的原子性管理</li>
+<li>线程阻塞与解除阻塞</li>
+<li>队列的管理<h5 id="同步状态"><a href="#同步状态" class="headerlink" title="同步状态"></a>同步状态</h5><blockquote>
+<p>AQS类使用单个int（32位）来保存同步状态，并暴露出getState、setState以及compareAndSet操作来读取和更新这个同步状态。其中属性state被声明为volatile，并且通过使用CAS指令来实现compareAndSetState，使得当且仅当同步状态拥有一个一致的期望值的时候，才会被原子地设置成新值，这样就达到了同步状态的原子性管理，确保了同步状态的原子性、可见性和有序性。</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h5><blockquote>
+<p>　j.u.c.locks包提供了LockSupport类来解决这个问题。方法LockSupport.park阻塞当前线程直到有个LockSupport.unpark方法被调用。unpark的调用是没有被计数的，因此在一个park调用前多次调用unpark方法只会解除一个park操作。另外，它们作用于每个线程而不是每个同步器。一个线程在一个新的同步器上调用park操作可能会立即返回，因为在此之前可以有多余的unpark操作。但是，在缺少一个unpark操作时，下一次调用park就会阻塞。虽然可以显式地取消多余的unpark调用，但并不值得这样做。在需要的时候多次调用park会更高效。park方法同样支持可选的相对或绝对的超时设置，以及与JVM的Thread.interrupt结合 ，可通过中断来unpark一个线程。</p>
+</blockquote>
+<h5 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h5><blockquote>
+<p>同步队列：整个框架的核心就是如何管理线程阻塞队列，该队列是严格的FIFO队列，因此不支持线程优先级的同步。同步队列的最佳选择是自身没有使用底层锁来构造的非阻塞数据结构，业界主要有两种选择，一种是MCS锁，另一种是CLH锁。其中CLH一般用于自旋，但是相比MCS，CLH更容易实现取消和超时，所以同步队列选择了CLH作为实现的基础</p>
+</blockquote>
+<blockquote>
+<p>条件队列：AQS只有一个同步队列，但是可以有多个条件队列。AQS框架提供了一个ConditionObject类，给维护独占同步的类以及实现Lock接口的类使用。　ConditionObject类实现了Condition接口，Condition接口提供了类似Object管程式的方法，如await、signal和signalAll操作，还扩展了带有超时、检测和监控的方法。ConditionObject类有效地将条件与其它同步操作结合到了一起。该类只支持Java风格的管程访问规则，这些规则中，当且仅当当前线程持有锁且要操作的条件（condition）属于该锁时，条件操作才是合法的。这样，一个ConditionObject关联到一个ReentrantLock上就表现的跟内置的管程（通过Object.wait等）一样了。两者的不同仅仅在于方法的名称、额外的功能以及用户可以为每个锁声明多个条件</p>
+</blockquote>
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><blockquote>
+<p>由于存在竞争条件，线程不安全，必须要保证原子性操作，才能消除这种不安全性。<br>synchronized 关键字，悲观锁，互斥锁，其他未获取到锁的线程必须等待（阻塞）<br>锁由于独占性，加锁会影响性能，必须保证一个平衡</p>
+</blockquote>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><ul>
+<li>synchronized 通过对象内部的一个叫监视器（monitor）来实现，而监视器依赖底层Mutex指令实现</li>
+<li>操作系统实现线程切换，需要从用户态转换到核心态，其成本会很高，这也就是synchronized 效率低下的原因，故synchronized被称为重量级锁</li>
+<li>jdk 1.6之后，为减少性能损耗，对synchronized进行优化，引入了 轻量级锁 与 偏向锁</li>
+</ul>
+<blockquote>
+<p>如果锁的释放很容易，那么获取锁的线程如果进入自循环的话，会很容易等到其他线程释放锁。这种叫自旋锁，不会切换状态，但会空转CPU，所以需要权衡</p>
+</blockquote>
+<h3 id="synchronized-锁升级状态"><a href="#synchronized-锁升级状态" class="headerlink" title="synchronized 锁升级状态"></a>synchronized 锁升级状态</h3><blockquote>
+<p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
+<ul>
+<li>无锁：无锁没有对资源进行锁定，所有的线程都能访问并修改同一个资源，但同时只有一个线程能修改成功。</li>
+<li>偏向锁：偏向锁是指一段同步代码一直被一个线程所访问，那么该线程会自动获取锁，降低获取锁的代价。</li>
+<li>轻量级锁：是指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。</li>
+<li>重量级锁：若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-XX:-UseBiasedLocking 关闭偏向锁</span><br><span class="line">JDK 1.6 默认开启偏向锁：尝试把锁给访问它的第一个线程</span><br><span class="line">JDK1.6中-XX:+UseSpinning开启自旋锁； </span><br><span class="line">-XX:PreBlockSpin=10 为自旋次数； </span><br><span class="line">JDK1.7后，去掉此参数，由jvm控制；</span><br></pre></td></tr></table></figure>
+<h3 id="volatile-写读的内存语义"><a href="#volatile-写读的内存语义" class="headerlink" title="volatile 写读的内存语义"></a>volatile 写读的内存语义</h3><ul>
+<li>当写一个volatile 变量时，JMM会把该现场对应的本地内存中的共享变量刷到主内存</li>
+<li>当读一个volatile 变量时，JMM会把该线程对应的本地内存置为无效，线程接下来将从主内存中读取共享变量</li>
+</ul>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>volatile 可见性,被修饰表示不会与其他的内存操作一起被重排序<blockquote>
+<p>使用场景，状态表计量（就是前面的线程运行状态那种，只用了它的可见性）；double check （单例声明）</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="组合对象"><a href="#组合对象" class="headerlink" title="组合对象"></a>组合对象</h2><ul>
+<li>将需要线程安全的交给已经安全的工具类</li>
+<li>同步策略的文档化</li>
+</ul>
+<h2 id="构建块"><a href="#构建块" class="headerlink" title="构建块"></a>构建块</h2><ul>
+<li><p>同步容器：包含2部分</p>
+<ul>
+<li>一个是Vector 和 Hashtable （使用的 synchronized ）</li>
+<li>另一个是同步包由（Collections.synchronizedXxx()工厂方法创建）<blockquote>
+<p>同步容器是线程安全的，但是有些复合操作，如反复迭代，缺少及加入(put-if-absent)，在并发的时候会出问题</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>并发容器：Java 1.5 提供几种并发的容器来改善同步容器，通过对容器的所有状态进行串行访问</p>
+<ul>
+<li>ConcurrentHashMap –&gt; 替代同步的哈希Map实现</li>
+<li>CopyOnWriteArrayList –&gt;List 相应的同步实现</li>
+</ul>
+</li>
+<li><p>Java 1.5 还新增了2个新的容器类型，Queue 和 BlockingQueue</p>
+</li>
+<li><p>闭锁</p>
+<ul>
+<li>CountDownLatch :主要提供的机制是多个线程都达到了预期状态或完成预期工作时触发事件，其他线程可以等待这个事件来触发自己后续的工作，这里等待线程是可以多个</li>
+<li>FutureTask :多用于耗时的计算，主线程可以在完成自己的任务后，再去获取结果</li>
+<li>Semaphore :Semaphore与CountDownLatch相似，不同的地方在于Semaphore的值被获取到后是可以释放的，并不像CountDownLatch那样一直减到底。它也被更多地用来限制流量，类似阀门的功能</li>
+<li>CyclicBarrier :可以协同多个线程，让多个线程在这个屏障前等待，直到所有线程都达到屏障，再一起执行后面的动作<blockquote>
+<p>CountDownLatch是不能循环使用，CyclicBarrier可以循环使用。就是CyclicBarrier可以多次被初始化。 </p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="任务执行"><a href="#任务执行" class="headerlink" title="任务执行"></a>任务执行</h2><ul>
+<li>Executor 接口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Executor&#123;</span><br><span class="line">     void execute(Runable command)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为任务提交，与任务执行 解耦合</p>
+</blockquote>
+<pre><code>* newFixedThreadPool 定长线程池，
+* newCachedThreadPool 可缓存线程池，长度不定，多任务时增加，少任务时减少
+* newSingleThreadExecutor 单线程化
+* newScheduleThreadPool 定长线程池，支持周期任务，类似Timer（取代Timer的缺点：TImer只会单线程执行，前一个任务如果耗时严重，会影响后一个任务的时序）
+</code></pre><ul>
+<li><p>执行策略</p>
+<ul>
+<li>任务在什么线程中执行</li>
+<li>任务以什么顺序执行</li>
+<li>可以有多少个任务并发执行</li>
+<li>可以有多少个任务等待执行</li>
+<li>如果系统过载，需要放弃，放弃那个任务，如何通知程序</li>
+<li>在任务执行前与结束后，应该做什么处理</li>
+</ul>
+</li>
+<li><p>Runnable vs Callable</p>
+<ul>
+<li>定义任务单元，Runnalbe 接口无返回，Callable可通过泛型指定返回类型</li>
+<li>Runnable 在Thread类构造中，Callable 没有</li>
+</ul>
+</li>
+<li><p>Future</p>
+<ul>
+<li>对线程执行结果的一种返回包装，能够判断任务是否完成，是否中断，获取任务执行结果</li>
+</ul>
+</li>
+</ul>
+<h2 id="取消和关闭任务"><a href="#取消和关闭任务" class="headerlink" title="取消和关闭任务"></a>取消和关闭任务</h2><blockquote>
+<p>一般任务的取消可以通过 valatile boolean flag;这种取消状态来判定</p>
+</blockquote>
+<ul>
+<li>任务中断<blockquote>
+<p>Java没有提供一种安全、直接的方法来停止某个线程，而是提供了中断机制。中断机制是一种协作机制，也就是说通过中断并不能直接终止另一个线程，而需要被中断的线程自己处理</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">t.isInterrupted() 	    //对象方法：检查是否被设置为 中断 状态，不会改变状态</span><br><span class="line">t.interrupt() 		    //对象方法：设置线程为中断</span><br><span class="line">Thread.interrupted()    //类方法：清除 当前线程 中断 状态</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是，那些会抛出InterruptedException的方法要除外。像sleep、wait、notify、join，这些方法遇到中断必须有对应的措施，可以直接在catch块中处理，也可以抛给上一层。这些方法之所以会抛出InterruptedException就是由于Java虚拟机在实现这些方法的时候，本身就有某种机制在判断中断标识位，如果中断了，就抛出一个InterruptedException</p>
+</blockquote>
+<ul>
+<li>Futrue  .cancel() 可以取消任务</li>
+<li>ExecutorService 提供shutdown 与 shutdownNow 来关闭线程池</li>
+<li>JVM关闭时，可添加钩子函数，Runtime.addShutdownHook 来注册</li>
+</ul>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><ul>
+<li>设置线程池大小<ul>
+<li>对于计算密集型的任务，一个由N个处理器的系统可以通过设置一个 N+1个线程池来获取最优利用率</li>
+<li>对于IO密集型，可参看Runtime,getRuntime().availableProcessors() //获取CPU数量</li>
+</ul>
+</li>
+</ul>
+<h2 id="活跃度危险"><a href="#活跃度危险" class="headerlink" title="活跃度危险"></a>活跃度危险</h2><ul>
+<li><p>死锁</p>
+<ul>
+<li>数据库中，如果两个事物发生死锁，它会选择一个牺牲者，使其退出事务，保证另一个事务的正常进行</li>
+<li>JVM中，当两个线程发生死锁是，这些线程永远不能再使用。游戏结束</li>
+</ul>
+</li>
+<li><p>锁顺序死锁</p>
+<blockquote>
+<p>两个线程试图通过不同的顺序获取多个相同的锁。</p>
+</blockquote>
+</li>
+<li><p>识别与诊断死锁</p>
+<ul>
+<li>1锁当然不会死锁</li>
+<li>使用Lock类定义的tryLock 来代替使用内部锁机制</li>
+<li>JVM挺实用线程转储(thread dump)识别死锁</li>
+</ul>
+</li>
+</ul>
+<h2 id="显示锁"><a href="#显示锁" class="headerlink" title="显示锁"></a>显示锁</h2><ul>
+<li>Lock vs ReentrantLock vs synchronized<blockquote>
+<p>与内部锁不同在于，Lock 提供了无条件的，可轮询的，定时的，可中断的锁。<br>与内部锁有着同样的内存语义，一样的可重入加锁</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = new ReentrantLock();</span><br><span class="line">...</span><br><span class="line">lock.lock();</span><br><span class="line">try&#123;</span><br><span class="line">    //更新对象状态</span><br><span class="line">    //捕获异常，必要时恢复到原路的不变约束</span><br><span class="line">&#125;finally&#123;</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>显示的Lock 与内部锁相比提供了一些扩展性，包括处理不可用锁时更好的灵活性（可轮询和可自定时锁请求，可中断锁请求，非块结果锁）</p>
+</blockquote>
+<ul>
+<li>读写锁</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface ReadWriteLock&#123;</span><br><span class="line">    Lock readLock();</span><br><span class="line">    Lock writeLock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>读写锁中的写入锁有一个唯一的使用者，也只能由获取到该锁的线程释放</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/07/MySQL 文档/" rel="next" title="MySQL 文档">
+                <i class="fa fa-chevron-left"></i> MySQL 文档
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Felicity.R.try" />
+          <p class="site-author-name" itemprop="name">Felicity.R.try</p>
+           
+              <p class="site-description motion-element" itemprop="description">Java开发工程师</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/rtry" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:532454550@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的5种状态"><span class="nav-number">1.1.1.</span> <span class="nav-text">线程的5种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-notify-notifyAll"><span class="nav-number">1.1.2.</span> <span class="nav-text">wait/notify/notifyAll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep-yield-join"><span class="nav-number">1.1.3.</span> <span class="nav-text">sleep/yield/join</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java内存模型-JMM"><span class="nav-number">1.2.</span> <span class="nav-text">Java内存模型(JMM)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重排序与顺序一致性"><span class="nav-number">1.2.1.</span> <span class="nav-text">重排序与顺序一致性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Double-Check-Lock-DCL"><span class="nav-number">1.3.</span> <span class="nav-text">Double Check Lock(DCL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compare-and-swap-CAS"><span class="nav-number">1.4.</span> <span class="nav-text">compare-and-swap(CAS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AbstractQueuedSynchronizer"><span class="nav-number">1.5.</span> <span class="nav-text">AbstractQueuedSynchronizer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#背景"><span class="nav-number">1.5.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计思路"><span class="nav-number">1.5.2.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#同步状态"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">同步状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#阻塞"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#队列"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">队列</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程安全"><span class="nav-number">2.</span> <span class="nav-text">线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">2.1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized-锁升级状态"><span class="nav-number">2.2.</span> <span class="nav-text">synchronized 锁升级状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile-写读的内存语义"><span class="nav-number">2.3.</span> <span class="nav-text">volatile 写读的内存语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景"><span class="nav-number">2.4.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合对象"><span class="nav-number">3.</span> <span class="nav-text">组合对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建块"><span class="nav-number">4.</span> <span class="nav-text">构建块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务执行"><span class="nav-number">5.</span> <span class="nav-text">任务执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取消和关闭任务"><span class="nav-number">6.</span> <span class="nav-text">取消和关闭任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池"><span class="nav-number">7.</span> <span class="nav-text">线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#活跃度危险"><span class="nav-number">8.</span> <span class="nav-text">活跃度危险</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示锁"><span class="nav-number">9.</span> <span class="nav-text">显示锁</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Felicity.R.try</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

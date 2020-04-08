@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,Netty," />
+  <meta name="keywords" content="Java,Netty,NIO,Reactor," />
 
 
 
@@ -94,20 +94,24 @@
 
 
 
-<meta name="description" content="简介：Netty 使用，Channel，Buffer，Selector">
-<meta name="keywords" content="Java,Netty">
+<meta name="description" content="简介：JAVA IO 模型：BIO，NIO，AIO；NIO 核心组件Channel，Buffer，Selector；进行IO编程中，常采用两种模式：Reactor 和 Proactor；Netty 使用，Netty的核心类">
+<meta name="keywords" content="Java,Netty,NIO,Reactor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Netty笔记">
 <meta property="og:url" content="http://rtry.xyz/2017/12/12/Netty笔记/index.html">
 <meta property="og:site_name" content="Rtry&#39;s blog">
-<meta property="og:description" content="简介：Netty 使用，Channel，Buffer，Selector">
+<meta property="og:description" content="简介：JAVA IO 模型：BIO，NIO，AIO；NIO 核心组件Channel，Buffer，Selector；进行IO编程中，常采用两种模式：Reactor 和 Proactor；Netty 使用，Netty的核心类">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://rtry.xyz/uploads/netty/f3-1.jpg">
-<meta property="og:updated_time" content="2019-05-21T03:39:58.518Z">
+<meta property="og:image" content="http://rtry.xyz/uploads/netty/webp">
+<meta property="og:image" content="http://rtry.xyz/uploads/netty/webp">
+<meta property="og:image" content="http://rtry.xyz/uploads/netty/webp">
+<meta property="og:image" content="http://rtry.xyz/uploads/netty/webp">
+<meta property="og:image" content="http://rtry.xyz/uploads/netty/616953-20170524200147732-1956106207.png">
+<meta property="og:updated_time" content="2020-04-08T05:59:38.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Netty笔记">
-<meta name="twitter:description" content="简介：Netty 使用，Channel，Buffer，Selector">
-<meta name="twitter:image" content="http://rtry.xyz/uploads/netty/f3-1.jpg">
+<meta name="twitter:description" content="简介：JAVA IO 模型：BIO，NIO，AIO；NIO 核心组件Channel，Buffer，Selector；进行IO编程中，常采用两种模式：Reactor 和 Proactor；Netty 使用，Netty的核心类">
+<meta name="twitter:image" content="http://rtry.xyz/uploads/netty/webp">
 
 
 
@@ -320,8 +324,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-21T11:39:58+08:00">
-                2019-05-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T13:59:38+08:00">
+                2020-04-08
               </time>
             
           </span>
@@ -376,36 +380,81 @@
       
 
       
-        <p>简介：Netty 使用，Channel，Buffer，Selector<br><a id="more"></a></p>
-<h2 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h2><h3 id="框架定义"><a href="#框架定义" class="headerlink" title="框架定义"></a>框架定义</h3><p>netty 是一个用于快速开发可维护的<strong>高性能</strong>协议服务器和客户端的异步的事件驱动网络应用框架</p>
-<p> netty 的架构方法和设计原理同它的技术内容一样重要</p>
-<p> netty 的核心组件</p>
-<ul>
-<li>Channels （Java NIO的一个基本抽象）</li>
-<li>Callbacks （提供给另一个的方法的引用）</li>
-<li>Futures （提供了另一个当操作完成时如何通知应用的方法）</li>
-<li><p>Events和handlers （events来通知我们状态的变化或者操作的状况）</p>
-<p>Netty和Mina是Java世界非常知名的通讯框架。它们都出自同一个作者，Mina诞生略早，属于Apache基金会，而Netty开始在Jboss名下，后来出来自立门户netty.io。 Netty目前有两个分支：4.x和3.x，(5.x已经废弃) 4.0分支重写了很多东西，并对项目进行了分包</p>
+        <p>简介：JAVA IO 模型：BIO，NIO，AIO；NIO 核心组件Channel，Buffer，Selector；进行IO编程中，常采用两种模式：Reactor 和 Proactor；Netty 使用，Netty的核心类<br><a id="more"></a></p>
+<h2 id="Java-IO-模型"><a href="#Java-IO-模型" class="headerlink" title="Java IO 模型"></a>Java IO 模型</h2><ul>
+<li>支持3种模型,BIO(同步阻塞) ,NIO(同步非阻塞) ,AIO(异步非阻塞)</li>
+<li>NIO 客户端发出请求会注册到多路复用器上,多路复用器轮询到连接有IO操作的进行处理.适用于连接数多,连接时间短的,比如聊天服务器,弹幕系统,服务器之间通信,JDK 1.4 开始支持</li>
+<li>AIO 引入异步通道的概念,采用Proactor模式,它的特点是先由操作系统完成再去通知服务器程序启动线程处理,适用与连接数多,连接时间长的应用,如相册服务器,JDK 1.7 支持</li>
+</ul>
+<h2 id="Java-NIO"><a href="#Java-NIO" class="headerlink" title="Java NIO"></a>Java NIO</h2><ul>
+<li>NIO 全称 为 Java non-blocking IO  ,从JDK1.4开始，（同步非阻塞）</li>
+<li>NIO 相关类都在 java.nio 包下 </li>
+<li>NIO 有3大核心组件， Channel Buffer Selector</li>
+<li>NIO 面向缓冲区/块 编程，数据读取到一个它稍后处理的缓冲区，需要时可以在缓冲区中前后移动，这就增加了处理过程的灵活性，使用它可以提供非阻塞式的高伸缩网络</li>
+<li>NIO 可以做到用一个线程来处理多个操作，假设有10000个请求过来，可以分配50-100个线程来处理，不像之前阻塞IO那样，必须分配10000个线程</li>
+<li>Http2.0 使用了多路复用技术，做到了同一个连接并发处理多个请求</li>
+<li>BIO 以流的方式处理数据，而NIO以块的方式处理数据，块的效率更高</li>
+<li>BIO 是阻塞的，NIO是非阻塞的</li>
+<li>BIO 基于字节流和字符流的操作，NIO基于Channel 和Buffer 进行的操作，Selector 用于监听多个通道的事件，因此使用单个线程就可以监听多个客户端通道</li>
+</ul>
+<h3 id="NIO-核心组件"><a href="#NIO-核心组件" class="headerlink" title="NIO 核心组件"></a>NIO 核心组件</h3><h4 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h4><ul>
+<li>Buffer 就是一个内存块,底层是一个数组</li>
+<li>Buffer 是一个抽象类,含有4个关键属性</li>
+<li>只读Buffer,聚合,分散Buffer</li>
+<li>MappedByteBuffer<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mark:标识</span><br><span class="line">positon:当前数组的索引</span><br><span class="line">limit:当前数组最大</span><br><span class="line">capacity:当前数组的容量</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="netty-在一个高度上做了两件事情（技术上-结构上）"><a href="#netty-在一个高度上做了两件事情（技术上-结构上）" class="headerlink" title="netty 在一个高度上做了两件事情（技术上/结构上）"></a>netty 在一个高度上做了两件事情（技术上/结构上）</h3><ol>
-<li>它的异步和事件驱动基于Java NIO实现，在高负载下能保证最好的应用性能和可扩展性</li>
-<li>它包含了一系列用来解耦应用逻辑和网络层的设计模式，简化了开发的同时最大限度地提升了可测试性，模块化和可重用性。</li>
-</ol>
-<h3 id="IO-NIO-Netty-比较"><a href="#IO-NIO-Netty-比较" class="headerlink" title="IO/NIO/Netty 比较"></a>IO/NIO/Netty 比较</h3><h6 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h6><ol>
+<h5 id="ByteBuffer"><a href="#ByteBuffer" class="headerlink" title="ByteBuffer"></a>ByteBuffer</h5><blockquote>
+<p>Java中的基本数据类型(boolean 除外) ，都有一个Buffer类型与他对应，最常用的是ByteBuffer类</p>
+<ul>
+<li>ByteBuffer支持类型化的put和get,put放入什么类型,get就应该使用相同的类型去取</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//创建直接缓冲区</span><br><span class="line">public static ByteBuffer allocateDirect(int capacity);</span><br><span class="line">//设置缓冲区初始值</span><br><span class="line">public static ByteBuffer allocate(int capacity);</span><br><span class="line">//把一个数组放到缓冲区使用</span><br><span class="line">public static ByteBuffer wrap(byte[] array,int offset, int length);</span><br><span class="line">//从当前位置positon 上get ,get之后 postion+1</span><br><span class="line">public byte get();</span><br><span class="line">//从绝对位置index 上get </span><br><span class="line">public byte get(int index);</span><br><span class="line">// 从当前位置put，put 之后，put之后 postion+1</span><br><span class="line">public ByteBuffer put(int index, byte b);</span><br><span class="line">// 从绝对位置put</span><br><span class="line">public ByteBuffer put(byte src);</span><br></pre></td></tr></table></figure>
+<h4 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h4><ul>
+<li>通道可以同时进行读写，而流只能读或者只能写</li>
+<li>通道可以实现异步读写</li>
+<li>通道可以从Buffer读数据，可以写数据到Buffer</li>
+<li>BIO 中Stream 是单项的,Channel 是双向的</li>
+</ul>
+<h5 id="FileChannel"><a href="#FileChannel" class="headerlink" title="FileChannel"></a>FileChannel</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//从通道读取数据,并放入缓存区</span><br><span class="line">public abstract int read(ByteBuffer dst);</span><br><span class="line"></span><br><span class="line">//把缓存区的数据写入通道</span><br><span class="line">public abstract int write(ByteBuffer src);</span><br><span class="line"></span><br><span class="line">//从目标通道中,复制数据到当前通道</span><br><span class="line">public abstract long transferFrom(ReadableByteChannel src,long position, long count)</span><br><span class="line"></span><br><span class="line">//把数据从当前通道复制给目标通道</span><br><span class="line">public abstract long transferTo(long position, long count, WritableByteChannel target)</span><br></pre></td></tr></table></figure>
+<h4 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h4><blockquote>
+<p>Java NIO 用非阻塞的方式,使用一个线程,处理多个客户端连接,就会用到Selector.它是一个抽象类</p>
+</blockquote>
+<ul>
+<li>Selector 能够检测到多个注册通道上是否有事件发生</li>
+<li>只有在连接真正有读写事件发生时,才会进行读写,</li>
+<li>避免多线程之间上下文切换</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//得到一个Selector对象</span><br><span class="line">public static Selector open();</span><br><span class="line"></span><br><span class="line">//监控所有注册通道,当其中有IO操作时,将对应的SelectorKey加入到内部集合并返回</span><br><span class="line">//无参数为阻塞方法,有时间为多久返回,立即返回的使用selectNow()</span><br><span class="line">public abstract int select(); </span><br><span class="line"></span><br><span class="line">//从内部集合中得到所有的SelectorKey</span><br><span class="line">public abstract Set&lt;SelectionKey&gt; selectedKeys();</span><br></pre></td></tr></table></figure>
+<h5 id="SelectionKey"><a href="#SelectionKey" class="headerlink" title="SelectionKey"></a>SelectionKey</h5><blockquote>
+<p>抽象类 表示Selector 与通道的注册关系,共四种</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static final int OP_ACCEPT = 1 &lt;&lt; 4; //有新的网络连接可以accept</span><br><span class="line">public static final int OP_CONNECT = 1 &lt;&lt; 3;//连接已经建立</span><br><span class="line">public static final int OP_READ = 1 &lt;&lt; 0; //读操作</span><br><span class="line">public static final int OP_WRITE = 1 &lt;&lt; 2; //写操作</span><br><span class="line"></span><br><span class="line">//得到与之关联的Selector对象</span><br><span class="line">public abstract Selector selector();</span><br><span class="line">//得到与之关联的通道</span><br><span class="line">public abstract SelectableChannel channel();</span><br><span class="line">//得到与之关联的共享数据</span><br><span class="line">public final Object attachment();</span><br><span class="line">//设置或改变监听事件</span><br><span class="line">public abstract int interestOps();</span><br><span class="line">//是否可读</span><br><span class="line">public final boolean isReadable() ;</span><br><span class="line">//是否可写</span><br><span class="line">public final boolean isWritable();</span><br></pre></td></tr></table></figure>
+<h4 id="NIO-与零拷贝"><a href="#NIO-与零拷贝" class="headerlink" title="NIO 与零拷贝"></a>NIO 与零拷贝</h4><ul>
+<li>Linux 2.1版本 提供了sendFile函数，其基本原理如下：<br>数据根本不经过用户态，直接从内存缓冲区进入Socket Buffer ，同时，由于和用户态无关，就减少了一次上下文切换</li>
+</ul>
+<h2 id="Java-AIO"><a href="#Java-AIO" class="headerlink" title="Java AIO"></a>Java AIO</h2><ul>
+<li>JDK 7 引入 Asynchronous I/O 既AIO，在进行IO编程中，常采用两种模式：Reactor 和 Proactor ，Java的NIO就是Reactor,当有事件触发时，服务器端得到通知，进行相应的处理</li>
+<li>AIO 即NIO2.0 ,叫做异步不阻塞IO，AIO 引入异步通道的概率，采用了Proactor模式，简化程序编写，有效的请求才会启动线程，他的特点是先由操作系统完成后才通知服务端程序启动线程去处理</li>
+</ul>
+<h3 id="IO-NIO-Netty-比较"><a href="#IO-NIO-Netty-比较" class="headerlink" title="IO/NIO/Netty 比较"></a>IO/NIO/Netty 比较</h3><h4 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h4><ol>
 <li>在多数情况下，大部分的线程是休眠的，资源的浪费</li>
 <li>线程需要额外分配不同的栈内存</li>
 <li>在JVM物理上可支持的最大线程数未到之前，线程的切换已成问题</li>
 </ol>
-<h6 id="NIO-优点"><a href="#NIO-优点" class="headerlink" title="NIO 优点"></a>NIO 优点</h6><ol>
+<h4 id="NIO-优点"><a href="#NIO-优点" class="headerlink" title="NIO 优点"></a>NIO 优点</h4><ol>
 <li>一个单独的线程可处理多个并发的连接</li>
 <li>内存的管理与上下文的切换优化明显</li>
 <li>当没有IO需要处理的时候，可以被指派其他任务</li>
 </ol>
-<h6 id="NIO-缺点"><a href="#NIO-缺点" class="headerlink" title="NIO 缺点"></a>NIO 缺点</h6><blockquote>
-<p>要安全地使用并且正确无误并非易事。特别在高负载下，可靠并且高效地在处理和指派I/O是一项困难和容易出错的任务</p>
-</blockquote>
-<h6 id="Netty-1"><a href="#Netty-1" class="headerlink" title="Netty"></a>Netty</h6><ul>
+<h4 id="NIO-缺点"><a href="#NIO-缺点" class="headerlink" title="NIO 缺点"></a>NIO 缺点</h4><ul>
+<li>NIO 的类库 和 API 繁复，使用复制，需要熟练掌握 Selector, ServerSocketChannel,SocketChannel,ByteBuffer</li>
+<li>同时需要熟悉多线程编程，因为NIO编程涉及到Reactor模式</li>
+<li>同时需要处理其他的问题，如短线重连，网络闪烁，半包读写，失败缓存，网络堵塞和异常处理</li>
+<li>JDK NIO 的BUG，如Epoll BUG </li>
+</ul>
+<h4 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h4><ul>
 <li><p>设计</p>
 <p> 用于多种传输类型的统一API，包括阻塞和非阻塞。简单但是强大的线程模型真正的无连接数据报<br> socket支持链式的支持复用的逻辑组件(Chaining of logic components to support reuse)</p>
 </li>
@@ -422,44 +471,209 @@
 <p> 完整的SSL/TLS和StartTLS的支持。 适用于受限的环境比如Applet或者OSGI中</p>
 </li>
 </ul>
-<h2 id="Netty-使用"><a href="#Netty-使用" class="headerlink" title="Netty 使用"></a>Netty 使用</h2><h3 id="ChannelHandlers"><a href="#ChannelHandlers" class="headerlink" title="ChannelHandlers"></a>ChannelHandlers</h3><p>接口 ChannelInboundHandler –&gt; 子类 ChannelInboundHandlerAdapter</p>
-<ol>
-<li>channelRead()—每次收到消息时被调用</li>
-<li>channelReadComplete()—用来通知handler上一个ChannelRead()是被这批消息中的最后一个消息调用 </li>
-<li>exceptionCaught()—在读操作异常被抛出时被调用</li>
-</ol>
-<h3 id="ChannelHandlers-要点"><a href="#ChannelHandlers-要点" class="headerlink" title="ChannelHandlers 要点"></a>ChannelHandlers 要点</h3><ol>
-<li>ChannelHandlers被不同类型的event调用</li>
-<li>应用程序通过实现或扩展ChannelHandlers来挂钩event的生命周期，提供定制的业务逻辑</li>
-<li>在结构上ChannelHandlers解耦了你的业务逻辑与网络代码，因为业务逻辑会变，但网络通信不会</li>
-</ol>
-<h3 id="客户端-SimpleChannelInbondHandler"><a href="#客户端-SimpleChannelInbondHandler" class="headerlink" title="客户端 SimpleChannelInbondHandler"></a>客户端 SimpleChannelInbondHandler</h3><ol>
-<li>channelActive()—和服务器的连接建立起来后被调用</li>
-<li>channelRead0()—从服务器收到一条消息时被调用</li>
-<li>exceptionCaught()—处理过程中异常发生时被调用</li>
-</ol>
-<h3 id="Netty-网络抽象"><a href="#Netty-网络抽象" class="headerlink" title="Netty 网络抽象"></a>Netty 网络抽象</h3><ol>
-<li>Channel—Sockets</li>
-<li>EventLoop—控制流，多线程，并发</li>
-<li><p>ChannelFuture—异步通知</p>
-<p>Channels，EventLoops和EventLoopGroups 的关系图<br><img src="/uploads/netty/f3-1.jpg" alt="网络抽象"></p>
-</li>
-</ol>
-<h4 id="ChannelFuture"><a href="#ChannelFuture" class="headerlink" title="ChannelFuture"></a>ChannelFuture</h4><blockquote>
-<p>netty所有的IO都是异步的，因此一个操作可能不会立即返回，我们需要一个方法稍后来判断他的结果，netty提供ChanelFuture ,他的addListener方法注册一个ChanelFutureLiitener,当操作完成时，可接受通知（必然接收）</p>
+<h2 id="Netty-简介"><a href="#Netty-简介" class="headerlink" title="Netty 简介"></a>Netty 简介</h2><ul>
+<li>Netty 是 jboss 提供的一个Java开源框架，现在为 Github上的独立项目</li>
+<li>Netty 是一个 异步的 ，基于事件驱动的网络应用框架，用以快速开发高性能，高可靠性的网络IO程序</li>
+<li>Netty 主要针对在TCP协议下，面向Clients端的高并发应用，或者 Peer-to-Peer场景下的大量数据持续传输的应用</li>
+<li>Netty 本质是一个NIO框架</li>
+</ul>
+<blockquote>
+<p> Netty和Mina是Java世界非常知名的通讯框架。它们都出自同一个作者，Mina诞生略早，属于Apache基金会，而Netty开始在Jboss名下，后来出来自立门户netty.io。 Netty目前有两个分支：4.x和3.x，(5.x已经废弃) 4.0分支重写了很多东西，并对项目进行了分包</p>
 </blockquote>
-<pre><code> &lt;filter&gt;   
-&lt;filter-name&gt;shiroFilter&lt;/filter-name&gt;   
-&lt;filter-class&gt;   
-   org.springframework.web.filter.DelegatingFilterProxy    
-&lt;/filter-class&gt;    
-&lt;/filter&gt;    
-&lt;filter-mapping&gt;    
-    &lt;filter-name&gt;shiroFilter&lt;/filter-name&gt;    
-    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;    
-&lt;/filter-mapping&gt;
-</code></pre><blockquote>
-<p>注： 该filter 会依赖于WebApplicationContext ,如果在springmvc中，不启动WebApplicationContext，直接从server 启动  Initializing Spring FrameworkServlet ‘spring’,那么如果有上面这个filter，则在容器请求时，会报错<br>java.lang.IllegalStateException: No WebApplicationContext found: no ContextLoaderListener registered?  </p>
+<h3 id="Netty-在一个高度上做了两件事情（技术上-结构上）"><a href="#Netty-在一个高度上做了两件事情（技术上-结构上）" class="headerlink" title="Netty 在一个高度上做了两件事情（技术上/结构上）"></a>Netty 在一个高度上做了两件事情（技术上/结构上）</h3><ol>
+<li>它的异步和事件驱动基于Java NIO实现，在高负载下能保证最好的应用性能和可扩展性</li>
+<li>它包含了一系列用来解耦应用逻辑和网络层的设计模式，简化了开发的同时最大限度地提升了可测试性，模块化和可重用性。</li>
+</ol>
+<h3 id="Netty-优点"><a href="#Netty-优点" class="headerlink" title="Netty 优点"></a>Netty 优点</h3><ul>
+<li>设计优雅：统一API ，阻塞非阻塞，分类关注点，高度可定制的线程模型</li>
+<li>使用方便：没有其他依赖，高性能，延迟低，低消耗</li>
+<li>安全： 完成的SSL/TLS StartTLS支持</li>
+</ul>
+<h3 id="Netty-应用场景"><a href="#Netty-应用场景" class="headerlink" title="Netty 应用场景"></a>Netty 应用场景</h3><h4 id="互联网行业"><a href="#互联网行业" class="headerlink" title="互联网行业"></a>互联网行业</h4><ul>
+<li>在分布式系统中，各节点之间需要远程调用服务，高性能的RPC框架必不可少，Netty 作为异步高性能通信框架，往往作为基础通信组件</li>
+<li>典型的应用：阿里的Dubbo 使用Netty进行通信</li>
+</ul>
+<h4 id="游戏行业"><a href="#游戏行业" class="headerlink" title="游戏行业"></a>游戏行业</h4><ul>
+<li>Netty 作为高性能基础通信组件，提供TCP/UDP 和 HTTP 协议栈，方便定制开发私有协议</li>
+<li>地图服务器之间可以方便的通过Netty进行高性能通信</li>
+</ul>
+<h4 id="大数据领域"><a href="#大数据领域" class="headerlink" title="大数据领域"></a>大数据领域</h4><ul>
+<li>Hadoop 的组件 AVRO 是基于Netty 框架的二次封装</li>
+</ul>
+<h2 id="Netty-线程模型"><a href="#Netty-线程模型" class="headerlink" title="Netty 线程模型"></a>Netty 线程模型</h2><h3 id="目前存在的线程模型："><a href="#目前存在的线程模型：" class="headerlink" title="目前存在的线程模型："></a>目前存在的线程模型：</h3><ul>
+<li>传统阻塞的IO服务模型</li>
+<li>Reactor 模式<ul>
+<li>单Reactor 单线程</li>
+<li>单Reactor 多线程</li>
+<li>主从Reactor 多线程 （Netty 基于此，做的一些改进）</li>
+</ul>
+</li>
+</ul>
+<h3 id="单Reactor-单线程"><a href="#单Reactor-单线程" class="headerlink" title="单Reactor 单线程"></a>单Reactor 单线程</h3><p><img src="/uploads/netty/webp" alt=""></p>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
+<li>优点：模型简单，没有多线程，进程通信，竞争问题，全部到在一个线程中完成</li>
+<li>缺点：性能问题，只有一个线程，无法发挥多核CPU 的性能，Handler 在处理某个连接上的业务时，整个进程无法处理其他连接事件</li>
+<li>缺点：可靠性问题，线程意外终止，或进入死循环，会导致整个系统通信模块不可用，不能接收和处理消息，造成节点故障</li>
+<li>使用场景：客户端有限，业务处理很快，如Redis在业务处理的时间复杂度</li>
+</ul>
+<h3 id="单Reactor-多线程"><a href="#单Reactor-多线程" class="headerlink" title="单Reactor 多线程"></a>单Reactor 多线程</h3><p><img src="/uploads/netty/webp" alt=""></p>
+<h4 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
+<li>优点：可用充分利用多核cpu的处理能力</li>
+<li>缺点：多线程数据共享和访问比较复杂，reactor处理所有的事件监听和响应，在单线程运行，在高并发场景容易出现瓶颈</li>
+</ul>
+<h3 id="主从Reactor-多线程"><a href="#主从Reactor-多线程" class="headerlink" title="主从Reactor 多线程"></a>主从Reactor 多线程</h3><p><img src="/uploads/netty/webp" alt=""></p>
+<h4 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
+<li>优点：父线程与子线程的数据交互简单，职责明确，父线程只需要接受新连接，子线程是完成后续的业务处理</li>
+<li>优点：父线程与子线程的数据教会简单，Reactor 主线程只需要把新连接传给子线程，子线程无需返回数据</li>
+<li>缺点：编程复杂度高</li>
+</ul>
+<h4 id="Reactor-模式具有如下优点"><a href="#Reactor-模式具有如下优点" class="headerlink" title="Reactor 模式具有如下优点"></a>Reactor 模式具有如下优点</h4><ul>
+<li>响应快，不必为单个同步事件所阻塞，虽然Reactor本身依然是同步的</li>
+<li>可以最大程度的避免复杂的多线程同步问题，避免多线程切换开销</li>
+<li>扩展性好，可以方便的通过Reactor实例个数来充分利用CPU资源</li>
+<li>复用性好，Reactor模式本身与具体的事件处理逻辑无关，具有很高的复用性</li>
+</ul>
+<h3 id="Netty-模型"><a href="#Netty-模型" class="headerlink" title="Netty 模型"></a>Netty 模型</h3><p><img src="/uploads/netty/webp" alt=""></p>
+<ul>
+<li>Netty 抽象出两组线程池，BossGroup 专门负责接收客户端的连接，WorkerGroup专门负责网络的读写</li>
+<li>BossGroup 和 WorkGroup 类型都是 NioEventLoopGroup</li>
+<li>NioEventLoopGroup 相当于一个事件循环组，这个组含有多个事件循环，每一个事件循环是NioEventLoop</li>
+<li>NioEventLoop 表示一个不断循环的执行处理任务的线程，每个NioEventLoop 都有一个Selector，用来监听绑定在其上的socket的网络通讯</li>
+<li>NioEventLoopGroup 可以有多个线程，既可以含有多个NioEventLoop</li>
+<li>每个Boss NioEventLoop循环执行的步骤分3步<ol>
+<li>轮询accept事件</li>
+<li>处理accept事件，与client建立连接，生成NioSocketChannel,并将其注册到某个 worker NioEventLoop上的selector</li>
+<li>处理任务队列的任务， 及runAllTasks</li>
+</ol>
+</li>
+<li>每个Worker NioEventLoop 循环执行的步骤<ol>
+<li>轮询read ,write 事件</li>
+<li>处理IO事件，既read,write 事件，在对应的NioSocketChannel处理</li>
+<li>处理任务队列的任务，既runAllTasks</li>
+</ol>
+</li>
+<li>每个Worker NioEventLoop 处理业务时，会使用pipeline,pipline中包含了channel</li>
+<li>任务队列中的Task 有3种典型的使用场景<ol>
+<li>用户程序自定义的普通任务</li>
+<li>用户自定义的定时任务</li>
+<li>非当前Reactor 线程调用的Channel的各种方法</li>
+</ol>
+</li>
+</ul>
+<h2 id="Netty-核心类"><a href="#Netty-核心类" class="headerlink" title="Netty 核心类"></a>Netty 核心类</h2><h4 id="BootStrap-，ServerBootstrap"><a href="#BootStrap-，ServerBootstrap" class="headerlink" title="BootStrap ，ServerBootstrap"></a>BootStrap ，ServerBootstrap</h4><ul>
+<li>引导，配置整个Netty程序额，串联各个组件，Bootstrap类是客户端程序的启动引导类，ServerBootstrap是服务端启动引导类</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//该方法用于服务端，用来设置两个EventLoop</span><br><span class="line">public ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup)；</span><br><span class="line">//该方法用于客户端，用来设置一个EventLoop</span><br><span class="line">public B group(EventLoopGroup group)；</span><br><span class="line">//设置服务端的通道实现</span><br><span class="line">public B channel(Class&lt;? extends C&gt; channelClass);</span><br><span class="line">//设置业务处理类（自定义的Handler）</span><br><span class="line">public ServerBootstrap childHandler(ChannelHandler childHandler)；</span><br><span class="line"></span><br><span class="line">//设置服务端占用的端口</span><br><span class="line">public ChannelFuture bind(int inetPort);</span><br><span class="line">//客户端连接服务器 </span><br><span class="line">public ChannelFuture connect(String inetHost, int inetPort)</span><br></pre></td></tr></table></figure>
+<h4 id="Future-ChannelFuture"><a href="#Future-ChannelFuture" class="headerlink" title="Future,ChannelFuture"></a>Future,ChannelFuture</h4><blockquote>
+<p>Netty中所有的IO操作都是异步的，不能立刻得知消息是否被正确处理，但是可以过一会等它执行完成或者直接注册一个监听，具体的实现就是Future 和ChanelFuture是，他们可以注册一个监听，当操作执行成功或失败时，监听会自动触发注册的监听事件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Channel channel() 返回当前正在进行的IO操作通道</span><br><span class="line">ChannelFuture sync() 等待异步操作执行完毕</span><br></pre></td></tr></table></figure>
+<h4 id="Channel-1"><a href="#Channel-1" class="headerlink" title="Channel"></a>Channel</h4><p>NioSocketChannel //异步客户端 TCP Socket连接<br>NioServerSocketChannel //异步的服务端 TCP Socket 连接<br>NioDatagramChannel 异步的UDP连接<br>NioSctpChannel 异步的客户端Sctp连接<br>NioSctpServerChannel 异步的Sctp 服务器端连接，这些通道涵盖了UDP 和TCP网络IO 及文件IO</p>
+<h4 id="Selector-1"><a href="#Selector-1" class="headerlink" title="Selector"></a>Selector</h4><ul>
+<li>Netty 基于Selector 对象实现IO多路复用，通过Selector 一个线程可以监听多个连接的Channel事件</li>
+<li>当向一个Selector 中注册Channel 后，Selector 内部的机制就可以自动不断的检查这些注册的Channel是否有已就绪的IO事件，这样程序就可以很简单的使用一个线程高效的管理多个Channel</li>
+</ul>
+<h4 id="ChannelHandler-及其实现类"><a href="#ChannelHandler-及其实现类" class="headerlink" title="ChannelHandler 及其实现类"></a>ChannelHandler 及其实现类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ChannelHandler 是一个接口，处理IO事件或拦截IO操作，并将其转发到其ChannelPipeline 中的下一个处理程序</span><br><span class="line">ChannelHandler 本身并诶呦提供很多方法，因为这个接口有许多的方法需要实现，方便使用期间，可以继承它的子类</span><br></pre></td></tr></table></figure>
+<p><img src="/uploads/netty/616953-20170524200147732-1956106207.png" alt=""></p>
+<ul>
+<li>CHannelInboundHandler用于处理入站IO事件</li>
+<li>ChannelOutBoundHandler用于处理出站IO操作</li>
+<li>ChannelInboundHandlerAdapter 用于处理入站IO事件 -适配器</li>
+<li>ChannelOutboundHandlerAdapter 用于处理出站的IO操作 -适配器</li>
+<li>ChannelDuplexHandler 处理出入站事件</li>
+</ul>
+<h4 id="Pipeline-和ChannelPipeline"><a href="#Pipeline-和ChannelPipeline" class="headerlink" title="Pipeline 和ChannelPipeline"></a>Pipeline 和ChannelPipeline</h4><ul>
+<li>在Netty中的每个Channel 都有且仅有一个 ChannelPipeline与其的对应</li>
+<li>一个Channel包含一个ChannelPipeline，而ChannelPipeline 中又维护一个由ChannelHandlerContext 组成的双向链表，并且每个ChannelHandlerContext中又关联着一个CHannelHandler</li>
+<li>入站事件和出站事件是一个双向链表，入站事件从链表的head往后传递到最后一个入站的handler,出站事件会从链表tail往前传递到最前一个出站的handler 两种类型不干扰</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ChannelPipeline addFirst(ChannelHandler ...handlers) 把一个业务处理类，添加到链表中第一个位置</span><br><span class="line"></span><br><span class="line">ChannelPipeline addLast(ChannelHandler ...handlers) 把一个业务处理类，添加到链表中最后位置</span><br></pre></td></tr></table></figure>
+<h4 id="EventLoopGroup-和其实现类NioEventLoopGroup"><a href="#EventLoopGroup-和其实现类NioEventLoopGroup" class="headerlink" title="EventLoopGroup 和其实现类NioEventLoopGroup"></a>EventLoopGroup 和其实现类NioEventLoopGroup</h4><ul>
+<li>EventLoopGroup 是一组EventLoop抽象，Netty为更好的利用多核CPU资源，一般会有多个EventLoop同时工作，每个EventLoop维护着一个Selector实例</li>
+<li>EventLoopGroup 提供next 接口，可以从组里按照一定的规律或得其中一个EventLoop来处理任务，在Netty服务端编程中，我们一般都需要提供两个EventLoopGroup 如BossEventLoopGroup and  WorkerEventLoopGroup</li>
+<li>通常一个服务端口及是一个ServerSocketChannel对应一个Selector和一个EventLoop线程，BossEvenetLoop 负责接收客户端的连接并将SocketChannel 交给WorkerEventLoopGroup </li>
+<li>BossEventLoopGroup 通常是一个单线程EventLoop, EventLoop维护着一个注册了ServerSocketChannel 的Selector 实例 BossEventLoop不断轮询Selector 将连接时间分离出来</li>
+</ul>
+<h4 id="ChannelHandlerContext"><a href="#ChannelHandlerContext" class="headerlink" title="ChannelHandlerContext"></a>ChannelHandlerContext</h4><ul>
+<li>保存Channel 相关信息的所有上下文，同时关联一个ChannelHandel对象，同时也绑定了对应的pipeline 和 Channel</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 关闭通道</span><br><span class="line">ChannelFuture close()</span><br><span class="line">//刷新</span><br><span class="line">ChannelOutboundInvoker flush()</span><br><span class="line">//将数据写到ChannelPipeline中当前ChannelHandler的下一个ChannelHandler开始处理（出站）</span><br><span class="line">ChannelFuture writeAndFlush(Object msg)</span><br></pre></td></tr></table></figure>
+<h4 id="ChannelOption"><a href="#ChannelOption" class="headerlink" title="ChannelOption"></a>ChannelOption</h4><blockquote>
+<p>Netty 在创建Channel实例后，一般需要设置ChannelOption参数，如下</p>
+</blockquote>
+<ul>
+<li><p>ChannelOption.SO_BACKLOG</p>
+<blockquote>
+<p>对应的TCP/IP 协议 listen 函数中backlog 参数，用于初始化服务器可连接队列大小，服务端处理客户端连接请求时候，服务端将不能处理的客户端连接是顺序处理的，所以同一时间只能处理一个客户端连接，新的客户端的请求放到队列中等待处理，backlog 参数指定了队列的大小</p>
+</blockquote>
+</li>
+<li><p>ChannelOption.SO_KEEPALIVE</p>
+<blockquote>
+<p>一直保持连接活动状态</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Unpooled"><a href="#Unpooled" class="headerlink" title="Unpooled"></a>Unpooled</h4><blockquote>
+<p>Netty 提供的一个专门用来操作缓冲区的工具类<br>通过给定的数据和字符编码返回一个 ByteBuf 对象（类似于 NIO 中的 ByteBuffer 但有区别）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static ByteBuf copiedBuffer(CharSequence string, Charset charset)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>含有3个重要属性<br>0 – [discarbale bytes] – readerIndex – [readable bytes] – writeIndex – [writeableByte] – capacity</p>
+</blockquote>
+<h3 id="Netty-编解码器"><a href="#Netty-编解码器" class="headerlink" title="Netty 编解码器"></a>Netty 编解码器</h3><blockquote>
+<p>Netty 自身提供的编解码器</p>
+<ul>
+<li>StringEncoder StringDecoder</li>
+<li>ObjectEncoder ObjectDecoder</li>
+<li>…</li>
+</ul>
+</blockquote>
+<h4 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h4><blockquote>
+<p>Netty 本身自带的ObjectDecoder/Encoder 可以用来实现POJO的编码和解码，其底层实现任然是Java 序列化技术，那么会有以下问题当Netty发送或者接受一个消息的时候，就将会发生一次数据转换。入站消息会被解码：从字节转换为另一种格式（比如java对象）；如果是出站消息，它会被编码成字节。</p>
+</blockquote>
+<ul>
+<li>无法跨语言</li>
+<li>序列化后体积太大，是二进制的5倍多</li>
+<li>性能低</li>
+</ul>
+<h4 id="Google-Protobuf"><a href="#Google-Protobuf" class="headerlink" title="Google  Protobuf"></a>Google  Protobuf</h4><blockquote>
+<p>适合 RPC 的数据交换格式<br>http+Json -&gt; tcp + protobuf</p>
+<ul>
+<li>protobuf 是以message 的方式来管理书籍的</li>
+<li>支持跨平台，跨语言的</li>
+<li>高性能，高可靠</li>
+<li>使用protobuf编译器能自动生成代码</li>
+</ul>
+</blockquote>
+<h4 id="自身编解码器"><a href="#自身编解码器" class="headerlink" title="自身编解码器"></a>自身编解码器</h4><blockquote>
+<p>当Netty发送或者接受一个消息的时候，就将会发生一次数据转换。入站消息会被解码：从字节转换为另一种格式（比如java对象）；如果是出站消息，它会被编码成字节。</p>
+</blockquote>
+<blockquote>
+<p>Netty提供一系列实用的编解码器，他们都实现了ChannelInboundHadnler或者ChannelOutboundHandler接口。在这些类中，channelRead方法已经被重写了。以入站为例，对于每个从入站Channel读取的消息，这个方法会被调用。随后，它将调用由解码器所提供的decode()方法进行解码，并将已经解码的字节转发给ChannelPipeline中的下一个ChannelInboundHandler</p>
+</blockquote>
+<h4 id="ByteToMessageDecoder-，-ReplayingDecoder"><a href="#ByteToMessageDecoder-，-ReplayingDecoder" class="headerlink" title="ByteToMessageDecoder ， ReplayingDecoder"></a>ByteToMessageDecoder ， ReplayingDecoder</h4><ul>
+<li><p>ReplayingDecoder扩展了ByteToMessageDecoder类，使用这个类，我们不必调用readableBytes()方法。参数S指定了用户状态管理的类型，其中Void代表不需要状态管理</p>
+</li>
+<li><p>局限性</p>
+<blockquote>
+<p>并不是所有的 ByteBuf 操作都被支持，如果调用了一个不被支持的方法，将会抛出一个UnsupportedOperationException。ReplayingDecoder 在某些情况下可能稍慢于ByteToMessageDecoder，例如网络缓慢并且消息格式复杂时，消息会被拆成了多个碎片，速度变慢</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="其他编解码器"><a href="#其他编解码器" class="headerlink" title="其他编解码器"></a>其他编解码器</h4><ul>
+<li><p>LineBasedFrameDecoder：这个类在Netty内部也有使用，它使用行尾控制字符（\n或者\r\n）作为分隔符来解析数据。</p>
+</li>
+<li><p>DelimiterBasedFrameDecoder：使用自定义的特殊字符作为消息的分隔符。</p>
+</li>
+<li><p>HttpObjectDecoder：一个HTTP数据的解码器</p>
+</li>
+<li>LengthFieldBasedFrameDecoder：通过指定长度来标识整包消息，这样就可以自动的处理黏包和半包消息。</li>
+</ul>
+<h3 id="TCP-粘包与拆包"><a href="#TCP-粘包与拆包" class="headerlink" title="TCP 粘包与拆包"></a>TCP 粘包与拆包</h3><blockquote>
+<p>TCP是面向连接的，面向流的，提供高可靠性服务。收发两端（客户端和服务器端）都要有一一成对的socket，因此，发送端为了将多个发给接收端的包，更有效的发给对方，使用了优化方法（Nagle算法），将多次间隔较小且数据量小的数据，合并成一个大的数据块，然后进行封包。这样做虽然提高了效率，但是接收端就难于分辨出完整的数据包了，因为面向流的通信是无消息保护边界的</p>
+</blockquote>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><blockquote>
+<p>使用自定义协议 + 编解码器 来解决<br>关键就是要解决 服务器端每次读取数据长度的问题, 这个问题解决，就不会出现服务器多读或少读数据的问题，从而避免的TCP 粘包、拆包 </p>
 </blockquote>
 
       
@@ -481,6 +695,10 @@
             <a href="/tags/Java/" rel="tag"># Java</a>
           
             <a href="/tags/Netty/" rel="tag"># Netty</a>
+          
+            <a href="/tags/NIO/" rel="tag"># NIO</a>
+          
+            <a href="/tags/Reactor/" rel="tag"># Reactor</a>
           
         </div>
       
@@ -582,7 +800,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -604,7 +822,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -659,7 +877,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty"><span class="nav-number">1.</span> <span class="nav-text">Netty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#框架定义"><span class="nav-number">1.1.</span> <span class="nav-text">框架定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#netty-在一个高度上做了两件事情（技术上-结构上）"><span class="nav-number">1.2.</span> <span class="nav-text">netty 在一个高度上做了两件事情（技术上/结构上）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-NIO-Netty-比较"><span class="nav-number">1.3.</span> <span class="nav-text">IO/NIO/Netty 比较</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#IO"><span class="nav-number">1.3.0.0.1.</span> <span class="nav-text">IO</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#NIO-优点"><span class="nav-number">1.3.0.0.2.</span> <span class="nav-text">NIO 优点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#NIO-缺点"><span class="nav-number">1.3.0.0.3.</span> <span class="nav-text">NIO 缺点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Netty-1"><span class="nav-number">1.3.0.0.4.</span> <span class="nav-text">Netty</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-使用"><span class="nav-number">2.</span> <span class="nav-text">Netty 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ChannelHandlers"><span class="nav-number">2.1.</span> <span class="nav-text">ChannelHandlers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ChannelHandlers-要点"><span class="nav-number">2.2.</span> <span class="nav-text">ChannelHandlers 要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端-SimpleChannelInbondHandler"><span class="nav-number">2.3.</span> <span class="nav-text">客户端 SimpleChannelInbondHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-网络抽象"><span class="nav-number">2.4.</span> <span class="nav-text">Netty 网络抽象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ChannelFuture"><span class="nav-number">2.4.1.</span> <span class="nav-text">ChannelFuture</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-IO-模型"><span class="nav-number">1.</span> <span class="nav-text">Java IO 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-NIO"><span class="nav-number">2.</span> <span class="nav-text">Java NIO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO-核心组件"><span class="nav-number">2.1.</span> <span class="nav-text">NIO 核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Buffer"><span class="nav-number">2.1.1.</span> <span class="nav-text">Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ByteBuffer"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">ByteBuffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Channel"><span class="nav-number">2.1.2.</span> <span class="nav-text">Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#FileChannel"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">FileChannel</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selector"><span class="nav-number">2.1.3.</span> <span class="nav-text">Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SelectionKey"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">SelectionKey</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-与零拷贝"><span class="nav-number">2.1.4.</span> <span class="nav-text">NIO 与零拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-AIO"><span class="nav-number">3.</span> <span class="nav-text">Java AIO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-NIO-Netty-比较"><span class="nav-number">3.1.</span> <span class="nav-text">IO/NIO/Netty 比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO"><span class="nav-number">3.1.1.</span> <span class="nav-text">IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-优点"><span class="nav-number">3.1.2.</span> <span class="nav-text">NIO 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-缺点"><span class="nav-number">3.1.3.</span> <span class="nav-text">NIO 缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty"><span class="nav-number">3.1.4.</span> <span class="nav-text">Netty</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-简介"><span class="nav-number">4.</span> <span class="nav-text">Netty 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-在一个高度上做了两件事情（技术上-结构上）"><span class="nav-number">4.1.</span> <span class="nav-text">Netty 在一个高度上做了两件事情（技术上/结构上）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-优点"><span class="nav-number">4.2.</span> <span class="nav-text">Netty 优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-应用场景"><span class="nav-number">4.3.</span> <span class="nav-text">Netty 应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#互联网行业"><span class="nav-number">4.3.1.</span> <span class="nav-text">互联网行业</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏行业"><span class="nav-number">4.3.2.</span> <span class="nav-text">游戏行业</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大数据领域"><span class="nav-number">4.3.3.</span> <span class="nav-text">大数据领域</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-线程模型"><span class="nav-number">5.</span> <span class="nav-text">Netty 线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目前存在的线程模型："><span class="nav-number">5.1.</span> <span class="nav-text">目前存在的线程模型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单Reactor-单线程"><span class="nav-number">5.2.</span> <span class="nav-text">单Reactor 单线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点"><span class="nav-number">5.2.1.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单Reactor-多线程"><span class="nav-number">5.3.</span> <span class="nav-text">单Reactor 多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点-1"><span class="nav-number">5.3.1.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从Reactor-多线程"><span class="nav-number">5.4.</span> <span class="nav-text">主从Reactor 多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点-2"><span class="nav-number">5.4.1.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reactor-模式具有如下优点"><span class="nav-number">5.4.2.</span> <span class="nav-text">Reactor 模式具有如下优点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-模型"><span class="nav-number">5.5.</span> <span class="nav-text">Netty 模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-核心类"><span class="nav-number">6.</span> <span class="nav-text">Netty 核心类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BootStrap-，ServerBootstrap"><span class="nav-number">6.0.1.</span> <span class="nav-text">BootStrap ，ServerBootstrap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Future-ChannelFuture"><span class="nav-number">6.0.2.</span> <span class="nav-text">Future,ChannelFuture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Channel-1"><span class="nav-number">6.0.3.</span> <span class="nav-text">Channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selector-1"><span class="nav-number">6.0.4.</span> <span class="nav-text">Selector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ChannelHandler-及其实现类"><span class="nav-number">6.0.5.</span> <span class="nav-text">ChannelHandler 及其实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pipeline-和ChannelPipeline"><span class="nav-number">6.0.6.</span> <span class="nav-text">Pipeline 和ChannelPipeline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EventLoopGroup-和其实现类NioEventLoopGroup"><span class="nav-number">6.0.7.</span> <span class="nav-text">EventLoopGroup 和其实现类NioEventLoopGroup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ChannelHandlerContext"><span class="nav-number">6.0.8.</span> <span class="nav-text">ChannelHandlerContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ChannelOption"><span class="nav-number">6.0.9.</span> <span class="nav-text">ChannelOption</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unpooled"><span class="nav-number">6.0.10.</span> <span class="nav-text">Unpooled</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-编解码器"><span class="nav-number">6.1.</span> <span class="nav-text">Netty 编解码器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缺陷"><span class="nav-number">6.1.1.</span> <span class="nav-text">缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Google-Protobuf"><span class="nav-number">6.1.2.</span> <span class="nav-text">Google  Protobuf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自身编解码器"><span class="nav-number">6.1.3.</span> <span class="nav-text">自身编解码器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ByteToMessageDecoder-，-ReplayingDecoder"><span class="nav-number">6.1.4.</span> <span class="nav-text">ByteToMessageDecoder ， ReplayingDecoder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他编解码器"><span class="nav-number">6.1.5.</span> <span class="nav-text">其他编解码器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-粘包与拆包"><span class="nav-number">6.2.</span> <span class="nav-text">TCP 粘包与拆包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">6.2.1.</span> <span class="nav-text">解决方案</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -682,7 +900,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

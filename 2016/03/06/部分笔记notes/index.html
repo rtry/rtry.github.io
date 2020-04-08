@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,线程,数据结构,加密算法,Stream,lambda," />
+  <meta name="keywords" content="Java,线程,数据结构,加密算法,Stream,lambda,队列," />
 
 
 
@@ -95,7 +95,7 @@
 
 
 <meta name="description" content="简介：Java 日常比较零碎的知识点记录：Java 线程线程池，线程通信，Java 泛型，Stream，Lambda表达式，Java 加密算法，Java mail，Java 队列">
-<meta name="keywords" content="Java,线程,数据结构,加密算法,Stream,lambda">
+<meta name="keywords" content="Java,线程,数据结构,加密算法,Stream,lambda,队列">
 <meta property="og:type" content="article">
 <meta property="og:title" content="部分笔记">
 <meta property="og:url" content="http://rtry.xyz/2016/03/06/部分笔记notes/index.html">
@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://rtry.xyz/uploads/notes/11182147-200b853b8a954defab784cc653e964021.jpg">
 <meta property="og:image" content="http://rtry.xyz/uploads/notes/11182519-1c215a72b08142ae90b4f7143d83e84c1.jpg">
 <meta property="og:image" content="http://rtry.xyz/uploads/notes/1182892-20171122100317930-842768608.png">
-<meta property="og:updated_time" content="2019-05-21T06:35:23.162Z">
+<meta property="og:updated_time" content="2020-04-08T05:19:53.022Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="部分笔记">
 <meta name="twitter:description" content="简介：Java 日常比较零碎的知识点记录：Java 线程线程池，线程通信，Java 泛型，Stream，Lambda表达式，Java 加密算法，Java mail，Java 队列">
@@ -322,8 +322,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-21T14:35:23+08:00">
-                2019-05-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T13:19:53+08:00">
+                2020-04-08
               </time>
             
           </span>
@@ -492,6 +492,7 @@
 <li>for 循环只有一行时，可以省下{} ，但是不能是赋值语句</li>
 <li>Integer 与int相比，值等就等，Integer对象之间比较，在byte范围内，必然相等</li>
 <li>BigInteger.add()方法，返回的是加的结果，原值是不会改变的</li>
+<li>BigInteger 与BigDecimal 具有相同方法，2个都是处理大数据精确计算的，一个是整数相关，一个是浮点数相关</li>
 <li>Integer 静态方法，可以方便的转换2/8/16进制</li>
 <li>基本上所有容器类的构造方法都有参数为容器的</li>
 <li>&lt;&lt; 与 &gt;&gt; 为位运算，表示将二进制左右移动，很方便的实现开方</li>
@@ -544,15 +545,12 @@
 <h2 id="Java-Stream-语法"><a href="#Java-Stream-语法" class="headerlink" title="Java Stream 语法"></a>Java Stream 语法</h2><blockquote>
 <p>Stream 是Java 8 推出</p>
 <p>Stream 是用函数式编程的方式来处理集合类上的负责操作（循环，查找，过滤等）</p>
-<p>其一系列的操作都是在操作Stream,直到feach时才会操作结果，这种迭代方式称为内部迭代。</p>
+<p>其一系列的操作都是在操作Stream,直到feach时才会操作结果，这种迭代方式称为内部迭代。（在一次聚合操作中，可以有多个Intermediate，但是有且只有一个Terminal）</p>
 </blockquote>
 <h3 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h3><ul>
 <li>创建Stream:通过stream()方法等，取得集合对象的数据集。</li>
 <li>Intermediate:通过一系列中间（Intermediate）方法，对数据集进行过滤、检索等数据集的再次处理。如上例中，使用filter()方法来对数据集进行过滤。</li>
-<li>Terminal通过最终（terminal）方法完成对数据集中元素的处理。如上例中，使用forEach()完成对过滤后元素的打印。<blockquote>
-<p>在一次聚合操作中，可以有多个Intermediate，但是有且只有一个Terminal</p>
-</blockquote>
-</li>
+<li>Terminal通过最终（terminal）方法完成对数据集中元素的处理。如上例中，使用forEach()完成对过滤后元素的打印。</li>
 </ul>
 <blockquote>
 <p>Stream的操作分类</p>
@@ -762,7 +760,7 @@
 <tr>
 <td>add(e)</td>
 <td>offer(e)</td>
-<td>像队列尾部添加</td>
+<td>向队列尾部添加</td>
 </tr>
 <tr>
 <td>remove()</td>
@@ -777,16 +775,21 @@
 </tbody>
 </table>
 <h3 id="继承关系图"><a href="#继承关系图" class="headerlink" title="继承关系图"></a>继承关系图</h3><p><img src="/uploads/notes/1182892-20171122100317930-842768608.png" alt=""></p>
-<h3 id="子类说明"><a href="#子类说明" class="headerlink" title="子类说明"></a>子类说明</h3><blockquote>
-<p>内置的不阻塞队列： PriorityQueue 和 ConcurrentLinkedQueue</p>
+<h3 id="子类说明"><a href="#子类说明" class="headerlink" title="子类说明"></a>子类说明</h3><h4 id="不阻塞队列"><a href="#不阻塞队列" class="headerlink" title="不阻塞队列"></a>不阻塞队列</h4><blockquote>
+<p>内置的 PriorityQueue 和 ConcurrentLinkedQueue</p>
 </blockquote>
 <pre><code>1. PriorityQueue 类实质上维护了一个有序列表。加入到Queue中的元素根据它们的天然排序（通过其java.util.Comparable实现）或者根据传递给构造函数的java.util.Comparator 实现来定位。
 
 2. ConcurrentLinkedQueue 是基于链接节点的、线程安全的队列。并发访问不需要同步。因为它在队列的尾部添加元素并从头部删除它们，所以只要不需要知道队列的大小。ConcurrentLinkedQueue 对公共集合的共享访问就可以工作得很好。收集关于队列大小的信息会很慢，需要遍历队列。
 </code></pre><p>　　</p>
-<blockquote>
-<p>阻塞接口:java.util.concurrent 中加入了BlockingQueue接口和五个阻塞队列类。它实质上就是一种带有一点扭曲的FIFO数据结构。不是立即从队列中添加或者删除元素，线程执行操作阻塞，直到有空间或者元素可用。BlockingQueue接口声明有阻塞操作put和take。put方法在队列满时阻塞，take方法在队列空时阻塞。</p>
+<h4 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h4><blockquote>
+<p>java.util.concurrent 中加入了BlockingQueue接口和五个阻塞队列类。它实质上就是一种带有一点扭曲的FIFO数据结构。不是立即从队列中添加或者删除元素，线程执行操作阻塞，直到有空间或者元素可用。</p>
 </blockquote>
+<p>BlockingQueue接口声明有阻塞操作put和take</p>
+<ul>
+<li>put 添加一个元素 如果队列满，则阻塞</li>
+<li>take 移除并返回队列头部的元素 如果队列为空，则阻塞</li>
+</ul>
 <pre><code>1. ArrayBlockingQueue ：一个由数组支持的有界队列。
 
 2. LinkedBlockingQueue ：一个由链接节点支持的可选有界队列。
@@ -824,6 +827,8 @@
             <a href="/tags/Stream/" rel="tag"># Stream</a>
           
             <a href="/tags/lambda/" rel="tag"># lambda</a>
+          
+            <a href="/tags/队列/" rel="tag"># 队列</a>
           
         </div>
       
@@ -921,7 +926,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -943,7 +948,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -998,7 +1003,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个特性"><span class="nav-number">1.1.</span> <span class="nav-text">两个特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-1-5之前对线程同步的方式"><span class="nav-number">2.</span> <span class="nav-text">Java 1.5之前对线程同步的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">2.1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile"><span class="nav-number">2.2.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用场景"><span class="nav-number">2.3.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadPoolExecutor线程池"><span class="nav-number">3.</span> <span class="nav-text">ThreadPoolExecutor线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决目的"><span class="nav-number">3.1.</span> <span class="nav-text">解决目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法"><span class="nav-number">3.2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Executors-工具类"><span class="nav-number">3.3.</span> <span class="nav-text">Executors 工具类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">4.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的数据结构"><span class="nav-number">4.1.</span> <span class="nav-text">常见的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二叉搜索树"><span class="nav-number">4.2.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展（对数-）"><span class="nav-number">4.3.</span> <span class="nav-text">扩展（对数 ）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件"><span class="nav-number">5.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eclipse-Scala-插件"><span class="nav-number">5.1.</span> <span class="nav-text">Eclipse  Scala 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven-maven-assembly-plugin-插件"><span class="nav-number">5.2.</span> <span class="nav-text">Maven maven-assembly-plugin 插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Puzzlers"><span class="nav-number">6.</span> <span class="nav-text">Java Puzzlers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Generics-泛型"><span class="nav-number">7.</span> <span class="nav-text">Java Generics 泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Lambda-表达式"><span class="nav-number">8.</span> <span class="nav-text">Java Lambda 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#格式"><span class="nav-number">8.1.</span> <span class="nav-text">格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回"><span class="nav-number">8.2.</span> <span class="nav-text">返回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内部接口单一方法替代"><span class="nav-number">8.3.</span> <span class="nav-text">内部接口单一方法替代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数体引用值"><span class="nav-number">8.4.</span> <span class="nav-text">函数体引用值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合迭代"><span class="nav-number">8.5.</span> <span class="nav-text">集合迭代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数接口"><span class="nav-number">8.6.</span> <span class="nav-text">函数接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Stream-语法"><span class="nav-number">9.</span> <span class="nav-text">Java Stream 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用流程"><span class="nav-number">9.1.</span> <span class="nav-text">使用流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建方法"><span class="nav-number">9.2.</span> <span class="nav-text">创建方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Intermediate"><span class="nav-number">9.3.</span> <span class="nav-text">Intermediate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Terminal"><span class="nav-number">9.4.</span> <span class="nav-text">Terminal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Short-circuiting"><span class="nav-number">9.5.</span> <span class="nav-text">Short-circuiting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java信息安全"><span class="nav-number">10.</span> <span class="nav-text">Java信息安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BASE64，MD5，SHA，HMAC，RIPEMD算法"><span class="nav-number">10.1.</span> <span class="nav-text">BASE64，MD5，SHA，HMAC，RIPEMD算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对称加密算法"><span class="nav-number">10.2.</span> <span class="nav-text">对称加密算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非对称加密算法RSA"><span class="nav-number">10.3.</span> <span class="nav-text">非对称加密算法RSA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA-证书制作"><span class="nav-number">10.4.</span> <span class="nav-text">JAVA 证书制作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成keyStore文件"><span class="nav-number">10.4.1.</span> <span class="nav-text">生成keyStore文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成自签名证书"><span class="nav-number">10.4.2.</span> <span class="nav-text">生成自签名证书</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件长度获取"><span class="nav-number">10.5.</span> <span class="nav-text">文件长度获取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Mail"><span class="nav-number">11.</span> <span class="nav-text">Java Mail</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">11.1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送邮件流程"><span class="nav-number">11.2.</span> <span class="nav-text">发送邮件流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serializable-接口"><span class="nav-number">12.</span> <span class="nav-text">Serializable 接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">12.1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StringBuffer-vs-StringBuilder"><span class="nav-number">12.2.</span> <span class="nav-text">StringBuffer vs StringBuilder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-队列"><span class="nav-number">13.</span> <span class="nav-text">Java 队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">13.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法详解"><span class="nav-number">13.2.</span> <span class="nav-text">方法详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承关系图"><span class="nav-number">13.3.</span> <span class="nav-text">继承关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类说明"><span class="nav-number">13.4.</span> <span class="nav-text">子类说明</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个特性"><span class="nav-number">1.1.</span> <span class="nav-text">两个特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-1-5之前对线程同步的方式"><span class="nav-number">2.</span> <span class="nav-text">Java 1.5之前对线程同步的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">2.1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile"><span class="nav-number">2.2.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用场景"><span class="nav-number">2.3.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadPoolExecutor线程池"><span class="nav-number">3.</span> <span class="nav-text">ThreadPoolExecutor线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决目的"><span class="nav-number">3.1.</span> <span class="nav-text">解决目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法"><span class="nav-number">3.2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Executors-工具类"><span class="nav-number">3.3.</span> <span class="nav-text">Executors 工具类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">4.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的数据结构"><span class="nav-number">4.1.</span> <span class="nav-text">常见的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二叉搜索树"><span class="nav-number">4.2.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展（对数-）"><span class="nav-number">4.3.</span> <span class="nav-text">扩展（对数 ）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件"><span class="nav-number">5.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eclipse-Scala-插件"><span class="nav-number">5.1.</span> <span class="nav-text">Eclipse  Scala 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven-maven-assembly-plugin-插件"><span class="nav-number">5.2.</span> <span class="nav-text">Maven maven-assembly-plugin 插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Puzzlers"><span class="nav-number">6.</span> <span class="nav-text">Java Puzzlers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Generics-泛型"><span class="nav-number">7.</span> <span class="nav-text">Java Generics 泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Lambda-表达式"><span class="nav-number">8.</span> <span class="nav-text">Java Lambda 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#格式"><span class="nav-number">8.1.</span> <span class="nav-text">格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回"><span class="nav-number">8.2.</span> <span class="nav-text">返回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内部接口单一方法替代"><span class="nav-number">8.3.</span> <span class="nav-text">内部接口单一方法替代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数体引用值"><span class="nav-number">8.4.</span> <span class="nav-text">函数体引用值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合迭代"><span class="nav-number">8.5.</span> <span class="nav-text">集合迭代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数接口"><span class="nav-number">8.6.</span> <span class="nav-text">函数接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Stream-语法"><span class="nav-number">9.</span> <span class="nav-text">Java Stream 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用流程"><span class="nav-number">9.1.</span> <span class="nav-text">使用流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建方法"><span class="nav-number">9.2.</span> <span class="nav-text">创建方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Intermediate"><span class="nav-number">9.3.</span> <span class="nav-text">Intermediate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Terminal"><span class="nav-number">9.4.</span> <span class="nav-text">Terminal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Short-circuiting"><span class="nav-number">9.5.</span> <span class="nav-text">Short-circuiting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java信息安全"><span class="nav-number">10.</span> <span class="nav-text">Java信息安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BASE64，MD5，SHA，HMAC，RIPEMD算法"><span class="nav-number">10.1.</span> <span class="nav-text">BASE64，MD5，SHA，HMAC，RIPEMD算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对称加密算法"><span class="nav-number">10.2.</span> <span class="nav-text">对称加密算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非对称加密算法RSA"><span class="nav-number">10.3.</span> <span class="nav-text">非对称加密算法RSA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA-证书制作"><span class="nav-number">10.4.</span> <span class="nav-text">JAVA 证书制作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成keyStore文件"><span class="nav-number">10.4.1.</span> <span class="nav-text">生成keyStore文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成自签名证书"><span class="nav-number">10.4.2.</span> <span class="nav-text">生成自签名证书</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件长度获取"><span class="nav-number">10.5.</span> <span class="nav-text">文件长度获取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Mail"><span class="nav-number">11.</span> <span class="nav-text">Java Mail</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">11.1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送邮件流程"><span class="nav-number">11.2.</span> <span class="nav-text">发送邮件流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serializable-接口"><span class="nav-number">12.</span> <span class="nav-text">Serializable 接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">12.1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StringBuffer-vs-StringBuilder"><span class="nav-number">12.2.</span> <span class="nav-text">StringBuffer vs StringBuilder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-队列"><span class="nav-number">13.</span> <span class="nav-text">Java 队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">13.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法详解"><span class="nav-number">13.2.</span> <span class="nav-text">方法详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承关系图"><span class="nav-number">13.3.</span> <span class="nav-text">继承关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类说明"><span class="nav-number">13.4.</span> <span class="nav-text">子类说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不阻塞队列"><span class="nav-number">13.4.1.</span> <span class="nav-text">不阻塞队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">13.4.2.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -1021,7 +1026,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

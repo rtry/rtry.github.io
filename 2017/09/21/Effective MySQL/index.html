@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Rtry&#39;s blog">
 <meta property="og:description" content="简介：MySQL索引的分类，建立，分析；MySQL 的配置；事务4大特性;Spring 事务的配置与使用；数据库锁的使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-21T03:39:58.549Z">
+<meta property="og:updated_time" content="2020-04-08T05:19:55.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective MySQL 读书笔记">
 <meta name="twitter:description" content="简介：MySQL索引的分类，建立，分析；MySQL 的配置；事务4大特性;Spring 事务的配置与使用；数据库锁的使用">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-21T11:39:58+08:00">
-                2019-05-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T13:19:55+08:00">
+                2020-04-08
               </time>
             
           </span>
@@ -717,8 +717,26 @@ key_leng:92 //varchar(30) null charset=utf8
 </ul>
 </blockquote>
 </li>
-<li><p>Mysql LAST_INSERT_ID()</p>
+<li><p>原码，反码，补码</p>
 <blockquote>
+<ul>
+<li>就二进制而言，最高位表示符号，0-为正，1-为负</li>
+<li>正  原码=反码=补码</li>
+<li>负  反码（除最高位符号位不变，其他位取反）  补码（反码之后，加入1）</li>
+<li>为什么会有反码，补码，因为负数的原码直接参与减法会出错</li>
+<li>二进制 0+0=0 | 0+1=1+0=1 | 1+1=10(向高位进位) | 二进制加法最高位的进位被舍弃</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 计算10-1=10+(-1)</span><br><span class="line">10=&gt; 0000 1010 (原码=补)</span><br><span class="line">-1=&gt; 1000 0001 =&gt;反码 1111 1110 =&gt;补码(+1) 1111 1111</span><br><span class="line"># 计算</span><br><span class="line">    0000 1010</span><br><span class="line">+   1111 1111</span><br><span class="line">=   0000 1001 =9</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>byte 1字节 8位 除去符号位 最大值 （0111 1111） = 127  ，最小值<br>（1111 1111）= -127 ，但是 规定 -0 （1000 0000） = -128 （以便于补码运算） 所以 byte范围为 -128  ~ 127</li>
+</ul>
+</blockquote>
+<ul>
+<li>Mysql LAST_INSERT_ID()<blockquote>
 <ol>
 <li>查询和插入所使用的Connection对象必须是同一个才可以</li>
 <li>LAST_INSERT_ID是与table无关的，如果向表a插入数据后，再向表b插入数据，LAST_INSERT_ID返回表b中的Id值</li>
@@ -914,7 +932,7 @@ key_leng:92 //varchar(30) null charset=utf8
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -936,7 +954,7 @@ key_leng:92 //varchar(30) null charset=utf8
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1014,7 +1032,7 @@ key_leng:92 //varchar(30) null charset=utf8
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
